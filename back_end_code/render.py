@@ -6,10 +6,6 @@ app = Flask(__name__)
 def home():
     return render_template('PATH TO HOME PAGE')
 
-@app.route('/about')
-def about():
-    return render_template('PATH TO ABOUT')
-
 if __name__ == '__main__':
     app.run(debug=True)
 
