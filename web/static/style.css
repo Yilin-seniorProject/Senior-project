@@ -1,72 +1,8 @@
 p{
     color:black;
 }
-
-.first_title{
-    display: flex;
-    align-items: center;
-}
-
-.first_title h1{
-    background-color: rgb(186, 186, 186); 
-    height: 50px;    
-    flex-shrink: 0; /*收縮比例*/
-    border-radius: 5px;
-}
-
-.first_title a{
-    float: right;
-    margin-left: 150px;
-    border: 2px solid red;
-    text-decoration: none;  /*此行程式碼代表除連結下方預設畫線*/
-}
-
-#car_count{
-    background-color: azure; 
-    border-radius: 5px; 
-    width: 50vw;    /*50vw代表50%的視窗寬度(高度)*/
-}
-
-#car_count table{
-    width: 100%;
-    border-collapse: collapse;  /*設置表格寬度和邊框合併樣式*/
-}
-
-#car_count td{
-    padding: 10px;
-    margin: 10px;
-}
-
-#car_count input[type = "text"]{
-    width: 30px;
-}
-
-#car_information{
-    background-color: blanchedalmond; 
-    height: 30vw; 
-    width: 50vw;
-    border-radius: 5px;
-}
-
-#car_information input[type = "text"]{
-    width:10vw;
-}
-
-#Drone_route{
-    position: absolute;left:52vw;
-    border: 1px solid black;
-    float: right; 
-    width: 47vw; 
-    height: 40vw;
-}
-
-.map_information{
-    position: absolute;
-    bottom: 0px;
-    right: 0px; 
-    padding: 10px; 
-    margin: 10px; 
-    background-color: rgba(128, 128, 128, 0.586); 
-    border: 1px solid black; 
+h1{
+    background-color: rgb(186, 186, 186);
+    height: 50px;
     border-radius: 5px;
 }
