@@ -3,54 +3,78 @@
     <head>
         <meta charset="UTF-8"/>
         <meta name="description" content="無人機隊車輛精準定位結果畫面">
-        <meta name="author" content="Willy">
+        <meta name="author" content="Brian,Willy">
         <meta name="keywords" content="無人機, 車輛定位">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>無人機隊車輛精準定位</title>
+        <title>無人機結合車輛精準定位</title>
         <link rel="stylesheet" href="../static/style.css"/> 
     
     </head>
     <body>
-        <div style="background-color: rgb(186, 186, 186); height: 50px; border-radius: 5px;">
-            <h1>無人機隊車輛精準定位</h1>
+        <div class = "first_title">
+            <h1>無人機結合車輛精準定位</h1>
+            <a href = "proposal_history.html">企劃書構想與書寫過程</a>
+            <a href = "project_members.html">參與企劃成員</a>
         </div>
-        <div style="float: left;">
-            
-            <div style="background-color: azure; border-radius: 5px; width: 500px;">
-                <h2>目前定位到的車輛數量&類別</h2>
-                <table>
-                    <tr>總數量：</tr>
-                    <tr>
-                        <td>汽車：</td>
-                        <td>公車：</td>
-                        <td>卡車：</td>
-                        <td>機車：</td>
-                    </tr>
-                </table>
-            </div>
-            
-            <div style="background-color: blanchedalmond; height: 300px; border-radius: 5px;">
-                <h2>觀察車輛資訊</h2>
-                <table>
-                    <tr>
-                        <td>車輛類別：</td>
-                        <td>GPS位置：</td>
-                    </tr>
-                    <tr>
-                        <td>俯視照片：</td>
-                    </tr>
-                </table>
-            </div>
-            
-            <div style="background-color: rgb(229, 217, 246); height: 100px; border-radius: 5px;">
-                <h2>更新資訊</h2>
-            </div>
 
+        <div style="float: left">            
+            <div id = "car_count">
+                <h2>目前定位到的車輛數量及類別</h2>
+                <table>
+                    <tr>
+                        總數量： 
+                        <input type = "text" width: >
+                    </tr>
+                    <tr>
+                        <td>
+                            汽車： 
+                            <input type = "text">
+                        </td>
+                        <td>      
+                            公車： 
+                            <input type = "text">
+                        </td>
+                        <td>
+                            卡車：
+                            <input type = "text">     
+                        </td>
+                        <td>
+                            機車：
+                            <input type = "text">                             
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        
+            <div id = "car_information">
+                <h2>觀察車輛資訊</h2>
+                <ul>
+                    <li>                        
+                        車輛類別：
+                        <input type = "text">
+                    </li>
+                    <li>
+                        <table>
+                            <tr>
+                                GPS位置：                            
+                                <td>
+                                    經度：
+                                    <input type = "text">
+                                </td>
+                                <td>
+                                    緯度：
+                                    <input type = "text">                               
+                                </td>
+                            </tr>
+                        </table>
+                    </li>
+                    <li>車輛圖片</li>                   
+                </ul>               
+            </div>
         </div>
-        <div style="position: relative; border: 1px solid black; float: right; width: 750px; height: 550px;">
-            <h2>無人機路線</h2>
-            
-            <div style="position: absolute; bottom: 0px; right: 0px; padding: 10px; margin: 10px; background-color: rgba(128, 128, 128, 0.586); border: 1px solid black; border-radius: 5px;">
+        <div id = "Drone_route">
+            <h2>無人機路線</h2>            
+            <div class= "map_information">
                 <h3>圖示</h3>
                 <span>汽車</span>
                 <span>公車</span>
@@ -59,5 +83,3 @@
         </div>
     </body>
 </html>
-
-123456
