@@ -6,16 +6,16 @@ p{
     display: flex;
     align-items: center;
     background-color: rgb(186, 186, 186); 
+    height: 50px; 
 }
 
-.first_title h1{
-    height: 50px;    
+.first_title h1{       
     flex-shrink: 0; /*收縮比例*/
 }
 
 .first_title a{
     float: right;
-    margin-left: 150px;
+    margin-left: 350px;
     border: 2px solid red;
     text-decoration: none;  /*此行程式碼代表除連結下方預設畫線*/
 }
