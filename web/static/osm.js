@@ -15,6 +15,7 @@ document.addEventListener("DOMContentLoaded", function() {
         iconSize: [40, 40],
     });
 
+    // 無人機標籤
     const DroneCenter = [25.021431498025557, 121.21861694845937]; //marker center
     const DroneMarker = L.marker(DroneCenter, {
         icon: DroneIcon,
@@ -29,10 +30,11 @@ document.addEventListener("DOMContentLoaded", function() {
     }).openTooltip();
 
 
+    // 汽車標籤
     const CarCenter = [25.02020409808486, 121.2150120596153];
     const CarIcon = L.icon({
         iconUrl: '../static/car_icon.png',
-        iconSize: [42, 360/(624/42)],
+        iconSize: [40, 40],
     });
 
     const CarMarker = L.marker(CarCenter, {
@@ -40,4 +42,46 @@ document.addEventListener("DOMContentLoaded", function() {
         opacity: 1.0
     }).addTo(map);
     CarMarker.bindPopup(`緯度：${CarCenter[0]}<br>經度：${CarCenter[1]}`).openPopup();
+    
+
+    // 公車標籤
+    const BusCenter = [25.02236270417824, 121.21548413994972];
+    const BusIcon = L.icon({
+        iconUrl: '../static/bus_icon.png',
+        iconSize: [40, 40],
+    });
+
+    const BusMarker = L.marker(BusCenter, {
+        icon: BusIcon,
+        opacity: 1.0
+    }).addTo(map);
+    BusMarker.bindPopup(`緯度：${BusCenter[0]}<br>經度：${BusCenter[1]}`).openPopup();
+    
+
+    // 卡車標籤
+    const TruckCenter = [25.018566260253085, 121.21632635354695];
+    const TruckIcon = L.icon({
+        iconUrl: '../static/Truck_icon.png',
+        iconSize: [40, 40],
+    });
+    
+    const TruckMarker = L.marker(TruckCenter, {
+        icon: TruckIcon,
+        opacity: 1.0
+    }).addTo(map);
+    TruckMarker.bindPopup(`緯度：${TruckCenter[0]}<br>經度：${TruckCenter[1]}`).openPopup();
+    
+    
+    // 機車標籤
+    const ScooterCenter = [25.022083808101044, 121.21886640547179];
+    const ScooterIcon = L.icon({
+        iconUrl: '../static/scooter_icon.png',
+        iconSize: [40, 40],
+    });
+    
+    const ScooterMarker = L.marker(ScooterCenter, {
+        icon: ScooterIcon,
+        opacity: 1.0
+    }).addTo(map);
+    ScooterMarker.bindPopup(`緯度：${ScooterCenter[0]}<br>經度：${ScooterCenter[1]}`).openPopup();
 });
