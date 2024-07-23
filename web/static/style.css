@@ -42,7 +42,7 @@ p{
 
 #car_information{
     background-color: blanchedalmond; 
-    height: 30vw; 
+    height: 32vw; 
     width: 50vw;
     border-radius: 5px;
 }
@@ -56,15 +56,15 @@ p{
     border: 1px solid black;
     float: right; 
     width: 47vw; 
-    height: 40vw;
+    height: 43vw;
 }
 
 .map_information{
     position: absolute;
+    z-index:1000;
     bottom: 0px;
     right: 0px; 
-    padding: 10px; 
-    margin: 10px; 
+    margin: 10px;
     background-color: rgba(128, 128, 128, 0.586); 
     border: 1px solid black; 
     border-radius: 5px;
