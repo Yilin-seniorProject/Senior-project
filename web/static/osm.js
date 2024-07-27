@@ -25,63 +25,62 @@ document.addEventListener("DOMContentLoaded", function() {
     // Marker 加上 Tooltip
     DroneMarker.bindTooltip("Drone position", {
         direction: 'bottom', // right、left、top、bottom、center。default: auto
-        permanent: false, // 是滑鼠移過才出現，還是一直出現
+        permanent: false, // true是滑鼠移過才出現，false是一直出現
         opacity: 1.0
     }).openTooltip();
 
-
-    // 汽車標籤
-    const CarCenter = [25.02020409808486, 121.2150120596153];
+    // 自定義圖標：汽車、公車、卡車、機車
     const CarIcon = L.icon({
         iconUrl: '../static/car_icon.png',
         iconSize: [40, 40],
     });
-
-    const CarMarker = L.marker(CarCenter, {
-        icon: CarIcon,
-        opacity: 1.0
-    }).addTo(map);
-    CarMarker.bindPopup(`緯度：${CarCenter[0]}<br>經度：${CarCenter[1]}`).openPopup();
-    
-
-    // 公車標籤
-    const BusCenter = [25.02236270417824, 121.21548413994972];
     const BusIcon = L.icon({
         iconUrl: '../static/bus_icon.png',
         iconSize: [40, 40],
     });
-
-    const BusMarker = L.marker(BusCenter, {
-        icon: BusIcon,
-        opacity: 1.0
-    }).addTo(map);
-    BusMarker.bindPopup(`緯度：${BusCenter[0]}<br>經度：${BusCenter[1]}`).openPopup();
-    
-
-    // 卡車標籤
-    const TruckCenter = [25.018566260253085, 121.21632635354695];
     const TruckIcon = L.icon({
-        iconUrl: '../static/Truck_icon.png',
+        iconUrl: '../static/truck_icon.png',
         iconSize: [40, 40],
     });
-    
-    const TruckMarker = L.marker(TruckCenter, {
-        icon: TruckIcon,
-        opacity: 1.0
-    }).addTo(map);
-    TruckMarker.bindPopup(`緯度：${TruckCenter[0]}<br>經度：${TruckCenter[1]}`).openPopup();
-    
-    
-    // 機車標籤
-    const ScooterCenter = [25.022083808101044, 121.21886640547179];
     const ScooterIcon = L.icon({
         iconUrl: '../static/scooter_icon.png',
         iconSize: [40, 40],
     });
-    
-    const ScooterMarker = L.marker(ScooterCenter, {
-        icon: ScooterIcon,
-        opacity: 1.0
-    }).addTo(map);
-    ScooterMarker.bindPopup(`緯度：${ScooterCenter[0]}<br>經度：${ScooterCenter[1]}`).openPopup();
+
+    const btnPutMarkers = document.getElementById('put-markers');
+    btnPutMarkers.addEventListener('click', e => {
+        e.preventDefault();
+        
+        // 獲取經緯度和訊號類型
+        const latitude = parseFloat(document.getElementById('latitude').value);
+        const longitude = parseFloat(document.getElementById('longitude').value);
+        const vehicleType = document.querySelector('input[name="vehicle-type"]:checked').value;
+
+        // 根據訊號類型選擇圖標
+        let selectedIcon;
+        switch(vehicleType) {
+            case 'car':
+                selectedIcon = CarIcon;
+                break;
+            case 'bus':
+                selectedIcon = BusIcon;
+                break;
+            case 'truck':
+                selectedIcon = TruckIcon;
+                break;
+            case 'scooter':
+                selectedIcon = ScooterIcon;
+                break;
+            default:
+                selectedIcon = CarIcon; // 默認圖標
+        }
+
+        // 放置標記
+        if (!isNaN(latitude) && !isNaN(longitude)) {
+            L.marker([latitude, longitude], { icon: selectedIcon }).addTo(map);
+        } else {
+            alert('Please enter valid latitude and longitude.');
+        }
+    });
+
 });

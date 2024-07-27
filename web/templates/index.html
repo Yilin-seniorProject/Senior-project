@@ -89,9 +89,23 @@
             </div>
             <!-- 添加一個用於顯示地圖的div -->
             <div id="map" style="height: 400px;"></div>
-            
             <script src="https://unpkg.com/leaflet@1.8.0/dist/leaflet.js"></script>
             <script src="../static/osm.js"></script>
+            <!-- 輸入標記於地圖上 -->
+            <label for="title">請輸入GPS座標：</label>
+            <input type="text" id="latitude" placeholder="Latitude">
+            <input type="text" id="longitude" placeholder="Longitude">
+            <div>
+                <input type="radio" id="car" name="vehicle-type" value="car" checked>
+                <label for="car">Car</label>
+                <input type="radio" id="bus" name="vehicle-type" value="bus">
+                <label for="bus">Bus</label>
+                <input type="radio" id="truck" name="vehicle-type" value="truck">
+                <label for="truck">Truck</label>
+                <input type="radio" id="scooter" name="vehicle-type" value="scooter">
+                <label for="scooter">Scooter</label>
+            </div>
+            <button id="put-markers">Submit</button>
         </div>
     </body>
 </html>
