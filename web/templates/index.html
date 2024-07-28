@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8"/>
+        <meta name="description" content="無人機對車輛精準定位結果畫面">
+        <meta name="author" content="Brian, Willy">
+        <meta name="keywords" content="無人機, 車輛定位">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>無人機結合車輛精準定位</title>
+        <link rel="stylesheet" href="../static/style.css"/> 
+        <link rel="stylesheet" href="https://unpkg.com/leaflet@1.8.0/dist/leaflet.css" />
+        
+    </head>
+    <body>
+        <div class="first_title">
+            <h1>無人機結合車輛精準定位</h1>
+            <a href="proposal_history.html">企劃書構想與書寫過程</a>
+            <a href="project_members.html">研究成員介紹</a>
+        </div>
+        
+        <div style="float: left">
+            <div id="car_count">
+                <h2>目前定位到的車輛數量及類別</h2>
+                <table>
+                    <tr>
+                        總數量： 
+                        <input type="text" readonly >
+                    </tr>
+                    <tr>
+                        <td>
+                            汽車： 
+                            <input type="text" readonly>
+                        </td>
+                        <td>      
+                            公車： 
+                            <input type="text" readonly>
+                        </td>
+                        <td>
+                            卡車：
+                            <input type="text" readonly>     
+                        </td>
+                        <td>
+                            機車：
+                            <input type="text" readonly>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+            
+            <div id = "car_information">
+                <h2>觀察車輛資訊</h2>
+                <ul>
+                    <li>
+                        車輛類別：
+                        <input type="text" readonly>
+                    </li>
+                    <li>
+                        <table>
+                            <tr>
+                                GPS位置：
+                                <td>
+                                    經度：
+                                    <input type="text" readonly>
+                                </td>
+                                <td>
+                                    緯度：
+                                    <input type="text" readonly>
+                                </td>
+                            </tr>
+                        </table>
+                    </li>
+                    <li>車輛圖片</li>                    
+                </ul>
+                <img src = "Black_Dear.jpg" width = 500px>
+            </div>
+        </div>
+        <div id="Drone_route">
+            <h2>無人機路線</h2>
+            <div class="map_information">
+                <h3>圖示</h3>
+                <img src="../static/car_icon.png" alt="汽車圖示" title="汽車" width=40;>
+                <span>汽車</span>
+                <img src="../static/bus_icon.png" alt="公車圖示" title="公車" width=40;>
+                <span>公車</span>
+                <img src="../static/truck_icon.png" alt="卡車圖示" title="卡車" width=40;>
+                <span>卡車</span>
+                <img src="../static/scooter_icon.png" alt="機車圖示" title="機車" width=40;>
+                <span>機車</span>
+            </div>
+            <!-- 添加一個用於顯示地圖的div -->
+            <div id="map" style="height: 400px;"></div>
+            <script src="https://unpkg.com/leaflet@1.8.0/dist/leaflet.js"></script>
+            <script src="../static/osm.js"></script>
+            <!-- 輸入標記於地圖上 -->
+            <label for="title">請輸入GPS座標：</label>
+            <input type="text" id="latitude" placeholder="Latitude">
+            <input type="text" id="longitude" placeholder="Longitude">
+            <div>
+                <input type="radio" id="car" name="vehicle-type" value="car" checked>
+                <label for="car">Car</label>
+                <input type="radio" id="bus" name="vehicle-type" value="bus">
+                <label for="bus">Bus</label>
+                <input type="radio" id="truck" name="vehicle-type" value="truck">
+                <label for="truck">Truck</label>
+                <input type="radio" id="scooter" name="vehicle-type" value="scooter">
+                <label for="scooter">Scooter</label>
+            </div>
+            <button id="put-markers">Submit</button>
+        </div>
+    </body>
+</html>

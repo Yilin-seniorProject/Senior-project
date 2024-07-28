@@ -162,4 +162,5 @@ cython_debug/
 # Custom
 test.py
 img/
+.vscode
 # *.db
