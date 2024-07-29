@@ -5,18 +5,17 @@ p{
 .first_title{
     display: flex;
     align-items: center;
+    background-color: rgb(186, 186, 186); 
+    height: 50px; 
 }
 
-.first_title h1{
-    background-color: rgb(186, 186, 186); 
-    height: 50px;    
+.first_title h1{       
     flex-shrink: 0; /*收縮比例*/
-    border-radius: 5px;
 }
 
 .first_title a{
     float: right;
-    margin-left: 150px;
+    margin-left: 350px;
     border: 2px solid red;
     text-decoration: none;  /*此行程式碼代表除連結下方預設畫線*/
 }
@@ -43,7 +42,7 @@ p{
 
 #car_information{
     background-color: blanchedalmond; 
-    height: 30vw; 
+    height: 32vw; 
     width: 50vw;
     border-radius: 5px;
 }
@@ -57,15 +56,15 @@ p{
     border: 1px solid black;
     float: right; 
     width: 47vw; 
-    height: 40vw;
+    height: 43vw;
 }
 
 .map_information{
     position: absolute;
+    z-index:1000;
     bottom: 0px;
     right: 0px; 
-    padding: 10px; 
-    margin: 10px; 
+    margin: 10px;
     background-color: rgba(128, 128, 128, 0.586); 
     border: 1px solid black; 
     border-radius: 5px;
