@@ -16,7 +16,7 @@ p{
 .first_title a{
     float: right;
     margin-left: 350px;
-    border: 2px solid red;
+    /*border: 2px solid red;*/
     text-decoration: none;  /*此行程式碼代表除連結下方預設畫線*/
 }
 
