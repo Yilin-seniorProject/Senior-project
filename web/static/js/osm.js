@@ -11,7 +11,7 @@ document.addEventListener("DOMContentLoaded", function() {
     }).addTo(map);
     
     const DroneIcon = L.icon({
-        iconUrl: '../static/Drone_icon.png',
+        iconUrl: '../static/img/Drone_icon.png',
         iconSize: [40, 40],
     });
 
@@ -31,19 +31,19 @@ document.addEventListener("DOMContentLoaded", function() {
 
     // 自定義圖標：汽車、公車、卡車、機車
     const CarIcon = L.icon({
-        iconUrl: '../static/car_icon.png',
+        iconUrl: '../static/img/car_icon.png',
         iconSize: [40, 40],
     });
     const BusIcon = L.icon({
-        iconUrl: '../static/bus_icon.png',
+        iconUrl: '../static/img/bus_icon.png',
         iconSize: [40, 40],
     });
     const TruckIcon = L.icon({
-        iconUrl: '../static/truck_icon.png',
+        iconUrl: '../static/img/truck_icon.png',
         iconSize: [40, 40],
     });
     const ScooterIcon = L.icon({
-        iconUrl: '../static/scooter_icon.png',
+        iconUrl: '../static/img/scooter_icon.png',
         iconSize: [40, 40],
     });
 
