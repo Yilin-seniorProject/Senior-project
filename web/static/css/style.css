@@ -3,14 +3,15 @@ p{
 }
 
 body{
-    background-color: #bcbcbc;
+    background-color: #e9e8e8;
 }
 .first_title{
     display: flex;
     align-items: center;
-    background-color: white;
+    background-color: rgb(0, 0, 71);
     border-radius: 5px; 
     height: 50px; 
+    color:white;
 }
 
 .first_title h1{       
@@ -20,12 +21,12 @@ body{
 .first_title a{
     float: right;
     margin-left: 350px;
-    /*border: 2px solid red;*/
     text-decoration: none;  /*此行程式碼代表除連結下方預設畫線*/
+    color: white;
 }
 
 #car_count{
-    /* background-color: azure;  */
+    background-color:white; 
     border-radius: 5px; 
     width: 50vw;    /*50vw代表50%的視窗寬度(高度)*/
 }
@@ -45,7 +46,7 @@ body{
 }
 
 #car_information{
-    /* background-color: blanchedalmond;  */
+    background-color: white; 
     height: 32vw; 
     width: 50vw;
     border-radius: 5px;
@@ -57,10 +58,10 @@ body{
 
 #Drone_route{
     position: absolute;left:52vw;
-    /* border: 1px solid black; */
     float: right; 
     width: 47vw; 
     height: 43vw;
+    background-color: white;
 }
 
 .map_information{
@@ -70,6 +71,6 @@ body{
     right: 0px; 
     margin: 10px;
     background-color: rgba(128, 128, 128, 0.586); 
-    border: 1px solid black; 
+    /* border: 1px solid black;  */
     border-radius: 5px;
 }
