@@ -1,17 +1,17 @@
 document.addEventListener("DOMContentLoaded", function() {
     // 初始化計數器
     let totalCount = 0;
-    let carCount = 0;
-    let busCount = 0;
-    let truckCount = 0;
-    let scooterCount = 0;
+    let carNum = 0;
+    let busNum = 0;
+    let truckNum = 0;
+    let scooterNum = 0;
 
     const updateCountDisplay = () => {
         document.querySelector('#car_count input:nth-child(2)').value = totalCount;
-        document.querySelector('#car_count input:nth-child(5)').value = carCount;
-        document.querySelector('#car_count input:nth-child(8)').value = busCount;
-        document.querySelector('#car_count input:nth-child(11)').value = truckCount;
-        document.querySelector('#car_count input:nth-child(14)').value = scooterCount;
+        document.querySelector('#car_count input:nth-child(5)').value = carNum;
+        document.querySelector('#car_count input:nth-child(8)').value = busNum;
+        document.querySelector('#car_count input:nth-child(11)').value = truckNum;
+        document.querySelector('#car_count input:nth-child(14)').value = scooterNum;
     };
 
     const btnPutMarkers = document.getElementById('put-markers');
@@ -22,16 +22,16 @@ document.addEventListener("DOMContentLoaded", function() {
         totalCount++;
         switch(vehicleType) {
             case 'car':
-                carCount++;
+                carNum++;
                 break;
             case 'bus':
-                busCount++;
+                busNum++;
                 break;
             case 'truck':
-                truckCount++;
+                truckNum++;
                 break;
             case 'scooter':
-                scooterCount++;
+                scooterNum++;
                 break;
         }
 

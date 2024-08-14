@@ -40,7 +40,7 @@ body{
     padding: 10px;
     margin: 10px;
 }
-
+/* 針對 id 為 car_count 內的所有 input 標籤進行設定*/
 #car_count input[type = "text"]{
     width: 30px;
 }
