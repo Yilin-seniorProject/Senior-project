@@ -42,22 +42,29 @@ def submit_data():
     image_name = request.args.get('image_name')#接收前端數據
 
     #取資料
-    cursor.execute("SELECT ImageData FROM {} WHERE ImageName = ?".format(table_name), (image_name,))
-    imagedata = cursor.fetchone()
-    cursor.execute("SELECT Longitude FROM {} WHERE ImageName = ?".format(table_name), (image_name,))
-    longitude = cursor.fetchone()
-    cursor.execute("SELECT Latitude FROM {} WHERE ImageName = ?".format(table_name), (image_name,))
-    latitude = cursor.fetchone()
-    return render_template('index.html', imagedata=imagedata, longitude=longitude, latitude=latitude)
+    cursor.execute("SELECT * FROM {} WHERE ImageName = ?".format(table_name), (image_name,))
+    imagename, imagedata, longitude, latitude, imagetype = cursor.fetchone()
+    return render_template('index.html', imagedata=imagedata, longitude=longitude, latitude=latitude,imagetype=imagetype)
 
 #接收樹梅派數據
 @app.route('/read_data', methods=['POST'])
 def read_data():
     data = request.json.get('data')
+    return "Data has been recorded."
+    
 
-
-
-
+@app.route('/delete_data', methods=['GET'])
+def delete_data():
+    password = '1'
+    key = request.args.get('key')
+    if key != password:
+        return "error request."
+    db = get_db()
+    cursor = db.cursor()
+    table_name = 'point'
+    cursor.execute("DELETE FROM {}".format(table_name))
+    db.commit()
+    return "All data has been deleted."
 
 if __name__ == '__main__':
     app.run(host='127.0.0.1', port=5000, debug=True)
