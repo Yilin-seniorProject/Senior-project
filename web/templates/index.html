@@ -10,6 +10,9 @@
         <link rel="stylesheet" href="../static/css/style.css"/> 
         <link rel="stylesheet" href="https://unpkg.com/leaflet@1.8.0/dist/leaflet.css" />
         
+        <script src="https://unpkg.com/leaflet@1.8.0/dist/leaflet.js"></script>
+        <script src="../static/js/osm.js"></script>
+        <script src="../static/js/counter.js"></script>
     </head>
     <body>
         <div class="first_title">
@@ -24,24 +27,24 @@
                 <table>
                     <tr>
                         總數量： 
-                        <input type="text" readonly >
+                        <input type="text" id="total_count" readonly >
                     </tr>
                     <tr>
                         <td>
                             汽車： 
-                            <input type="text" readonly>
+                            <input type="text" id="car_count_input" readonly>
                         </td>
                         <td>      
                             公車： 
-                            <input type="text" readonly>
+                            <input type="text" id="bus_count_input" readonly>
                         </td>
                         <td>
                             卡車：
-                            <input type="text" readonly>     
+                            <input type="text" id="truck_count_input" readonly>     
                         </td>
                         <td>
                             機車：
-                            <input type="text" readonly>
+                            <input type="text" id="scooter_count_input" readonly>
                         </td>
                     </tr>
                 </table>
@@ -89,8 +92,6 @@
             </div>
             <!-- 添加一個用於顯示地圖的div -->
             <div id="map" style="height: 400px;"></div>
-            <script src="https://unpkg.com/leaflet@1.8.0/dist/leaflet.js"></script>
-            <script src="../static/js/osm.js"></script>
             <!-- 輸入標記於地圖上 -->
             <label for="title">請輸入GPS座標：</label>
             <input type="text" id="latitude" placeholder="Latitude">
