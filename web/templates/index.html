@@ -27,7 +27,7 @@
                 <table>
                     <tr>
                         總數量： 
-                        <input type="text" id="total_count" readonly >
+                        <input type="text" id="total_count" readonly>
                     </tr>
                     <tr>
                         <td>
@@ -55,7 +55,7 @@
                 <ul>
                     <li>
                         車輛類別：
-                        <input type="text" readonly>
+                        <input type="text" id="target_type" value="type" >
                     </li>
                     <li>
                         <table>
@@ -63,18 +63,18 @@
                                 GPS位置：
                                 <td>
                                     經度：
-                                    <input type="text" value={{longitude}} readonly>
+                                    <input type="text" id="target_lng" value={{longitude}} readonly>
                                 </td>
                                 <td>
                                     緯度：
-                                    <input type="text" value={{latitude}} readonly>
+                                    <input type="text" id="target_lat" value={{latitude}} readonly>
                                 </td>
                             </tr>
                         </table>
                     </li>
                     <li>車輛圖片</li>                    
                 </ul>
-                <img src = "../static/img/Black_Dear.jpg" width = 500px>
+                <img src = "../static/img/Black_Dear.jpg" width = 500px id="target_img">
             </div>
         </div>
         <div id="Drone_route">
@@ -94,8 +94,8 @@
             <div id="map" style="height: 400px;"></div>
             <!-- 輸入標記於地圖上 -->
             <label for="title">請輸入GPS座標：</label>
-            <input type="text" id="latitude" placeholder="Latitude">
-            <input type="text" id="longitude" placeholder="Longitude">
+            <input type="text" id="lat_input" placeholder="Latitude" value="">
+            <input type="text" id="lng_input" placeholder="Longitude"value="">
             <div>
                 <input type="radio" id="car" name="vehicle-type" value="car" checked>
                 <label for="car">Car</label>

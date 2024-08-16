@@ -52,8 +52,8 @@ document.addEventListener("DOMContentLoaded", function() {
         e.preventDefault();
         
         // 獲取經緯度和訊號類型
-        const latitude = parseFloat(document.getElementById('latitude').value);
-        const longitude = parseFloat(document.getElementById('longitude').value);
+        const latitude = parseFloat(document.getElementById('lat_input').value);
+        const longitude = parseFloat(document.getElementById('lng_input').value);
         const vehicleType = document.querySelector('input[name="vehicle-type"]:checked').value;
 
         // 根據訊號類型選擇圖標
