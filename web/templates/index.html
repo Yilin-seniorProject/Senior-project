@@ -55,7 +55,7 @@
                 <ul>
                     <li>
                         車輛類別：
-                        <input type="text" id="target_type" value="type" >
+                        <input type="text" id="target_type" value="" >
                     </li>
                     <li>
                         <table>
@@ -63,11 +63,11 @@
                                 GPS位置：
                                 <td>
                                     經度：
-                                    <input type="text" id="target_lng" value={{longitude}} readonly>
+                                    <input type="text" id="target_lng" value="" readonly>
                                 </td>
                                 <td>
                                     緯度：
-                                    <input type="text" id="target_lat" value={{latitude}} readonly>
+                                    <input type="text" id="target_lat" value= "" readonly>
                                 </td>
                             </tr>
                         </table>
@@ -94,8 +94,8 @@
             <div id="map" style="height: 400px;"></div>
             <!-- 輸入標記於地圖上 -->
             <label for="title">請輸入GPS座標：</label>
-            <input type="text" id="lat_input" placeholder="Latitude" value="">
-            <input type="text" id="lng_input" placeholder="Longitude"value="">
+            <input type="text" id="input_lat" placeholder="Latitude" value="">
+            <input type="text" id="input_lng" placeholder="Longitude"value="">
             <div>
                 <input type="radio" id="car" name="vehicle-type" value="car" checked>
                 <label for="car">Car</label>

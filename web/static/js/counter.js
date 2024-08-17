@@ -1,23 +1,33 @@
 // 自動發送請求設定
 function autoFetchData() {
-    let targetType = document.getElementById("target_type").value;
-    let targetLat = document.getElementById("target_lat").value;
-    let targetLng = document.getElementById("target_lng").value;
+    let inputLat = document.getElementById("input_lat").value;
+    let inputLng = document.getElementById("input_lng").value;
 
     // 構建查詢參數的 URL
-    let url = `/submit_data?target_type=${encodeURIComponent(targetType)}&target_lat=${encodeURIComponent(targetLat)}&target_lng=${encodeURIComponent(targetLng)}`;
+    let url = `/submit_data?input_lat=${encodeURIComponent(inputLat)}&input_lng=${encodeURIComponent(inputLng)}`;
 
     // 使用 fetch 發送 GET 請求
     fetch(url)
     .then(response => response.json()) // 將回應解析為 JSON 格式
     .then(data => {
         console.log('Success:', data); // 成功後打印回應數據
-        // 你可以在這裡添加代碼來更新網頁的顯示
+
+        // 自动选择与 imagetype 匹配的 radio 按钮
+        const inputType = data.imagetype; // 假設後端回傳的資料格式中包含 input_type 屬性
+        if (inputType) {
+            const radioButton = document.querySelector(`input[name="vehicle-type"][value="${inputType}"]`);
+            if (radioButton) {
+                radioButton.checked = true;
+            }
+        }
+
+        // 其他更新網頁顯示的代碼
     })
     .catch((error) => {
         console.error('Error:', error); // 如果有錯誤，打印錯誤信息
     });
 }
+
 
 document.addEventListener("DOMContentLoaded", function() {
     // 初始化計數器

@@ -75,8 +75,8 @@ document.addEventListener("DOMContentLoaded", function() {
         e.preventDefault();
         
         // 獲取經緯度和訊號類型
-        const latitude = parseFloat(document.getElementById('lat_input').value);
-        const longitude = parseFloat(document.getElementById('lng_input').value);
+        const latitude = parseFloat(document.getElementById('input_lat').value);
+        const longitude = parseFloat(document.getElementById('input_lng').value);
         const vehicleType = document.querySelector('input[name="vehicle-type"]:checked').value;
 
         // 根據訊號類型選擇圖標
@@ -101,6 +101,7 @@ document.addEventListener("DOMContentLoaded", function() {
         // 放置標記
         if (!isNaN(latitude) && !isNaN(longitude)) {
             const marker = L.marker([latitude, longitude], { icon: selectedIcon }).addTo(map);
+            // console.log("already add the marker!");
             
             // 當標記被點擊時，顯示車輛的資訊
             marker.on('click', () => {
