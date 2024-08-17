@@ -1,3 +1,26 @@
+// 發送請求設定
+function postRequest(){
+    let targetImg = document.getElementById("target_img").value;
+    
+    // 構建要發送的數據
+    const data = {
+        target_img: targetImg
+    };
+
+    // 構建查詢參數的 URL
+    let url = `/submit_data?target_img=${encodeURIComponent(targetImg)}`;
+
+    // 使用 fetch 發送 GET 請求
+    fetch(url)
+    .then(response => response.json()) // 將回應解析為 JSON 格式
+    .then(data => {
+        console.log('Success:', data); // 成功後打印回應數據
+    })
+    .catch((error) => {
+        console.error('Error:', error); // 如果有錯誤，打印錯誤信息
+    });
+}
+
 document.addEventListener("DOMContentLoaded", function() {
     // *** 放置地圖
     let zoom = 17; // 縮放程度，間距為 0 - 18
@@ -77,10 +100,20 @@ document.addEventListener("DOMContentLoaded", function() {
 
         // 放置標記
         if (!isNaN(latitude) && !isNaN(longitude)) {
-            L.marker([latitude, longitude], { icon: selectedIcon }).addTo(map);
+            const marker = L.marker([latitude, longitude], { icon: selectedIcon }).addTo(map);
+            
+            // 當標記被點擊時，顯示車輛的資訊
+            marker.on('click', () => {
+                document.getElementById('target_type').value = vehicleType;
+                document.getElementById('target_lng').value = longitude;
+                document.getElementById('target_lat').value = latitude;
+                postRequest();
+            });
         } else {
             alert('Please enter valid latitude and longitude.');
         }
     });
+
+    
 
 });
