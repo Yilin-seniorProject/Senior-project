@@ -8,20 +8,20 @@ URL = '127.0.0.1:5000/read_data'
 
 while True:
     result = predict.predict()
-    
+
     if result != None:
         frame, classname, accuracy, midpoints = result
         lat, lon = mavlink.get_gps_info()
         geo = dumps({
-            "lat":lat,
-            "lng":lon
-            })
+            "lat": lat,
+            "lng": lon
+        })
 
-        data = {'img':open(frame, 'rb'),
+        data = {'img': open(frame, 'rb'),
                 'classname': classname,
                 'midpoints': midpoints,
-                'geo':geo}
-        
+                'geo': geo
+                }
+
         request = requests.post(URL, files=data)
         print(request)
-
