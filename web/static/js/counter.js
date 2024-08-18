@@ -20,14 +20,11 @@ function autoFetchData() {
                 radioButton.checked = true;
             }
         }
-
-        // 其他更新網頁顯示的代碼
     })
     .catch((error) => {
         console.error('Error:', error); // 如果有錯誤，打印錯誤信息
     });
 }
-
 
 document.addEventListener("DOMContentLoaded", function() {
     // 初始化計數器
@@ -73,4 +70,3 @@ document.addEventListener("DOMContentLoaded", function() {
     // 設置每5秒自動執行一次請求
     setInterval(autoFetchData, 5000);
 });
-

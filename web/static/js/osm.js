@@ -1,11 +1,6 @@
 // 發送請求設定
 function postRequest(){
     let targetImg = document.getElementById("target_img").value;
-    
-    // 構建要發送的數據
-    const data = {
-        target_img: targetImg
-    };
 
     // 構建查詢參數的 URL
     let url = `/submit_data?target_img=${encodeURIComponent(targetImg)}`;
