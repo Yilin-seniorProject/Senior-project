@@ -50,12 +50,12 @@
                 </table>
             </div>
             
-            <div id = "car_information">
+            <div id="car_information">
                 <h2>觀察車輛資訊</h2>
                 <ul>
                     <li>
                         車輛類別：
-                        <input type="text" id="target_type" value="" >
+                        <input type="text" id="target_type" value="" raadonly>
                     </li>
                     <li>
                         <table>
@@ -67,14 +67,14 @@
                                 </td>
                                 <td>
                                     緯度：
-                                    <input type="text" id="target_lat" value= "" readonly>
+                                    <input type="text" id="target_lat" value="" readonly>
                                 </td>
                             </tr>
                         </table>
                     </li>
                     <li>車輛圖片</li>                    
                 </ul>
-                <img src = "../static/img/Black_Dear.jpg" width = 500px id="target_img">
+                <img src="../static/img/Black_Dear.jpg" width=500px id="target_img">
             </div>
         </div>
         <div id="Drone_route">
@@ -95,7 +95,7 @@
             <!-- 輸入標記於地圖上 -->
             <label for="title">請輸入GPS座標：</label>
             <input type="text" id="input_lat" placeholder="Latitude" value="">
-            <input type="text" id="input_lng" placeholder="Longitude"value="">
+            <input type="text" id="input_lng" placeholder="Longitude" value="">
             <div>
                 <input type="radio" id="car" name="vehicle-type" value="car" checked>
                 <label for="car">Car</label>
