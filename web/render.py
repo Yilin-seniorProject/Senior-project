@@ -33,7 +33,7 @@ def project_members():
     return render_template('project_members.html')
 
 #接收前端要求
-@app.route('/submit_data', methods=['GET'])
+@app.route('/submit_data', methods=['GET']) 
 def submit_data():
     db = get_db()
     cursor = db.cursor()

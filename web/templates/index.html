@@ -27,35 +27,35 @@
                 <table>
                     <tr>
                         總數量： 
-                        <input type="text" id="total_count" readonly >
+                        <input type="text" id="total_count" value="0" readonly>
                     </tr>
                     <tr>
                         <td>
                             汽車： 
-                            <input type="text" id="car_count_input" readonly>
+                            <input type="text" id="car_count_input" value="0" readonly>
                         </td>
                         <td>      
                             公車： 
-                            <input type="text" id="bus_count_input" readonly>
+                            <input type="text" id="bus_count_input" value="0" readonly>
                         </td>
                         <td>
                             卡車：
-                            <input type="text" id="truck_count_input" readonly>     
+                            <input type="text" id="truck_count_input" value="0" readonly>     
                         </td>
                         <td>
                             機車：
-                            <input type="text" id="scooter_count_input" readonly>
+                            <input type="text" id="scooter_count_input" value="0" readonly>
                         </td>
                     </tr>
                 </table>
             </div>
             
-            <div id = "car_information">
+            <div id="car_information">
                 <h2>觀察車輛資訊</h2>
                 <ul>
                     <li>
                         車輛類別：
-                        <input type="text" readonly>
+                        <input type="text" id="target_type" value="" readonly>
                     </li>
                     <li>
                         <table>
@@ -63,18 +63,18 @@
                                 GPS位置：
                                 <td>
                                     經度：
-                                    <input type="text" value={{longitude}} readonly>
+                                    <input type="text" id="target_lng" value="" readonly>
                                 </td>
                                 <td>
                                     緯度：
-                                    <input type="text" value={{latitude}} readonly>
+                                    <input type="text" id="target_lat" value="" readonly>
                                 </td>
                             </tr>
                         </table>
                     </li>
                     <li>車輛圖片</li>                    
                 </ul>
-                <img src = "../static/img/Black_Dear.jpg" width = 500px>
+                <img src="../static/img/Black_Dear.jpg" width=500px id="target_img">
             </div>
         </div>
         <div id="Drone_route">
@@ -94,8 +94,8 @@
             <div id="map" style="height: 400px;"></div>
             <!-- 輸入標記於地圖上 -->
             <label for="title">請輸入GPS座標：</label>
-            <input type="text" id="latitude" placeholder="Latitude">
-            <input type="text" id="longitude" placeholder="Longitude">
+            <input type="text" id="input_lat" placeholder="Latitude" value="">
+            <input type="text" id="input_lng" placeholder="Longitude" value="">
             <div>
                 <input type="radio" id="car" name="vehicle-type" value="car" checked>
                 <label for="car">Car</label>
