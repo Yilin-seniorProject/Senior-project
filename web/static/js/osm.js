@@ -110,6 +110,28 @@ document.addEventListener("DOMContentLoaded", function() {
         }
     });
 
+    // 获取相关元素
+    const thumbnailImg = document.getElementById("target_img");
+    const popup = document.getElementById("popup");
+    const popupImg = document.getElementById("popup_img");
+    const closePopup = document.getElementById("close_popup");
+
+    // 当点击缩略图时，显示悬浮窗口
+    thumbnailImg.addEventListener("click", function() {
+        popup.style.display = "block"; // 顯示懸浮視窗
+    });
+
+    // 当点击关闭按钮时，隐藏悬浮窗口
+    closePopup.addEventListener("click", function() {
+        popup.style.display = "none"; // 隱藏懸浮視窗
+    });
+
+    // 当点击懸浮視窗外部區域时，隱藏窗口
+    window.addEventListener("click", function(event) {
+        if (event.target === popup) {
+            popup.style.display = "none";
+        }
+    });
     
 
 });

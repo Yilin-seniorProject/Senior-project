@@ -56,6 +56,40 @@ body{
     width:10vw;
 }
 
+/* 設置懸浮視窗的樣式 */
+.popup {
+    display: none; /* 初始狀態為隱藏 */
+    position: fixed;
+    z-index: 2000; /* 確保它出縣在最前方 */
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.8); /* 半透明背景 */
+}
+
+/* 設置懸浮視窗内部圖片的樣式 */
+.popup img {
+    margin: auto;
+    display: block;
+    max-width: 80%;
+    max-height: 80%;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+/* 關閉按鈕的樣式 */
+#close_popup {
+    position: absolute;
+    top: 20px;
+    right: 30px;
+    font-size: 30px;
+    color: white;
+    cursor: pointer;
+}
+
 #Drone_route{
     position: absolute;left:52vw;
     float: right; 
@@ -74,3 +108,4 @@ body{
     /* border: 1px solid black;  */
     border-radius: 5px;
 }
+
