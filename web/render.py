@@ -1,13 +1,15 @@
 from flask import Flask, render_template, g, request, jsonify
 import json, sqlite3, os, base64, io
 from PIL import Image
+from pyngrok import ngrok
+
 
 
 app = Flask(__name__)
 DATABASE = 'database.db'
 table_name = 'point'
 image_counter = 1
-sended = str
+sended = "0.jpg"
 
 def save_image(image):
     global image_counter
@@ -49,6 +51,7 @@ def project_members():
     return render_template('project_members.html')
 
 #傳遞初始數據給前端
+'''
 @app.route('/initial_data', methods=['GET'])
 def initial_data():
     global sended
@@ -64,6 +67,7 @@ def initial_data():
     else:
         # 返回提示數據列表為空
         return jsonify({"status": "error", "message": "No data found"})
+'''
 
 #後續數據更新傳遞前端
 @app.route('/update_data', methods=['GET'])
@@ -105,17 +109,18 @@ def read_data():
     db = get_db()
     cursor = db.cursor()
     corddata = json.loads(data)
-    #print('Received data:', data)
+    latitude, longitude = corddata['geo']
+    print('Received data:', data)
     try:
-        name = save_image(corddata['image'])
-        #print(name)
+        name = save_image(corddata['img'])
+        print(name)
         cursor.execute("INSERT INTO {} (ImageName, Center, Longitude, Latitude, ImageType) VALUES (?, ?, ?, ?, ?)".format(table_name), 
     (
         name,
-        corddata['Center'],
-        corddata['Longitude'],
-        corddata['Latitude'],
-        corddata['ImageType']
+        corddata['midpoints'],
+        longitude,
+        latitude,
+        corddata['classname']
     ))
         db.commit()
         return jsonify({"status": "success", "message": "Data received"})
@@ -125,7 +130,7 @@ def read_data():
 
 @app.route('/delete_data', methods=['GET'])
 def delete_data():
-    global image_counter
+    global image_counter, sended
     image_counter = 1
     password = '1'
     key = request.args.get('key')
@@ -136,7 +141,14 @@ def delete_data():
     table_name = 'point'
     cursor.execute("DELETE FROM {}".format(table_name))
     db.commit()
+    sended = "0.jpg"
     return jsonify({"status": "success", "message": "Data deleted"})
 
 if __name__ == '__main__':
+    '''
+    ngrok.set_auth_token("2lCGJJzd2hX7vPZs3eDtOaLiasl_5YdkT5A6wpaaujcqrffZQ")
+    port = 5000
+    public_url = ngrok.connect(port).public_url
+    print(" * ngrok tunnel \"{}\" -> \"http://127.0.0.1:{}\"".format(public_url, port))
+    '''
     app.run(host='127.0.0.1', port=5000, debug=True)
