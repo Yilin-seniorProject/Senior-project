@@ -1,20 +1,20 @@
-// 發送請求設定
-function postRequest(){
-    let targetImg = document.getElementById("target_img").value;
+// // 發送請求設定
+// function postRequest(){
+//     let targetImg = document.getElementById("target_img").value;
 
-    // 構建查詢參數的 URL
-    let url = `/submit_data?target_img=${encodeURIComponent(targetImg)}`;
+//     // 構建查詢參數的 URL
+//     let url = `/submit_data?target_img=${encodeURIComponent(targetImg)}`;
 
-    // 使用 fetch 發送 GET 請求
-    fetch(url)
-    .then(response => response.json()) // 將回應解析為 JSON 格式
-    .then(data => {
-        console.log('Success:', data); // 成功後打印回應數據
-    })
-    .catch((error) => {
-        console.error('Error:', error); // 如果有錯誤，打印錯誤信息
-    });
-}
+//     // 使用 fetch 發送 GET 請求
+//     fetch(url)
+//     .then(response => response.json()) // 將回應解析為 JSON 格式
+//     .then(data => {
+//         console.log('Success:', data); // 成功後打印回應數據
+//     })
+//     .catch((error) => {
+//         console.error('Error:', error); // 如果有錯誤，打印錯誤信息
+//     });
+// }
 
 document.addEventListener("DOMContentLoaded", function() {
     // *** 放置地圖
@@ -103,14 +103,15 @@ document.addEventListener("DOMContentLoaded", function() {
                 document.getElementById('target_type').value = vehicleType;
                 document.getElementById('target_lng').value = longitude;
                 document.getElementById('target_lat').value = latitude;
-                postRequest();
+                // document.getElementById('target_img').value = src();
+                // postRequest();
             });
         } else {
             alert('Please enter valid latitude and longitude.');
         }
     });
 
-    // 获取相关元素
+    // 获取相關元素
     const thumbnailImg = document.getElementById("target_img");
     const popup = document.getElementById("popup");
     const popupImg = document.getElementById("popup_img");
