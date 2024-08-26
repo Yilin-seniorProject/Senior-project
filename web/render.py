@@ -109,7 +109,7 @@ def read_data():
     db = get_db()
     cursor = db.cursor()
     corddata = json.loads(data)
-    latitude, longitude = corddata['geo']
+    #latitude, longitude = corddata['geo']
     print('Received data:', data)
     try:
         name = save_image(corddata['img'])
@@ -118,8 +118,8 @@ def read_data():
     (
         name,
         corddata['midpoints'],
-        longitude,
-        latitude,
+        corddata['Longitude'],
+        corddata['Latitude'],
         corddata['classname']
     ))
         db.commit()
