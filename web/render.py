@@ -8,17 +8,15 @@ from pyngrok import ngrok
 app = Flask(__name__)
 DATABASE = 'database.db'
 table_name = 'point'
-image_counter = 1
-sended = "0.jpg"
-
+image_counter, sended = int, str
+IMAGE_DIRECTORY = 'web/static'
 def save_image(image):
-    global image_counter
-    save_directory = 'web\static'
-    os.makedirs(save_directory, exist_ok=True)
+    global image_counter,IMAGE_DIRECTORY
+    os.makedirs(IMAGE_DIRECTORY, exist_ok=True)
     image_name = str(image_counter)+'.jpg'
     image_binary = base64.b64decode(image)
     image = Image.open(io.BytesIO(image_binary))
-    image.save(os.path.join(save_directory, image_name), 'JPEG')
+    image.save(os.path.join(IMAGE_DIRECTORY, image_name), 'JPEG')
     image_counter += 1
     return(image_name)
 
@@ -30,6 +28,20 @@ def get_db():
     if db is not None:
         print('conective')
     return db
+
+
+with app.app_context():
+    db = get_db()
+    cursor = db.cursor()
+    cursor.execute("SELECT MAX(ROWID) FROM {}".format(table_name))
+    latest_rowid = cursor.fetchone()[0]
+    if latest_rowid:
+        image_counter = latest_rowid + 1
+        sended = str(latest_rowid) + '.jpg'
+    else:
+        image_counter = 1
+        sended = "0.jpg"
+
 
 @app.teardown_appcontext
 def close_db(exception=None):
@@ -91,16 +103,28 @@ def update_data():
 #接收前端要求(傳圖)
 @app.route('/submit_data', methods=['GET'])
 def submit_data():
+    longitude = request.args.get('longitude')
+    latitude = request.args.get('latitude')
+    
     db = get_db()
     cursor = db.cursor()
-    db.row_factory = sqlite3.Row
-
-    image_name = request.args.get('image_name')#接收前端數據
-
-    #取資料
-    cursor.execute("SELECT ImageData FROM {} WHERE ImageName = ?".format(table_name), (image_name,))
-    imagedata = cursor.fetchone()
-    return jsonify({"status": "success", "message": "Data received"})
+    cursor.execute("SELECT ImageName FROM point WHERE Longitude = ? AND Latitude = ?", (longitude, latitude))
+    result = cursor.fetchall()
+    result_encoded = []
+    try:
+        for i in result:
+            print(i)
+            image_path = os.path.join(IMAGE_DIRECTORY, i[0])
+            if not os.path.exists(image_path):
+                print('not exsist')
+            with open(image_path, "rb") as image_file:
+                encoded_string = base64.b64encode(image_file.read()).decode('utf-8')
+                print(encoded_string)
+                result_encoded.append(encoded_string)
+                
+        return jsonify({"status": "success", "image_data": result_encoded})
+    except:
+        return jsonify({"status": "error", "message": "No data found"})
 
 #接收樹梅派數據(傳來的有經緯、座標中點、圖、型別)
 @app.route('/read_data', methods=['POST'])
