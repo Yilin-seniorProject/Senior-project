@@ -157,9 +157,11 @@ def delete_data():
     global image_counter, sended
     image_counter = 1
     password = '1'
+    '''
     key = request.args.get('key')
     if key != password:
         return jsonify({"status": "fail", "message": "wrong key"})
+    '''
     db = get_db()
     cursor = db.cursor()
     table_name = 'point'
