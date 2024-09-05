@@ -54,7 +54,7 @@ document.addEventListener("DOMContentLoaded", function() {
                 break;
             case 'bus':
                 busNum++;
-            break;
+                break;
             case 'truck':
                 truckNum++;
                 break;
