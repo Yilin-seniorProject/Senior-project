@@ -4,8 +4,7 @@ from PIL import Image
 from io import BytesIO
 url = 'http://127.0.0.1:5000/submit_data'
 params = {
-    "longitude": "10",  # 替换为实际的经度
-    "latitude": "20"     # 替换为实际的纬度
+    "rowid": "1",
 }
 headers = {'Content-Type': 'application/json'} 
 # 发送GET请求
@@ -14,7 +13,6 @@ response = requests.get(url, params=params, headers=headers)
 print(f'Status Code: {response.status_code}')
 response_data = response.json()
 image_data = response_data['image_data']
-for encoded_string in image_data:
-    image_binary = base64.b64decode(encoded_string)
-    image = Image.open(BytesIO(image_binary))
-    image.show()
+image_binary = base64.b64decode(image_data)
+image = Image.open(BytesIO(image_binary))
+image.show()
