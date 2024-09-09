@@ -53,12 +53,12 @@ document.addEventListener("DOMContentLoaded", function() {
             case 'car':
                 carNum++;
                 break;
-                case 'bus':
-                    busNum++;
+            case 'bus':
+                busNum++;
                 break;
-                case 'truck':
-                    truckNum++;
-                    break;
+            case 'truck':
+                truckNum++;
+                break;
             case 'scooter':
                 scooterNum++;
                 break;
