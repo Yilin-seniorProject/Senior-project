@@ -4,7 +4,7 @@ function autoFetchData() {
     let inputLng = document.getElementById("input_lng").value;
     
     // 構建查詢參數的 URL
-    let url = `/submit_data?input_lat=${encodeURIComponent(inputLat)}&input_lng=${encodeURIComponent(inputLng)}`;
+    let url = `/updata_data?input_lat=${encodeURIComponent(inputLat)}&input_lng=${encodeURIComponent(inputLng)}`;
     
     // 使用 fetch 發送 GET 請求
     fetch(url)
@@ -40,9 +40,8 @@ function updateCountDisplay() {
 };
 
 document.addEventListener("DOMContentLoaded", function() {
-    // 初始化計數器
-
     
+    // 初始化計數器
     const btnPutMarkers = document.getElementById('put-markers');
     btnPutMarkers.addEventListener('click', () => {
         const vehicleType = document.querySelector('input[name="vehicle-type"]:checked').value;
