@@ -1,20 +1,23 @@
-// // 發送請求設定
-// function postRequest(){
-//     let targetImg = document.getElementById("target_img").value;
+// 發送請求設定
+function imgRequest(markerId){
+    // 構建查詢參數的 URL，傳遞 Marker ID
+    let url = `/submit_data?marker_id=${encodeURIComponent(markerId)}`;
 
-//     // 構建查詢參數的 URL
-//     let url = `/submit_data?target_img=${encodeURIComponent(targetImg)}`;
-
-//     // 使用 fetch 發送 GET 請求
-//     fetch(url)
-//     .then(response => response.json()) // 將回應解析為 JSON 格式
-//     .then(data => {
-//         console.log('Success:', data); // 成功後打印回應數據
-//     })
-//     .catch((error) => {
-//         console.error('Error:', error); // 如果有錯誤，打印錯誤信息
-//     });
-// }
+    // 使用 fetch 發送 GET 請求
+    fetch(url)
+    .then(response => response.json()) // 將回應解析為 JSON 格式
+    .then(data => {
+        console.log('Success:', data); // 成功後打印回應數據
+        // console.log(`Marker ID: ${markerId}\nType: ${vehicleType}\nLocation: ${latitude}, ${longitude}`)
+        // 假設後端返回的 data 中包含圖片的 URL
+        if(data.img_url) {
+            document.getElementById("target_img").src = data.img_url;
+        }
+    })
+    .catch((error) => {
+        console.error('Error:', error); // 如果有錯誤，打印錯誤信息
+    });
+}
 
 document.addEventListener("DOMContentLoaded", function() {
     // *** 放置地圖
@@ -64,7 +67,7 @@ document.addEventListener("DOMContentLoaded", function() {
         iconUrl: '../static/img/scooter_icon.png',
         iconSize: [40, 40],
     });
-
+    const markerList = [];
     const btnPutMarkers = document.getElementById('put-markers');
     btnPutMarkers.addEventListener('click', e => {
         e.preventDefault();
@@ -95,34 +98,33 @@ document.addEventListener("DOMContentLoaded", function() {
 
         // 放置標記
         if (!isNaN(latitude) && !isNaN(longitude)) {
+            const markerId = markerList.length + 1;
             const marker = L.marker([latitude, longitude], { icon: selectedIcon }).addTo(map);
-            // console.log("already add the marker!");
-            
+            markerList.push({ marker, markerId });
             // 當標記被點擊時，顯示車輛的資訊
             marker.on('click', () => {
                 document.getElementById('target_type').value = vehicleType;
                 document.getElementById('target_lng').value = longitude;
                 document.getElementById('target_lat').value = latitude;
-                // document.getElementById('target_img').value = src();
-                // postRequest();
+                imgRequest(markerId);
             });
         } else {
             alert('Please enter valid latitude and longitude.');
         }
     });
 
-    // 获取相關元素
+    // 獲取相關元素
     const thumbnailImg = document.getElementById("target_img");
     const popup = document.getElementById("popup");
     const popupImg = document.getElementById("popup_img");
     const closePopup = document.getElementById("close_popup");
 
-    // 当点击缩略图时，显示悬浮窗口
+    // 当点击缩略图时，顯示懸浮視窗
     thumbnailImg.addEventListener("click", function() {
         popup.style.display = "block"; // 顯示懸浮視窗
     });
 
-    // 当点击关闭按钮时，隐藏悬浮窗口
+    // 当点击关闭按钮时，隐藏懸浮視窗
     closePopup.addEventListener("click", function() {
         popup.style.display = "none"; // 隱藏懸浮視窗
     });
