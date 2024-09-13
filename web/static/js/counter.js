@@ -4,15 +4,13 @@ function autoFetchData() {
     let inputLng = document.getElementById("input_lng").value;
     
     // 構建查詢參數的 URL
-    let url = `/updata_data?input_lat=${encodeURIComponent(inputLat)}&input_lng=${encodeURIComponent(inputLng)}`;
+    let url = `/update_data?input_lat=${encodeURIComponent(inputLat)}&input_lng=${encodeURIComponent(inputLng)}`;
     
     // 使用 fetch 發送 GET 請求
     fetch(url)
     .then(response => response.json()) // 將回應解析為 JSON 格式
     .then(data => {
         console.log('Success:', data); // 成功後打印回應數據
-        
-        // 自动选择与 imagetype 匹配的 radio 按钮
         const inputType = data.imagetype; // 假設後端回傳的資料格式中包含 input_type 屬性
         if (inputType) {
             const radioButton = document.querySelector(`input[name="vehicle-type"][value="${inputType}"]`);

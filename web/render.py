@@ -100,7 +100,7 @@ def update_data():
         return jsonify({"data": data})
     else:
         # 返回提示數據列表為空
-        return jsonify({"status": "error", "message": "No data found"})
+        return jsonify({"message": "No data found"})
 
 #接收前端要求(傳圖)
 @app.route('/submit_data', methods=['GET'])
