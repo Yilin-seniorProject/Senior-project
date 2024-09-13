@@ -97,7 +97,7 @@ def update_data():
     data = [dict(row) for row in rows]
     if data:
         sended = data[-1]['ImageName']
-        return jsonify({"status": "success", "message": "Data retrieved", "data": data})
+        return jsonify({"data": data})
     else:
         # 返回提示數據列表為空
         return jsonify({"status": "error", "message": "No data found"})
@@ -105,27 +105,21 @@ def update_data():
 #接收前端要求(傳圖)
 @app.route('/submit_data', methods=['GET'])
 def submit_data():
-    longitude = request.args.get('longitude')
-    latitude = request.args.get('latitude')
-    
+    imagename = request.args.get('imagename')
+    '''
     db = get_db()
     cursor = db.cursor()
-    cursor.execute("SELECT ImageName FROM point WHERE Longitude = ? AND Latitude = ?", (longitude, latitude))
-    result = cursor.fetchall()
-    result_encoded = []
-    try:
-        for i in result:
-            print(i)
-            image_path = os.path.join(IMAGE_DIRECTORY, i[0])
-            if not os.path.exists(image_path):
-                print('not exsist')
-            with open(image_path, "rb") as image_file:
-                encoded_string = base64.b64encode(image_file.read()).decode('utf-8')
-                print(encoded_string)
-                result_encoded.append(encoded_string)
-                
-        return jsonify({"status": "success", "image_data": result_encoded})
-    except:
+    cursor.execute("SELECT ImageName FROM {} WHERE ROWID = ?".format(table_name), (rowid,))
+    imagename = cursor.fetchone()
+    if imagename is not None:
+        imagename = imagename[0]
+    else:
+        return jsonify({"status": "error", "message": "No data found"})
+    '''
+    image = trans_image(imagename)
+    if image:
+        return jsonify({"status": "success", "image_data": image})
+    else:
         return jsonify({"status": "error", "message": "No data found"})
 
 #接收樹梅派數據(傳來的有經緯、座標中點、圖、型別)

@@ -110,7 +110,8 @@ def update_data():
 ##提取圖片
 @app.route('/submit_data', methods=['GET'])
 def submit_data():
-    rowid = request.args.get('rowid')
+    imagename = request.args.get('imagename')
+    '''
     db = get_db()
     cursor = db.cursor()
     cursor.execute("SELECT ImageName FROM {} WHERE ROWID = ?".format(table_name), (rowid,))
@@ -119,9 +120,10 @@ def submit_data():
         imagename = imagename[0]
     else:
         return jsonify({"status": "error", "message": "No data found"})
+    '''
     image = trans_image(imagename)
     if image:
-        return jsonify({"status": "success", "image_data": image})
+        return jsonify({"image_data": image})
     else:
         return jsonify({"status": "error", "message": "No data found"})
 
