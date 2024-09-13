@@ -14,8 +14,8 @@ image_path = 'web\static\img\Black_Dear.jpg'
 image_base64 = image_to_base64(image_path)
 
 geo = dumps({
-            "lat": 10,
-            "lng": 20
+            "lat": 25.0204,
+            "lng": 121.215
         })
 
 data = {'img': image_base64,
