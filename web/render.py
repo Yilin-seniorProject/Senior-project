@@ -97,10 +97,10 @@ def update_data():
     data = [dict(row) for row in rows]
     if data:
         sended = data[-1]['ImageName']
-        return jsonify({"status": "success", "message": "Data retrieved", "data": data})
+        return jsonify({"data": data})
     else:
         # 返回提示數據列表為空
-        return jsonify({"status": "error", "message": "No data found"})
+        return jsonify({"message": "No data found"})
 
 #接收前端要求(傳圖)
 @app.route('/submit_data', methods=['GET'])
