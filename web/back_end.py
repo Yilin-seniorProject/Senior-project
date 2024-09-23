@@ -41,16 +41,17 @@ with app.app_context():
     sended = "0.jpg"
 '''
 
-#圖片檔儲存(格式base64>jpg，輸入base64編碼圖片回傳ImageName)
+#圖片檔儲存(格式二進位>jpg，輸入base64編碼圖片回傳ImageName)
 def save_image(image):
     global IMAGE_DIRECTORY
     os.makedirs(IMAGE_DIRECTORY, exist_ok=True)
     sys_datetime = datetime.now().strftime("%Y%m%d_%H%M%S")
     image_name = str(sys_datetime)+'.jpg'
-    image_binary = base64.b64decode(image)
-    image = Image.open(io.BytesIO(image_binary))
+    #image_binary = base64.b64decode(image)
+    #image = Image.open(io.BytesIO(image_binary))
+    image = Image.open(io.BytesIO(image))
     full_image_path = os.path.join(IMAGE_DIRECTORY, image_name)
-    print(f"Saving image at: {full_image_path}")
+    #print(f"Saving image at: {full_image_path}")
     image.save(full_image_path, 'JPEG')
     return(image_name)
 
