@@ -1,12 +1,18 @@
+<<<<<<< Updated upstream
 from flask import Flask, render_template, g, request, jsonify
 import json, sqlite3, os, base64, io
 from PIL import Image
 from pyngrok import ngrok
 
+=======
+from flask import Flask, render_template, g
+import sqlite3
+>>>>>>> Stashed changes
 
 
 app = Flask(__name__)
 DATABASE = 'database.db'
+<<<<<<< Updated upstream
 table_name = 'point'
 image_counter, sended = int, str
 IMAGE_DIRECTORY = 'web/static'
@@ -19,6 +25,8 @@ def save_image(image):
     image.save(os.path.join(IMAGE_DIRECTORY, image_name), 'JPEG')
     image_counter += 1
     return(image_name)
+=======
+>>>>>>> Stashed changes
 
 
 def get_db():
@@ -55,6 +63,12 @@ def close_db(exception=None):
 @app.route('/', methods=['GET'])
 def index():
     return render_template('index.html')
+@app.route('/proposal_history.html')
+def proposal_histary():
+    return render_template('proposal_history.html')
+@app.route('/project_members.html')
+def project_members():
+    return render_template('project_members.html')
 
 #次頁面
 @app.route('/proposal_history.html')
