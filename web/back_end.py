@@ -1,12 +1,13 @@
-from flask import Flask, render_template, g, request, jsonify
+from flask import Flask, render_template, g, request, jsonify, session
 import json, sqlite3, os, base64, io
 from PIL import Image
+from datetime import datetime
 
 app = Flask(__name__)
-
+app.secret_key = 'asdf' 
 DATABASE = 'database.db'
 table_name = 'point'
-image_counter, sended = int, str
+cleantag = False
 IMAGE_DIRECTORY = 'web\static\car_image'
 
 #連接sql
@@ -26,6 +27,7 @@ def close_db(exception=None):
         db.close()
 
 #初始化sql儲存
+'''
 with app.app_context():
     db = get_db()
     cursor = db.cursor()
@@ -35,22 +37,22 @@ with app.app_context():
     latest_rowid = cursor.fetchone()[0]
     if latest_rowid:
         image_counter = latest_rowid + 1
-        sended = str(latest_rowid) + '.jpg'
     else:
         image_counter = 1
-        sended = "0.jpg"
+    sended = "0.jpg"
+'''
 
 #圖片檔儲存(格式base64>jpg，輸入base64編碼圖片回傳ImageName)
 def save_image(image):
-    global image_counter,IMAGE_DIRECTORY
+    global IMAGE_DIRECTORY
     os.makedirs(IMAGE_DIRECTORY, exist_ok=True)
-    image_name = str(image_counter)+'.jpg'
+    sys_datetime = datetime.now().strftime("%Y%m%d_%H%M%S")
+    image_name = str(sys_datetime)+'.jpg'
     image_binary = base64.b64decode(image)
     image = Image.open(io.BytesIO(image_binary))
     full_image_path = os.path.join(IMAGE_DIRECTORY, image_name)
-    #print(f"Saving image at: {full_image_path}")
+    print(f"Saving image at: {full_image_path}")
     image.save(full_image_path, 'JPEG')
-    image_counter += 1
     return(image_name)
 
 #圖片檔輸出(格式jpg>base64，輸入ImageName回傳圖片的base64編碼)
@@ -91,26 +93,28 @@ def project_members():
 ##更新數據
 @app.route('/update_data', methods=['GET'])
 def update_data():
-    global sended
-    #print(f"sended: {sended}, type: {type(sended)}")
+    global cleantag
+    if cleantag:
+        cleantag = False
+        return jsonify({"message": "The database is empty"})
     db = get_db()
     db.row_factory = sqlite3.Row
     cursor = db.cursor()
-    query = "SELECT ImageName, Latitude, Longitude, ImageType FROM {} WHERE ImageName > ?".format(table_name)
-    cursor.execute(query, (sended,))
+    query = "SELECT ImageName, Latitude, Longitude, ImageType FROM {}".format(table_name)
+    cursor.execute(query)
     rows = cursor.fetchall()
     data = [dict(row) for row in rows]
     if data:
-        sended = data[-1]['ImageName']
-        return jsonify({"status": "success", "message": "Data retrieved", "data": data})
+        return jsonify(data)
     else:
         # 返回提示數據列表為空
-        return jsonify({"status": "error", "message": "No data found"})
+        return jsonify({"message": "No updated data found"})
 
 ##提取圖片
 @app.route('/submit_data', methods=['GET'])
 def submit_data():
-    rowid = request.args.get('rowid')
+    imagename = request.args.get('imagename')
+    '''
     db = get_db()
     cursor = db.cursor()
     cursor.execute("SELECT ImageName FROM {} WHERE ROWID = ?".format(table_name), (rowid,))
@@ -119,11 +123,12 @@ def submit_data():
         imagename = imagename[0]
     else:
         return jsonify({"status": "error", "message": "No data found"})
+    '''
     image = trans_image(imagename)
     if image:
-        return jsonify({"status": "success", "image_data": image})
+        return jsonify({"image_data": image})
     else:
-        return jsonify({"status": "error", "message": "No data found"})
+        return jsonify({"message": "No data found"})
 
 
 @app.route('/read_data', methods=['POST'])
@@ -155,7 +160,7 @@ def read_data():
 
 @app.route('/delete_data', methods=['GET'])
 def delete_data():
-    global image_counter, sended, IMAGE_DIRECTORY
+    global sended, IMAGE_DIRECTORY, cleantag
     '''
     password = '1'
     key = request.args.get('key')
@@ -168,8 +173,8 @@ def delete_data():
     table_name = 'point'
     cursor.execute("DELETE FROM {}".format(table_name))
     db.commit()
-    image_counter = 1
-    sended = "0.jpg"
+    sended = 0
+    cleantag = True
     return jsonify({"status": "success", "message": "Data deleted"})
 
 if __name__ == '__main__':
