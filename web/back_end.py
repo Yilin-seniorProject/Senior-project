@@ -4,10 +4,8 @@ from PIL import Image
 from datetime import datetime
 
 app = Flask(__name__)
-
 DATABASE = 'database.db'
 table_name = 'point'
-sended = 0
 cleantag = False
 IMAGE_DIRECTORY = 'web\static\car_image'
 
@@ -94,23 +92,19 @@ def project_members():
 ##更新數據
 @app.route('/update_data', methods=['GET'])
 def update_data():
-    global sended, cleantag
+    global cleantag
     if cleantag:
         cleantag = False
         return jsonify({"message": "The database is empty"})
     db = get_db()
     db.row_factory = sqlite3.Row
     cursor = db.cursor()
-    query = "SELECT ImageName, Latitude, Longitude, ImageType FROM {} WHERE ROWID > ?".format(table_name)
-    cursor.execute(query, (sended,))
+    query = "SELECT ImageName, Latitude, Longitude, ImageType FROM {}".format(table_name)
+    cursor.execute(query)
     rows = cursor.fetchall()
     data = [dict(row) for row in rows]
     if data:
-        sended_name = data[-1]['ImageName']
-        cursor.execute("SELECT ROWID FROM {} WHERE ImageName = ?".format(table_name), (sended_name,))
-        rows = cursor.fetchone()
-        sended = int(rows[0])
-        return jsonify({"data": data})
+        return jsonify(data)
     else:
         # 返回提示數據列表為空
         return jsonify({"message": "No updated data found"})
