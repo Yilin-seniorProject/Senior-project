@@ -1,4 +1,4 @@
-from flask import Flask, render_template, g, request, jsonify
+from flask import Flask, render_template, g, request, jsonify, session
 import json, sqlite3, os, base64, io
 from PIL import Image
 from datetime import datetime
@@ -51,7 +51,7 @@ def save_image(image):
     #image = Image.open(io.BytesIO(image_binary))
     image = Image.open(io.BytesIO(image))
     full_image_path = os.path.join(IMAGE_DIRECTORY, image_name)
-    #print(f"Saving image at: {full_image_path}")
+    print(f"Saving image at: {full_image_path}")
     image.save(full_image_path, 'JPEG')
     return(image_name)
 

@@ -1,20 +1,18 @@
+let id = 0;
+
 // 自動發送請求設定
 function autoFetchData() {
     let url = `/update_data?`;
     fetch(url)
-    .then(response => response.json()) // 將回應解析為 JSON 格式
+    .then(response => response.json()) // 將回應 body(type:json) 解析為 promise object
     .then(data => {
-        console.log('Success:', data); // 成功後打印回應數據
-        const inputType = data.ImageType; // 假設後端回傳的資料格式中包含 input_type 屬性
-        const inputLat = data.Latitude;
-        const inputLng =data.Longitude;
-    
-        if (inputType) {
-            return [inputType, inputLat, inputLng];
-            // const radioButton = document.querySelector(`input[name="vehicle-type"][value="${inputType}"]`);
-            // if (radioButton) {
-            //     radioButton.checked = true;
-            // }
+        while (id < data.length) {
+            const element = data[id];
+            console.log(element['ImageName']);
+            console.log(element['ImageType']);
+            console.log(element['Latitude']);
+            console.log(element['Longitude']);
+            id++;
         }
     })
     .catch((error) => {
@@ -93,22 +91,10 @@ document.addEventListener("DOMContentLoaded", function() {
         iconSize: [40, 40],
     });
 
-    // setInterval(autoFetchData, 5000);
+    
+    interval = setInterval(autoFetchData, 5000);
+    
     let inputType, InputLat, InputLng;
-
-    setInterval(() => {
-        autoFetchData().then(data => {
-            if (data) {
-                [inputType, InputLat, InputLng] = data;
-
-                // 打印變數來檢查儲存的值
-                console.log('Data 1:', inputType);
-                console.log('Data 2:', InputLat);
-                console.log('Data 3:', InputLng);
-            }
-        });
-    }, 5000);
-
     const markerList = [];
     const btnPutMarkers = document.getElementById('put-markers');
     btnPutMarkers.addEventListener('click', e => {
