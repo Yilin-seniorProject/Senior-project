@@ -1,4 +1,4 @@
-from flask import Flask, render_template, g, request, jsonify, session
+from flask import Flask, render_template, g, request, jsonify
 import json, sqlite3, os, base64, io
 from PIL import Image
 from datetime import datetime
@@ -41,7 +41,7 @@ with app.app_context():
     sended = "0.jpg"
 '''
 
-#圖片檔儲存(格式二進位>jpg，輸入base64編碼圖片回傳ImageName)
+#圖片檔儲存(格式二進位>jpg，輸入二進位圖片回傳ImageName)
 def save_image(image):
     global IMAGE_DIRECTORY
     os.makedirs(IMAGE_DIRECTORY, exist_ok=True)
@@ -157,16 +157,10 @@ def read_data():
     except:
         return jsonify({"status": "fail", "message": "Data not received"})
     
-
+#無安全保護，之後可能要加
 @app.route('/delete_data', methods=['GET'])
 def delete_data():
     global sended, IMAGE_DIRECTORY, cleantag
-    '''
-    password = '1'
-    key = request.args.get('key')
-    if key != password:
-        return jsonify({"status": "fail", "message": "wrong key"})
-    '''
     clear_folder(IMAGE_DIRECTORY)
     db = get_db()
     cursor = db.cursor()
