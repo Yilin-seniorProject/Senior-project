@@ -22,7 +22,7 @@ function autoFetchData() {
 }
 
 // 請求照片設定
-function imgRequest(markerId){
+function imgRequest(markerId) {
     // 構建查詢參數的 URL，傳遞 Marker ID
     let url = `/submit_data?marker_id=${encodeURIComponent(markerId)}`;
 
@@ -40,6 +40,74 @@ function imgRequest(markerId){
     .catch((error) => {
         console.error('Error:', error); // 如果有錯誤，打印錯誤信息
     });
+}
+
+function logo(e,map) {
+    e.preventDefault();
+    
+    // 獲取經緯度和訊號類型
+     const latitude = parseFloat(document.getElementById('input_lat').value);
+     const longitude = parseFloat(document.getElementById('input_lng').value);
+     const vehicleType = document.querySelector('input[name="vehicle-type"]:checked').value;
+    let inputType, InputLat, InputLng;  
+    //const latitude = parseFloat(InputLat);
+    //const longitude = parseFloat(InputLng);
+    //const vehicleType = inputType;
+    const markerList = [];  
+    
+    // 自定義圖標：汽車、公車、卡車、機車
+    const CarIcon = L.icon({
+        iconUrl: '../static/img/car_icon.png',
+        iconSize: [40, 40],
+    });
+    /*const BusIcon = L.icon({
+        iconUrl: '../static/img/bus_icon.png',
+        iconSize: [40, 40],
+    });
+    const TruckIcon = L.icon({
+        iconUrl: '../static/img/truck_icon.png',
+        iconSize: [40, 40],
+    });
+    */
+    const ScooterIcon = L.icon({
+        iconUrl: '../static/img/scooter_icon.png',
+        iconSize: [40, 40],
+    });
+
+    // 根據訊號類型選擇圖標
+    let selectedIcon;
+    switch(vehicleType) {
+        case 'car':
+            selectedIcon = CarIcon;
+            break;
+        case 'bus':
+            selectedIcon = BusIcon;
+            break;
+        case 'truck':
+            selectedIcon = TruckIcon;
+            break;
+        case 'scooter':
+            selectedIcon = ScooterIcon;
+            break;
+        default:
+            selectedIcon = CarIcon; // 默認圖標
+    }
+
+    // 放置標記
+    if (!isNaN(latitude) && !isNaN(longitude)) {
+        const markerId = markerList.length + 1;
+        const marker = L.marker([latitude, longitude], { icon: selectedIcon }).addTo(map);
+        markerList.push({ marker, markerId });
+        // 當標記被點擊時，顯示車輛的資訊
+        marker.on('click', () => {
+            document.getElementById('target_type').value = vehicleType;
+            document.getElementById('target_lng').value = longitude;
+            document.getElementById('target_lat').value = latitude;
+            imgRequest(markerId);
+        });
+    } else {
+        alert('Please enter valid latitude and longitude.');
+    }
 }
 
 document.addEventListener("DOMContentLoaded", function() {
@@ -72,78 +140,11 @@ document.addEventListener("DOMContentLoaded", function() {
         permanent: false, // true是滑鼠移過才出現，false是一直出現
         opacity: 1.0
     }).openTooltip();
-
-    // 自定義圖標：汽車、公車、卡車、機車
-    const CarIcon = L.icon({
-        iconUrl: '../static/img/car_icon.png',
-        iconSize: [40, 40],
-    });
-    /*const BusIcon = L.icon({
-        iconUrl: '../static/img/bus_icon.png',
-        iconSize: [40, 40],
-    });
-    const TruckIcon = L.icon({
-        iconUrl: '../static/img/truck_icon.png',
-        iconSize: [40, 40],
-    });
-    */
-    const ScooterIcon = L.icon({
-        iconUrl: '../static/img/scooter_icon.png',
-        iconSize: [40, 40],
-    });
-
+           
+    interval = setInterval(autoFetchData, 5000);    
     
-    interval = setInterval(autoFetchData, 5000);
-    
-    let inputType, InputLat, InputLng;
-    const markerList = [];
     const btnPutMarkers = document.getElementById('put-markers');
-    btnPutMarkers.addEventListener('click', e => {
-        e.preventDefault();
-        
-        // 獲取經緯度和訊號類型
-        // const latitude = parseFloat(document.getElementById('input_lat').value);
-        // const longitude = parseFloat(document.getElementById('input_lng').value);
-        // const vehicleType = document.querySelector('input[name="vehicle-type"]:checked').value;
-        const latitude = parseFloat(InputLat);
-        const longitude = parseFloat(InputLng);
-        const vehicleType = inputType;
-
-        // 根據訊號類型選擇圖標
-        let selectedIcon;
-        switch(vehicleType) {
-            case 'car':
-                selectedIcon = CarIcon;
-                break;
-            case 'bus':
-                selectedIcon = BusIcon;
-                break;
-            case 'truck':
-                selectedIcon = TruckIcon;
-                break;
-            case 'scooter':
-                selectedIcon = ScooterIcon;
-                break;
-            default:
-                selectedIcon = CarIcon; // 默認圖標
-        }
-
-        // 放置標記
-        if (!isNaN(latitude) && !isNaN(longitude)) {
-            const markerId = markerList.length + 1;
-            const marker = L.marker([latitude, longitude], { icon: selectedIcon }).addTo(map);
-            markerList.push({ marker, markerId });
-            // 當標記被點擊時，顯示車輛的資訊
-            marker.on('click', () => {
-                document.getElementById('target_type').value = vehicleType;
-                document.getElementById('target_lng').value = longitude;
-                document.getElementById('target_lat').value = latitude;
-                imgRequest(markerId);
-            });
-        } else {
-            alert('Please enter valid latitude and longitude.');
-        }
-    });
+    btnPutMarkers.addEventListener('click',e => logo(e,map));
 
     // 獲取相關元素
     const thumbnailImg = document.getElementById("target_img");

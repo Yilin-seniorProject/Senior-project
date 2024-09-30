@@ -7,8 +7,8 @@ let scooterNum = 0;
 function updateCountDisplay() {
     document.getElementById('total_count').value = totalCount;
     document.getElementById('car_count_input').value = carNum;
-    document.getElementById('bus_count_input').value = busNum;
-    document.getElementById('truck_count_input').value = truckNum;
+    //document.getElementById('bus_count_input').value = busNum;
+    //document.getElementById('truck_count_input').value = truckNum;
     document.getElementById('scooter_count_input').value = scooterNum;
 };
 
