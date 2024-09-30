@@ -101,11 +101,10 @@ body{
 .map_information{
     position: absolute;
     z-index:1000;
-    bottom: 0px;
+    bottom: -10px;
     right: 0px; 
-    margin: 10px;
-    background-color: rgba(128, 128, 128, 0.586); 
-    /* border: 1px solid black;  */
-    border-radius: 5px;
+    margin: 5px;
+    background-color: rgba(128, 128, 128, 0.586);    
+    border-radius:10px;
 }
 

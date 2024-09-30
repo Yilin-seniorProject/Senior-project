@@ -49,10 +49,7 @@ function logo(e,map) {
      const latitude = parseFloat(document.getElementById('input_lat').value);
      const longitude = parseFloat(document.getElementById('input_lng').value);
      const vehicleType = document.querySelector('input[name="vehicle-type"]:checked').value;
-    let inputType, InputLat, InputLng;  
-    //const latitude = parseFloat(InputLat);
-    //const longitude = parseFloat(InputLng);
-    //const vehicleType = inputType;
+    let inputType, InputLat, InputLng;      
     const markerList = [];  
     
     // 自定義圖標：汽車、公車、卡車、機車
@@ -60,11 +57,11 @@ function logo(e,map) {
         iconUrl: '../static/img/car_icon.png',
         iconSize: [40, 40],
     });
-    /*const BusIcon = L.icon({
-        iconUrl: '../static/img/bus_icon.png',
+    const TaxiIcon = L.icon({
+        iconUrl: '../static/img/taxi_icon.png',
         iconSize: [40, 40],
     });
-    const TruckIcon = L.icon({
+    /*const TruckIcon = L.icon({
         iconUrl: '../static/img/truck_icon.png',
         iconSize: [40, 40],
     });
@@ -80,12 +77,9 @@ function logo(e,map) {
         case 'car':
             selectedIcon = CarIcon;
             break;
-        case 'bus':
-            selectedIcon = BusIcon;
-            break;
-        case 'truck':
-            selectedIcon = TruckIcon;
-            break;
+        case 'taxi':
+            selectedIcon = TaxiIcon;
+            break;       
         case 'scooter':
             selectedIcon = ScooterIcon;
             break;

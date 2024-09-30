@@ -34,16 +34,12 @@
                             汽車： 
                             <input type="text" id="car_count_input" value="0" readonly>
                         </td>
-                        <!--
+                        
                         <td>      
-                            公車： 
-                            <input type="text" id="bus_count_input" value="0" readonly>
+                            計程車： 
+                            <input type="text" id="taxi_count_input" value="0" readonly>
                         </td>
-                        <td>
-                            卡車：
-                            <input type="text" id="truck_count_input" value="0" readonly>     
-                        </td>
-                        -->
+
                         <td>
                             機車：
                             <input type="text" id="scooter_count_input" value="0" readonly>
@@ -84,17 +80,13 @@
             </div>
         </div>
         <div id="Drone_route">
-            <h2>無人機路線</h2>
-            <div class="map_information">
+            <h2>無人機路線</h2>            
+            <div class="map_information">                
                 <h3>圖示</h3>
                 <img src="../static/img/car_icon.png" alt="汽車圖示" title="汽車" width=40;>                
-                <span>汽車</span>
-                <!--
-                <img src="../static/img/bus_icon.png" alt="公車圖示" title="公車" width=40;>                
-                <span>公車</span>
-                <img src="../static/img/truck_icon.png" alt="卡車圖示" title="卡車" width=40;>
-                <span>卡車</span>
-                -->
+                <span>汽車</span>                
+                <img src="../static/img/taxi_icon.png" alt="計程車圖示" title="計程車" width=40;>                
+                <span>計程車</span>                
                 <img src="../static/img/scooter_icon.png" alt="機車圖示" title="機車" width=40;>
                 <span>機車</span>
             </div>
@@ -107,10 +99,8 @@
             <div>
                 <input type="radio" id="car" name="vehicle-type" value="car" checked>
                 <label for="car">Car</label>
-                <input type="radio" id="bus" name="vehicle-type" value="bus">
-                <label for="bus">Bus</label>
-                <input type="radio" id="truck" name="vehicle-type" value="truck">
-                <label for="truck">Truck</label>
+                <input type="radio" id="taxi" name="vehicle-type" value="taxi">
+                <label for="taxi">Taxi</label>                
                 <input type="radio" id="scooter" name="vehicle-type" value="scooter">
                 <label for="scooter">Scooter</label>
             </div>

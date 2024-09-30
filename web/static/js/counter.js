@@ -1,14 +1,12 @@
 let totalCount = 0;
 let carNum = 0;
-let busNum = 0;
-let truckNum = 0;
+let taxiNum = 0;
 let scooterNum = 0;
 
 function updateCountDisplay() {
     document.getElementById('total_count').value = totalCount;
     document.getElementById('car_count_input').value = carNum;
-    //document.getElementById('bus_count_input').value = busNum;
-    //document.getElementById('truck_count_input').value = truckNum;
+    document.getElementById('taxi_count_input').value = taxiNum;    
     document.getElementById('scooter_count_input').value = scooterNum;
 };
 
@@ -24,12 +22,9 @@ document.addEventListener("DOMContentLoaded", function() {
             case 'car':
                 carNum++;
                 break;
-            case 'bus':
-                busNum++;
-                break;
-            case 'truck':
-                truckNum++;
-                break;
+            case 'taxi':
+                taxiNum++;
+                break;            
             case 'scooter':
                 scooterNum++;
                 break;
