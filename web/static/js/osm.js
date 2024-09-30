@@ -78,7 +78,7 @@ document.addEventListener("DOMContentLoaded", function() {
         iconUrl: '../static/img/car_icon.png',
         iconSize: [40, 40],
     });
-    const BusIcon = L.icon({
+    /*const BusIcon = L.icon({
         iconUrl: '../static/img/bus_icon.png',
         iconSize: [40, 40],
     });
@@ -86,6 +86,7 @@ document.addEventListener("DOMContentLoaded", function() {
         iconUrl: '../static/img/truck_icon.png',
         iconSize: [40, 40],
     });
+    */
     const ScooterIcon = L.icon({
         iconUrl: '../static/img/scooter_icon.png',
         iconSize: [40, 40],
