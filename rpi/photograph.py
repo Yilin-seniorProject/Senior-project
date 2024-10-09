@@ -5,13 +5,15 @@ now = datetime.datetime.now()
 now = datetime.datetime.strftime(now, "%m%d_%H%M")
 
 mode = input("拍照還是錄影[jpeg/vid]？ [jpeg/vid] ")
-
+PATH = "./Senior-project/rpi/static/"
 if mode == "jpeg":
+    fileName = PATH + f"imgs/img{now}.jpg"
     os.system(
-        f'libcamera-jpeg -o ~/Drone/static/imgs/img{now}.jpg -t 100 --width 1920 --height 1080')
+        f'libcamera-jpeg -o {fileName} -t 100 --width 640 --height 640')
 elif mode == "vid":
     t = int(input("請輸入錄製時間(s): ")) * 1000
+    fileName = PATH + f"videos/video{now}.h264"
     os.system(
-        f'libcamera-vid -o ~/Drone/static/videos/video{now}.h264 -t {t} --width 640 --height 480')
+        f'libcamera-vid -o {fileName} -t {t} --width 640 --height 480')
 
 exit()
