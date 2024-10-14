@@ -91,7 +91,8 @@ body{
 }
 
 #Drone_route{
-    position: absolute;left:52vw;
+    position: absolute;
+    left:52vw;    
     float: right; 
     width: 47vw; 
     height: 43vw;
@@ -101,10 +102,11 @@ body{
 .map_information{
     position: absolute;
     z-index:1000;
-    bottom: -10px;
+    bottom: 120px;
     right: 0px; 
     margin: 5px;
     background-color: rgba(128, 128, 128, 0.586);    
     border-radius:10px;
+    opacity: 0.9;
 }
 
