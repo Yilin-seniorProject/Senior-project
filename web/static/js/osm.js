@@ -1,24 +1,27 @@
+const markerList = [];
 let id = 0;
+let map;
 
 // 自動發送請求設定
 function autoFetchData() {
     let url = `/update_data?`;
     fetch(url)
-    .then(response => response.json()) // 將回應 body(type:json) 解析為 promise object
-    .then(data => {
-        while (id < data.length) {
-            const element = data[id];
-            console.log(element['ImageName']);
-            console.log(element['ImageType']);
-            console.log(element['Latitude']);
-            console.log(element['Longitude']);
-            id++;
-        }
-    })
-    .catch((error) => {
-        console.error('Error:', error); // 如果有錯誤，打印錯誤信息
-    });
-    
+        .then(response => response.json()) // 將回應 body(type:json) 解析為 promise object
+        .then(data => {
+            while (id < data.length) {
+                const element = data[id];
+                console.log(element['ImageName']);
+                console.log(element['ImageType']);
+                console.log(element['Latitude']);
+                console.log(element['Longitude']);
+                logo(map, element['Latitude'], element['Longitude'], element['ImageType'])
+                id++;
+            }
+        })
+        .catch((error) => {
+            console.error('Error:', error); // 如果有錯誤，打印錯誤信息
+        });
+
 }
 
 // 請求照片設定
@@ -28,30 +31,21 @@ function imgRequest(markerId) {
 
     // 使用 fetch 發送 GET 請求
     fetch(url)
-    .then(response => response.json()) // 將回應解析為 JSON 格式
-    .then(data => {
-        console.log('Success:', data); // 成功後打印回應數據
-        // console.log(`Marker ID: ${markerId}\nType: ${vehicleType}\nLocation: ${latitude}, ${longitude}`)
-        // 假設後端返回的 data 中包含圖片的 URL
-        if(data.img_url) {
-            document.getElementById("target_img").src = data.img_url;
-        }
-    })
-    .catch((error) => {
-        console.error('Error:', error); // 如果有錯誤，打印錯誤信息
-    });
+        .then(response => response.json()) // 將回應解析為 JSON 格式
+        .then(data => {
+            console.log('Success:', data); // 成功後打印回應數據
+            // console.log(`Marker ID: ${markerId}\nType: ${vehicleType}\nLocation: ${latitude}, ${longitude}`)
+            // 假設後端返回的 data 中包含圖片的 URL
+            if (data.img_url) {
+                document.getElementById("target_img").src = data.img_url;
+            }
+        })
+        .catch((error) => {
+            console.error('Error:', error); // 如果有錯誤，打印錯誤信息
+        });
 }
 
-function logo(e,map) {
-    e.preventDefault();
-    
-    // 獲取經緯度和訊號類型
-     const latitude = parseFloat(document.getElementById('input_lat').value);
-     const longitude = parseFloat(document.getElementById('input_lng').value);
-     const vehicleType = document.querySelector('input[name="vehicle-type"]:checked').value;
-    let inputType, InputLat, InputLng;      
-    const markerList = [];  
-    
+function logo(map, latitude, longitude, vehicleType) {
     // 自定義圖標：汽車、公車、卡車、機車
     const CarIcon = L.icon({
         iconUrl: '../static/img/car_icon.png',
@@ -61,11 +55,6 @@ function logo(e,map) {
         iconUrl: '../static/img/taxi_icon.png',
         iconSize: [40, 40],
     });
-    /*const TruckIcon = L.icon({
-        iconUrl: '../static/img/truck_icon.png',
-        iconSize: [40, 40],
-    });
-    */
     const ScooterIcon = L.icon({
         iconUrl: '../static/img/scooter_icon.png',
         iconSize: [40, 40],
@@ -73,13 +62,13 @@ function logo(e,map) {
 
     // 根據訊號類型選擇圖標
     let selectedIcon;
-    switch(vehicleType) {
+    switch (vehicleType) {
         case 'car':
             selectedIcon = CarIcon;
             break;
         case 'taxi':
             selectedIcon = TaxiIcon;
-            break;       
+            break;
         case 'scooter':
             selectedIcon = ScooterIcon;
             break;
@@ -104,18 +93,18 @@ function logo(e,map) {
     }
 }
 
-document.addEventListener("DOMContentLoaded", function() {
+document.addEventListener("DOMContentLoaded", function () {
     // *** 放置地圖
     let zoom = 17; // 縮放程度，間距為 0 - 18
     let center = [25.019448151190158, 121.21634240643077]; // 中心點座標：橫山書法藝術公園
-    let map = L.map('map').setView(center, zoom); // 使用新添加的map元素
+    map = L.map('map').setView(center, zoom); // 使用新添加的map元素
 
     // 設定地圖的圖層
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
         attribution: '© OpenStreetMap', // 商用時必須要有版權出處
-        zoomControl: true , // 是否秀出 - + 按鈕
+        zoomControl: true, // 是否秀出 - + 按鈕
     }).addTo(map);
-    
+
     const DroneIcon = L.icon({
         iconUrl: '../static/img/Drone_icon.png',
         iconSize: [40, 40],
@@ -134,11 +123,17 @@ document.addEventListener("DOMContentLoaded", function() {
         permanent: false, // true是滑鼠移過才出現，false是一直出現
         opacity: 1.0
     }).openTooltip();
-           
-    interval = setInterval(autoFetchData, 5000);    
-    
+
+    interval = setInterval(autoFetchData, 5000);
+
     const btnPutMarkers = document.getElementById('put-markers');
-    btnPutMarkers.addEventListener('click',e => logo(e,map));
+    btnPutMarkers.addEventListener('click', e => {
+        const latitude = parseFloat(document.getElementById('input_lat').value);
+        const longitude = parseFloat(document.getElementById('input_lng').value);
+        const vehicleType = document.querySelector('input[name="vehicle-type"]:checked').value;
+        e.preventDefault();
+        logo(map, latitude, longitude, vehicleType);
+    });
 
     // 獲取相關元素
     const thumbnailImg = document.getElementById("target_img");
@@ -147,17 +142,17 @@ document.addEventListener("DOMContentLoaded", function() {
     const closePopup = document.getElementById("close_popup");
 
     // 当点击缩略图时，顯示懸浮視窗
-    thumbnailImg.addEventListener("click", function() {
+    thumbnailImg.addEventListener("click", function () {
         popup.style.display = "block"; // 顯示懸浮視窗
     });
 
     // 当点击关闭按钮时，隐藏懸浮視窗
-    closePopup.addEventListener("click", function() {
+    closePopup.addEventListener("click", function () {
         popup.style.display = "none"; // 隱藏懸浮視窗
     });
 
     // 当点击懸浮視窗外部區域时，隱藏窗口
-    window.addEventListener("click", function(event) {
+    window.addEventListener("click", function (event) {
         if (event.target === popup) {
             popup.style.display = "none";
         }
