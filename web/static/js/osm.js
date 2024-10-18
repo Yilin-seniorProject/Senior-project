@@ -10,18 +10,13 @@ function autoFetchData() {
         .then(data => {
             while (id < data.length) {
                 const element = data[id];
-                console.log(element['ImageName']);
-                console.log(element['ImageType']);
-                console.log(element['Latitude']);
-                console.log(element['Longitude']);
-                logo(map, element['Latitude'], element['Longitude'], element['ImageType'])
+                put_icon(map, element['Latitude'], element['Longitude'], element['ImageType'])
                 id++;
             }
         })
         .catch((error) => {
             console.error('Error:', error); // 如果有錯誤，打印錯誤信息
         });
-
 }
 
 // 請求照片設定
@@ -45,7 +40,7 @@ function imgRequest(markerId) {
         });
 }
 
-function logo(map, latitude, longitude, vehicleType) {
+function put_icon(map, latitude, longitude, vehicleType) {
     // 自定義圖標：汽車、公車、卡車、機車
     const CarIcon = L.icon({
         iconUrl: '../static/img/car_icon.png',
@@ -132,7 +127,7 @@ document.addEventListener("DOMContentLoaded", function () {
         const longitude = parseFloat(document.getElementById('input_lng').value);
         const vehicleType = document.querySelector('input[name="vehicle-type"]:checked').value;
         e.preventDefault();
-        logo(map, latitude, longitude, vehicleType);
+        put_icon(map, latitude, longitude, vehicleType);
     });
 
     // 獲取相關元素
