@@ -1,4 +1,6 @@
-const markerList = [];
+const markerList = [];  //儲存所有已經放置在地圖上的標記
+const autoMarkerList = [];  //儲存自動獲取的標記
+const manualMarkerList = [];    //儲存手動輸入的標記
 let id = 0;
 let map;
 
@@ -10,11 +12,21 @@ function autoFetchData() {
         .then(data => {
             while (id < data.length) {
                 const element = data[id];
-                console.log(element['ImageName']);
-                console.log(element['ImageType']);
-                console.log(element['Latitude']);
-                console.log(element['Longitude']);
-                logo(map, element['Latitude'], element['Longitude'], element['ImageType'])
+                console.log(element['ImageName']);  // 打印圖片名稱
+                console.log(element['ImageType']);  // 打印圖片類型
+                console.log(element['Latitude']);    // 打印緯度
+                console.log(element['Longitude']);  // 打印經度
+
+                const autoLat = element['Latitude'];   // 從伺服器返回的資料中提取 'Latitude' 欄位，將其賦值給變數 autoLat，表示自動獲取的標記的緯度
+                const autoLng = element['Longitude'];  // 從伺服器返回的資料中提取 'Longitude' 欄位，將其賦值給變數 autoLng，表示自動獲取的標記的經度
+                const autoType = element['ImageType']; // 從伺服器返回的資料中提取 'ImageType' 欄位，將其賦值給變數 autoType，表示自動獲取的標記的圖片類型（例如：汽車、機車等）
+                                
+                //確保自動獲取的標記不會覆蓋手動輸入的標記
+                const isManualMarker = maanualMarkerList.some(marker => marker.lat === autoLat && marker.lng === autolng);
+                
+                if(!isManualMarker){
+                    logo(map, autoLat, autoLng, autoType, ture); //設定為自動標記
+                }                
                 id++;
             }
         })
@@ -45,7 +57,7 @@ function imgRequest(markerId) {
         });
 }
 
-function logo(map, latitude, longitude, vehicleType) {
+function logo(map, latitude, longitude, vehicleType, isAuto = false) {  //加入isAuto 是為了確認是否為自動獲取
     // 自定義圖標：汽車、公車、卡車、機車
     const CarIcon = L.icon({
         iconUrl: '../static/img/car_icon.png',
@@ -81,6 +93,14 @@ function logo(map, latitude, longitude, vehicleType) {
         const markerId = markerList.length + 1;
         const marker = L.marker([latitude, longitude], { icon: selectedIcon }).addTo(map);
         markerList.push({ marker, markerId });
+
+        // 區分標記來源是自動獲取還是手動輸入
+        if (isAuto) {
+            autoMarkerList.push({ marker, lat: latitude, lng: longitude });
+        } else {
+            manualMarkerList.push({ marker, lat: latitude, lng: longitude });
+        }
+
         // 當標記被點擊時，顯示車輛的資訊
         marker.on('click', () => {
             document.getElementById('target_type').value = vehicleType;
@@ -88,7 +108,8 @@ function logo(map, latitude, longitude, vehicleType) {
             document.getElementById('target_lat').value = latitude;
             imgRequest(markerId);
         });
-    } else {
+    }
+    else {
         alert('Please enter valid latitude and longitude.');
     }
 }
