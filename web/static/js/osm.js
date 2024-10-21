@@ -81,7 +81,8 @@ function put_icon(map, latitude, longitude, vehicleType) {
         // 區分標記來源是自動獲取還是手動輸入
         if (isAuto) {
             autoMarkerList.push({ marker, lat: latitude, lng: longitude });
-        } else {
+        } 
+        else {
             manualMarkerList.push({ marker, lat: latitude, lng: longitude });
         }
 
