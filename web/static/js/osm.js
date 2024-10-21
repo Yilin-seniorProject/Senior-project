@@ -1,4 +1,6 @@
-const markerList = [];
+const markerList = [];  //儲存所有已經放置在地圖上的標記
+const autoMarkerList = [];  //儲存自動獲取的標記
+const manualMarkerList = [];    //儲存手動輸入的標記
 let id = 0;
 let map;
 
@@ -29,7 +31,6 @@ function imgRequest(markerId) {
         .then(response => response.json()) // 將回應解析為 JSON 格式
         .then(data => {
             console.log('Success:', data); // 成功後打印回應數據
-            // console.log(`Marker ID: ${markerId}\nType: ${vehicleType}\nLocation: ${latitude}, ${longitude}`)
             // 假設後端返回的 data 中包含圖片的 URL
             if (data.img_url) {
                 document.getElementById("target_img").src = data.img_url;
@@ -76,6 +77,14 @@ function put_icon(map, latitude, longitude, vehicleType) {
         const markerId = markerList.length + 1;
         const marker = L.marker([latitude, longitude], { icon: selectedIcon }).addTo(map);
         markerList.push({ marker, markerId });
+
+        // 區分標記來源是自動獲取還是手動輸入
+        if (isAuto) {
+            autoMarkerList.push({ marker, lat: latitude, lng: longitude });
+        } else {
+            manualMarkerList.push({ marker, lat: latitude, lng: longitude });
+        }
+
         // 當標記被點擊時，顯示車輛的資訊
         marker.on('click', () => {
             document.getElementById('target_type').value = vehicleType;
@@ -83,7 +92,8 @@ function put_icon(map, latitude, longitude, vehicleType) {
             document.getElementById('target_lat').value = latitude;
             imgRequest(markerId);
         });
-    } else {
+    }
+    else {
         alert('Please enter valid latitude and longitude.');
     }
 }
