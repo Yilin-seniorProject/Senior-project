@@ -15,6 +15,6 @@ elif mode == "vid":
     t = int(input("請輸入錄製時間(s): ")) * 1000
     fileName = PATH + f"videos/video{now}.h264"
     os.system(
-        f'libcamera-vid -o {fileName} -t {t} --width 640 --height 480')
+        f'libcamera-vid -o {fileName} -t {t} --width 640 --height 640')
 
 exit()
