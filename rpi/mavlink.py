@@ -26,7 +26,7 @@ def send_message(master, message_id, *params):
         mavutil.mavlink.MAV_CMD_SET_MESSAGE_INTERVAL,  # ID of command to send
         0,  # Confirmation
         message_id,  # param1: Message ID to be streamed
-        1000000,
+        params[0],
         params[1],
         params[2],
         params[3],
@@ -49,7 +49,8 @@ master = connect_drone()
 ret = send_message(master, mavutil.mavlink.MAVLINK_MSG_ID_GPS_RAW_INT, 1e6)
 ret = send_message(
     master, mavutil.mavlink.MAVLINK_MSG_ID_GLOBAL_POSITION_INT, 1e6)
-print("mavlink on ready")
+ret = send_message(
+    master, mavutil.mavlink.MAVLINK_MSG_ID_ATTITUDE, 1e6)
 
 
 def get_gps_info():
@@ -66,3 +67,6 @@ def get_gps_info():
     except Exception as e:
         print(e)
         exit(1)
+
+
+print("mavlink package on ready")

@@ -1,10 +1,11 @@
 from json import dumps
+from time import sleep
 import mavlink
 import predict
 import requests
 
 # URL = 'https://55c6-140-115-205-49.ngrok-free.app/dataCollector'
-URL = '172.24.48.1:5000/read_data'
+URL = 'http://192.168.137.1:5000/read_data'
 
 while True:
     result = predict.predict()
@@ -24,4 +25,4 @@ while True:
                 }
 
         request = requests.post(URL, files=data)
-        print(request)
+        sleep(0.1)
