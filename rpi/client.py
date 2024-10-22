@@ -4,7 +4,7 @@ import mavlink
 import predict
 import requests
 
-# URL = 'https://55c6-140-115-205-49.ngrok-free.app/dataCollector'
+
 URL = 'http://192.168.137.1:5000/read_data'
 
 while True:

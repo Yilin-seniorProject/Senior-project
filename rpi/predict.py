@@ -5,7 +5,7 @@ import numpy as np
 model = YOLO("./modelv4.pt")
 
 picam2 = Picamera2()
-picam2.preview_configuration.main.size = (1288, 720)
+picam2.preview_configuration.main.size = (640, 640)
 picam2.preview_configuration.main.format = "RGB888"
 picam2.preview_configuration.main.align()
 picam2.configure("preview")
