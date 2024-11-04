@@ -113,22 +113,19 @@ def update_data():
 ##提取圖片
 @app.route('/submit_data', methods=['GET'])
 def submit_data():
-    imagename = request.args.get('imagename')
-    '''
+    marker_id = request.args.get('marker_id')
+
     db = get_db()
     cursor = db.cursor()
-    cursor.execute("SELECT ImageName FROM {} WHERE ROWID = ?".format(table_name), (rowid,))
+    cursor.execute(f"SELECT ImageName FROM {table_name} WHERE ROWID = ?", (marker_id,))
     imagename = cursor.fetchone()
     if imagename is not None:
         imagename = imagename[0]
     else:
         return jsonify({"status": "error", "message": "No data found"})
-    '''
-    image = trans_image(imagename)
-    if image:
-        return jsonify({"image_data": image})
-    else:
-        return jsonify({"message": "No data found"})
+    image_path = os.path.join("static","car_image",imagename)
+    return jsonify({"image_path": image_path})
+
 
 
 @app.route('/read_data', methods=['POST'])

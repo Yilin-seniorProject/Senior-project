@@ -29,10 +29,10 @@ function imgRequest(markerId) {
         .then(response => response.json()) // 將回應解析為 JSON 格式
         .then(data => {
             console.log('Success:', data); // 成功後打印回應數據
-            // console.log(`Marker ID: ${markerId}\nType: ${vehicleType}\nLocation: ${latitude}, ${longitude}`)
-            // 假設後端返回的 data 中包含圖片的 URL
-            if (data.img_url) {
-                document.getElementById("target_img").src = data.img_url;
+            if (data.image_path) {
+                document.getElementById("target_img").src = data.image_path;
+                document.getElementById("popup_img").src = data.image_path;
+                console.log('Image changed.');
             }
         })
         .catch((error) => {
@@ -99,25 +99,6 @@ document.addEventListener("DOMContentLoaded", function () {
         attribution: '© OpenStreetMap', // 商用時必須要有版權出處
         zoomControl: true, // 是否秀出 - + 按鈕
     }).addTo(map);
-
-    const DroneIcon = L.icon({
-        iconUrl: '../static/img/Drone_icon.png',
-        iconSize: [40, 40],
-    });
-
-    // 無人機標籤
-    const DroneCenter = [25.021431498025557, 121.21861694845937]; //marker center
-    const DroneMarker = L.marker(DroneCenter, {
-        icon: DroneIcon,
-        opacity: 1.0
-    }).addTo(map);
-
-    // Marker 加上 Tooltip
-    DroneMarker.bindTooltip("Drone position", {
-        direction: 'bottom', // right、left、top、bottom、center。default: auto
-        permanent: false, // true是滑鼠移過才出現，false是一直出現
-        opacity: 1.0
-    }).openTooltip();
 
     interval = setInterval(autoFetchData, 5000);
 
