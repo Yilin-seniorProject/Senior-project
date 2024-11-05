@@ -138,6 +138,7 @@ def read_data():
     except:
         return jsonify({"status": "fail", "message": "Data not received"})
 
+# 清除數據庫
 # 無安全保護，之後可能要加
 @app.route('/delete_data', methods=['GET'])
 def delete_data():
