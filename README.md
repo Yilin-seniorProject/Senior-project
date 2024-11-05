@@ -1,13 +1,9 @@
 # Senior-project
 ## Introduction
 
-___
-
 Senior project of drone  
 
 ## Regulations
-
-___
 
 ### Commit Rule
 Please follow the annotation rules provided at the following URL when writing comments:  
@@ -17,8 +13,6 @@ Please follow the annotation rules provided at the following URL when writing co
 If you have any test files, please named it "*filename_test*" and __DO NOT__ push to main branch.
 
 ## Data Transfer
-
-___
 
 ### Refresh User Interface
 Front end: request for **latitude**, **longitude**, and **vehicleType**.
