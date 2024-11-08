@@ -2,16 +2,14 @@ from picamera2 import Picamera2
 from ultralytics import YOLO
 import numpy as np
 
-model = YOLO("./modelv3.pt")
+model = YOLO("./modelv4.pt")
 
 picam2 = Picamera2()
-picam2.preview_configuration.main.size = (1288, 720)
+picam2.preview_configuration.main.size = (640, 640)
 picam2.preview_configuration.main.format = "RGB888"
 picam2.preview_configuration.main.align()
 picam2.configure("preview")
 picam2.start()
-
-print("predict on ready")
 
 
 def predict() -> tuple | None:
@@ -22,8 +20,6 @@ def predict() -> tuple | None:
         id = int(box.cls)
         classname = model.names[id]
         accuracy = box.conf.item()
-        # print(box.cls.item())
-        # print(box.xyxy)
         print(f"class: {classname}")
         print(f"accuracy: {accuracy}")
         xy_arr = box.xyxy.cpu()
@@ -34,3 +30,6 @@ def predict() -> tuple | None:
         print(f"mid point(x,y): {midpoints}")
 
     return (frame, classname, accuracy, midpoints)
+
+
+print("predict on ready")
