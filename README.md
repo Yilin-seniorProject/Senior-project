@@ -21,3 +21,10 @@ back end: send the data for **ImageName**, **Latitude**, **Longitude**, and **Im
 ### Image Request
 Front end: give **markerId** and request for **image_path**
 back end: get **ImageName** by searching **ROWID** in database and send **image_path**
+
+## Object Detection
+Ncnn inference: clone [ncnn](https://github.com/Tencent/ncnn.git) repositories and follow the example about [yolov5ncnn](https://www.wpgdadatong.com/blog/detail/75045)
+Using yolov7.cpp for inference, importing the **subprocess** module in Python is the easiest way to get the result.
+
+## Model:
+class: taxi, car, and motorcycle
