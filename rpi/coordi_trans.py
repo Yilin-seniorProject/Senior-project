@@ -5,9 +5,8 @@ from ultralytics import YOLO
 
 class Detect():
 
-    def __init__(self, cameraMatrix, dist, height, outputPath, yoloPath, row, pitch, heading, longitude, latitude):
+    def __init__(self, cameraMatrix, dist, outputPath, yoloPath):
         self.cameraMatrix = cameraMatrix
-        self.height = height
         self.camCenter_x = cameraMatrix[0][2]
         self.camCenter_y = cameraMatrix[1][2]
         self.focus_x = cameraMatrix[0][0]
@@ -19,8 +18,6 @@ class Detect():
         self.heading = np.deg2rad(heading)
         self.dist = dist
         self.model = YOLO(yoloPath)
-        self.longitude = longitude #經
-        self.latitude = latitude #緯
         self.i = 0 #just regarding as a file name to saving image, you can remove it
 
     def undistortion(self, img): #TODO fix undistortion
@@ -50,24 +47,24 @@ class Detect():
             self.i+=1
             return obj
         
-    def coordinateTransform(self, img):
+    def coordinateTransform(self, img, row, pitch, heading, height, longitude, latitude):
         #caclulate origin of the camrea
         newOrigin = [] #(cx, cy)
-        newOrigin.append(self.camCenter_x - np.tan(self.row))
-        newOrigin.append(self.camCenter_y - np.tan(self.pitch))
+        newOrigin.append(self.camCenter_x - np.tan(row))
+        newOrigin.append(self.camCenter_y - np.tan(pitch))
         #calculate offset
         objs = self.detect(img)
         if len(objs)>0:
             rot = [] # result for rotate coordinate
             for obj in objs:
-                x_offset = (obj[1]-newOrigin[0])*self.height / self.focus_x
-                y_offset = (obj[2]-newOrigin[1])*self.height / self.focus_y
-                x_north = x_offset*np.cos(self.heading) - y_offset*np.sin(self.heading) #rotation mtx = ([cos -sin],[sin cos])
-                y_north = x_offset*np.sin(self.heading) + y_offset*np.cos(self.heading)
+                x_offset = (obj[1]-newOrigin[0])*height / self.focus_x
+                y_offset = (obj[2]-newOrigin[1])*height / self.focus_y
+                x_north = x_offset*np.cos(heading) - y_offset*np.sin(heading) #rotation mtx = ([cos -sin],[sin cos])
+                y_north = x_offset*np.sin(heading) + y_offset*np.cos(heading)
                 longi = x_north/101779 #longitude offset
                 lati = y_north/110936.2 #latitude offset
-                precise_longi = self.longitude+longi
-                precise_lati = self.latitude+lati
+                precise_longi = longitude+longi
+                precise_lati = latitude+lati
 
                 # 2d list and it has id, north coordinate(x,y), corrected GPS(經,緯)
                 # actually like this: [[3, array([-2.2423], dtype=float32), array([-1.2744], dtype=float32), array([100]), array([100], dtype=float32)]]
@@ -92,11 +89,11 @@ if __name__ =='__main__':
     pitch = 0
     heading = 100  
 
-    # detedctor = Detect(camera_mtx, dist, height, output_path, model_path, row, pitch, heading)
+    # detedctor = Detect(camera_mtx, dist, output_path, model_path)
     # cap = cv2.VideoCapture(input)
     # ret, frame = cap.read()
     # while ret:
-    #     arg = detedctor.coordinateTransform(frame)
+    #     arg = detedctor.coordinateTransform(frame, row, pitch, heading, height, longitude, latitude)
     #     if len(arg)==1:
     #         ret, frame = cap.read()
     #         continue
