@@ -45,17 +45,18 @@ class Detect():
             print(self.i)
             cv2.imwrite(f'{self.outputPath}/{self.i}.jpg', annotaionImg) #save image when detect obj
             self.i+=1
-            return obj
+        return obj
         
     def coordinateTransform(self, img, row, pitch, heading, height, longitude, latitude):
         #caclulate origin of the camrea
         newOrigin = [] #(cx, cy)
+        rot = []
         newOrigin.append(self.camCenter_x - np.tan(row))
         newOrigin.append(self.camCenter_y - np.tan(pitch))
         #calculate offset
         objs = self.detect(img)
         if len(objs)>0:
-            rot = [] # result for rotate coordinate
+         # result for rotate coordinate
             for obj in objs:
                 x_offset = (obj[1]-newOrigin[0])*height / self.focus_x
                 y_offset = (obj[2]-newOrigin[1])*height / self.focus_y
@@ -69,9 +70,7 @@ class Detect():
                 # 2d list and it has id, north coordinate(x,y), corrected GPS(經,緯)
                 # actually like this: [[3, array([-2.2423], dtype=float32), array([-1.2744], dtype=float32), array([100]), array([100], dtype=float32)]]
                 rot.append([obj[0], x_north, y_north, precise_longi, precise_lati]) 
-            return rot
-        else:
-            objs = self.detect()
+        return rot
 
 if __name__ =='__main__':
     camera_mtx = np.array( [[1.84463584e+03, 0.00000000e+00, 1.37568753e+02],
