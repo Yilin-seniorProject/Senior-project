@@ -2,9 +2,8 @@ from flask import Flask, render_template, g, request, jsonify
 import json
 import sqlite3
 import os
-import base64
-import io
-from PIL import Image
+import numpy as np
+import cv2
 from datetime import datetime
 
 app = Flask(__name__)
@@ -31,19 +30,16 @@ def close_db(exception=None):
         db.close()
 
 
-# 圖片檔儲存(格式二進位>jpg，輸入二進位圖片回傳ImageName)
+# 圖片檔儲存(list -> np.array，回傳ImageName)
 def save_image(image):
     global IMAGE_DIRECTORY
-    os.makedirs(IMAGE_DIRECTORY, exist_ok=True)
     sys_datetime = datetime.now().strftime("%Y%m%d_%H%M%S")
-    image_name = str(sys_datetime)+'.jpg'
-    # image_binary = base64.b64decode(image)
-    # image = Image.open(io.BytesIO(image_binary))
-    image = Image.open(io.BytesIO(image))
-    full_image_path = os.path.join(IMAGE_DIRECTORY, image_name)
-    print(f"Saving image at: {full_image_path}")
-    image.save(full_image_path, 'JPEG')
-    return (image_name)
+    image = np.array(image)
+    image_name = f'{sys_datetime}.jpg'
+    image_path = os.path.join(IMAGE_DIRECTORY, image_name)
+    cv2.imwrite(image_path, image)
+    print(f"Saving image at: {image_path}")
+    return image_name
 
 
 # 清理圖片資料夾
@@ -112,31 +108,29 @@ def submit_data():
     return jsonify({"image_path": image_path})
 
 
-@app.route('/read_data', methods=['POST'])
+@app.route("/read_data", methods=["POST"])
 def read_data():
-    data = request.get_data('data')
-    db = get_db()
-    cursor = db.cursor()
-    corddata = json.loads(data)
-    try:
-        name = save_image(corddata['img'])
-        geo_data = json.loads(corddata['geo'])
-        latitude = geo_data['lat']
-        longitude = geo_data['lng']
-        imagetype = corddata['classname']
-        center = corddata['midpoints']
-        cursor.execute("INSERT INTO {} (ImageName, Center, Longitude, Latitude, ImageType) VALUES (?, ?, ?, ?, ?)".format(table_name),
-                       (
+    if request.method == "POST":
+        db = get_db()
+        cursor = db.cursor()
+        try:
+            response = request.get_json()
+            data = json.loads(response)
+            name = save_image(data['frame'])
+            latitude, longitude = data['geo']
+            imagetype = data['classname']
+            cursor.execute("INSERT INTO {} (ImageName, Longitude, Latitude, ImageType) VALUES (?, ?, ?, ?)".format(table_name),
+                           (
             name,
-            center,
             longitude,
             latitude,
             imagetype
-        ))
-        db.commit()
-        return jsonify({"status": "success", "message": "Data received"})
-    except:
-        return jsonify({"status": "fail", "message": "Data not received"})
+            ))
+            db.commit()
+            return jsonify({"status": "success", "message": "Data received"})
+        except Exception as e:
+            print(e)
+            return jsonify({"status": "fail", "message": "Data not received"})
 
 # 清除數據庫
 # 無安全保護，之後可能要加
@@ -155,4 +149,4 @@ def delete_data():
 
 
 if __name__ == '__main__':
-    app.run(host='127.0.0.1', port=5000, debug=True)
+    app.run(host='192.168.137.1', port=5000, debug=True)
