@@ -41,20 +41,4 @@ print("rvecs:\n",rvecs)
 print("tvecs:\n",tvecs)
 newcameramtx, roi = cv2.getOptimalNewCameraMatrix(mtx, dist, (u, v), 0, (u, v))
 print('newcameramtx',newcameramtx)
-# camera=cv2.VideoCapture(0)
-# while True:
-#     (grabbed,frame)=camera.read()
-#     h1, w1 = frame.shape[:2]
-#     newcameramtx, roi = cv2.getOptimalNewCameraMatrix(mtx, dist, (u, v), 0, (u, v))
-#     dst1 = cv2.undistort(frame, mtx, dist, None, newcameramtx)
-#     x, y, w1, h1 = roi
-#     dst1 = dst1[y:y + h1, x:x + w1]
-#     cv2.imshow('dst1',dst1)
-#     if cv2.waitKey(1) & 0xFF == ord('q'):
-#         cv2.imwrite("../u4/frame.jpg", dst1)
-#         break
-
-# camera.release()
-# cv2.destroyAllWindows()
-
 
