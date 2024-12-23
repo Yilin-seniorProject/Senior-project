@@ -3,7 +3,7 @@ import numpy as np
 from picamera2 import Picamera2
 from ultralytics import YOLO
 import datetime
-from mavlink import get_attitude_info, get_gps_info, get_heading_info
+from mavlink import get_attitude_info, get_gps_info
 
 picam2 = Picamera2()
 picam2.preview_configuration.main.size = (640, 640)
@@ -69,10 +69,10 @@ class Detector():
         newOrigin = []  # (cx, cy)
         roll = np.deg2rad(attitude[0])
         pitch = np.deg2rad(attitude[1])
-        hdg = np.deg2rad(attitude[2])
         lat = position[0]
         lon = position[1]
         alt = position[2]
+        hdg = np.deg2rad(position[3])
         rot = []
         newOrigin.append(self.camCenter_x - np.tan(roll))
         newOrigin.append(self.camCenter_y - np.tan(pitch))
@@ -104,15 +104,10 @@ if __name__ =='__main__':
     model_path = r"best_ncnn_model"
     
     # attitude
-    
-
     detector = Detector(cameraMatrix = camera_mtx, dist = dist, yoloPath = model_path)
     while True:
         frame = picam2.capture_array()
-        atti_info = get_attitude_info()
-        heading_info = get_heading_info()
+        attitude = get_attitude_info()
         position = get_gps_info()
-        roll = atti_info[0]
-        pitch = atti_info[1]
-        hdg = heading_info
-        print(detector.coordinateTransform(frame, position, (roll, pitch, hdg)))
+        print(detector.coordinateTransform(
+            frame, position, attitude))

@@ -119,12 +119,15 @@ def read_data():
             name = save_image(data['frame'])
             latitude, longitude = data['geo']
             imagetype = data['classname']
-            cursor.execute("INSERT INTO {} (ImageName, Longitude, Latitude, ImageType) VALUES (?, ?, ?, ?)".format(table_name),
+            centerX, centerY = data['center']
+            cursor.execute("INSERT INTO {} (ImageName, Longitude, Latitude, ImageType, CenterX, CenterY) VALUES (?, ?, ?, ?, ?, ?)".format(table_name),
                            (
             name,
             longitude,
             latitude,
-            imagetype
+            imagetype,
+            centerX,
+            centerY
             ))
             db.commit()
             return jsonify({"status": "success", "message": "Data received"})
