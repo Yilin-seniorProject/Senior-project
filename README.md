@@ -1,8 +1,8 @@
 # Senior-project
 ## Introduction
 
-Senior project of drone  
-
+Senior project of drone for objecct detection on roads.
+Team Number: 14
 ## Regulations
 
 ### Commit Rule
@@ -23,8 +23,17 @@ Front end: give **markerId** and request for **image_path**
 back end: get **ImageName** by searching **ROWID** in database and send **image_path**
 
 ## Object Detection
+
 Ncnn inference: clone [ncnn](https://github.com/Tencent/ncnn.git) repositories and follow the example about [yolov5ncnn](https://www.wpgdadatong.com/blog/detail/75045). 
 Using yolov7.cpp for inference, importing the **subprocess** module in Python is the easiest way to get the result.
 
-## Model:
+## Model
+
 class: taxi, car, and motorcycle
+
+## Deadlines
+
+- Final Rports Slides Submission: 23:59 113/12/29 (Sun.)
+- Final Report Display: 09:00 113/12/31 (Tues.)
+- Result Report Submission (Prof.): 17:00 114/01/08 (Wed.)
+- Result Report Submission (CD): 17:00 114/01/13 (Mon.) 
