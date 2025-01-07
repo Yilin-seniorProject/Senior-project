@@ -29,11 +29,16 @@ Using yolov7.cpp for inference, importing the **subprocess** module in Python is
 
 ## Model
 
-class: taxi, car, and motorcycle
+Class: car, motorcycle and taxi (for pedestrains) 
 
 ## Deadlines
 
-- Final Rports Slides Submission: 23:59 113/12/29 (Sun.)
-- Final Report Display: 09:00 113/12/31 (Tues.)
 - Result Report Submission (Prof.): 17:00 114/01/08 (Wed.)
-- Result Report Submission (CD): 17:00 114/01/13 (Mon.) 
+- Result Report Submission (CD): 17:00 114/01/13 (Mon.)
+
+##　TODO
+
+- Choose class name for motorcycle or scooter
+- add drone position in front end for reference
+- check coordi_transfer.py
+- change the name of vechileType(1, 2, 3) ->(car, scooter, ...)

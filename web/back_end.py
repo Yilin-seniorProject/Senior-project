@@ -10,7 +10,7 @@ app = Flask(__name__)
 DATABASE = 'database.db'
 table_name = 'point'
 cleantag = False
-IMAGE_DIRECTORY = 'web\static\car_image'
+IMAGE_DIRECTORY = r'web\static\car_image'
 
 
 # 連接sql
@@ -118,12 +118,13 @@ def read_data():
             data = json.loads(response)
             name = save_image(data['frame'])
             latitude, longitude = data['geo']
+            
             imagetype = data['classname']
             cursor.execute("INSERT INTO {} (ImageName, Longitude, Latitude, ImageType) VALUES (?, ?, ?, ?)".format(table_name),
                            (
             name,
-            longitude,
-            latitude,
+            longitude[0],
+            latitude[0],
             imagetype
             ))
             db.commit()
@@ -149,4 +150,4 @@ def delete_data():
 
 
 if __name__ == '__main__':
-    app.run(host='192.168.137.1', port=5000, debug=True)
+    app.run(host='127.0.0.1', port=5000, debug=True)
