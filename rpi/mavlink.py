@@ -57,12 +57,11 @@ def get_gps_info():
     try:
         gps_info = master.recv_match(
             type="GLOBAL_POSITION_INT", blocking=True).to_dict()
-        lat = gps_info["lat"] * 1e-7
-        lon = gps_info["lon"] * 1e-7
-        alt = gps_info['relative_alt'] * 1e-3
-        hdg = gps_info["hdg"] * 0.01
-        print(f'lat:{lat}, lon:{lon}, alt:{alt}, hdg:{hdg}')
-        return (lat, lon, alt, hdg)
+        lat = gps_info["lat"]*1e-7
+        lon = gps_info["lon"]*1e-7
+        alt = gps_info['relative_alt']*1e-3
+        print(f'lat:{lat}, lon:{lon}, alt:{alt}')
+        return (lat, lon, alt)
     except KeyboardInterrupt:
         exit(0)
     except Exception as e:
@@ -85,9 +84,24 @@ def get_attitude_info():
         print(e)
         exit(1)
 
+def get_heading_info():
+    # Receive message
+    try:
+        position_info = master.recv_match(
+            type="GLOBAL_POSITION_INT", blocking=True).to_dict()
+        hdg = position_info["hdg"] * 0.01
+        print(f'heading degree:{hdg}')
+        return hdg
+    except KeyboardInterrupt:
+        exit(0)
+    except Exception as e:
+        print(e)
+        exit(1)
+
 print("mavlink package on ready")
 
 if __name__ == "__main__":
     while True:
         get_gps_info()
         get_attitude_info()
+        get_heading_info()
