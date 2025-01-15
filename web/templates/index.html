@@ -12,7 +12,6 @@
         
         <script type="module" src="https://unpkg.com/leaflet@1.8.0/dist/leaflet.js"></script>
         <script type="module" src="../static/js/osm.js"></script>
-        <!-- <script type="module" src="../static/js/counter.js"></script> -->
         <script type="module" src="../static/js/pullRequest.js"></script>
         <script type="module" src="../static/js/putIcon.js"></script>
     </head>
@@ -34,12 +33,6 @@
                             汽車： 
                             <input type="text" id="car_count_input" value="0" readonly>
                         </td>
-                        
-                        <td>      
-                            計程車： 
-                            <input type="text" id="taxi_count_input" value="0" readonly>
-                        </td>
-
                         <td>
                             機車：
                             <input type="text" id="scooter_count_input" value="0" readonly>
@@ -49,7 +42,7 @@
             </div>
             
             <div id="car_information">
-                <h2>觀察車輛資訊</h2>
+                <h2>該車輛資訊</h2>
                 <ul>
                     <li>
                         車輛類別：
@@ -80,16 +73,14 @@
             </div>
         </div>
         <div id="Drone_route">
-            <h2>無人機路線</h2>
-              
+            <h2>被檢測之車輛位置</h2>
+
             <!-- 添加一個用於顯示地圖的div -->
-            <div id="map" style="height: 400px; position: relative"></div>          
-            <div class="map_information">                
+            <div id="map" style="height: 500px; position: relative"></div>          
+            <div class="map_information"> 
                 <h3>圖示</h3>
-                <img src="../static/img/car_icon.png" alt="汽車圖示" title="汽車" width=40;>                
-                <span>汽車</span>                
-                <img src="../static/img/taxi_icon.png" alt="計程車圖示" title="計程車" width=40;>                
-                <span>計程車</span>                
+                <img src="../static/img/car_icon.png" alt="汽車圖示" title="汽車" width=40;>
+                <span>汽車</span>
                 <img src="../static/img/scooter_icon.png" alt="機車圖示" title="機車" width=40;>
                 <span>機車</span>
             </div>
@@ -101,8 +92,6 @@
             <div>
                 <input type="radio" id="car" name="vehicle-type" value="car" checked>
                 <label for="car">Car</label>
-                <input type="radio" id="taxi" name="vehicle-type" value="taxi">
-                <label for="taxi">Taxi</label>                
                 <input type="radio" id="scooter" name="vehicle-type" value="scooter">
                 <label for="scooter">Scooter</label>
             </div>
