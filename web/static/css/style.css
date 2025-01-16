@@ -60,7 +60,7 @@ body{
 .popup {
     display: none; /* 初始狀態為隱藏 */
     position: fixed;
-    z-index: 2000; /* 確保它出縣在最前方 */
+    z-index: 2000; /* 確保它出現在最前方 */
     left: 0;
     top: 0;
     width: 100%;
