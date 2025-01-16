@@ -85,8 +85,8 @@ class Detector():
                 y_offset = (obj[2]-newOrigin[1]) * alt / self.focus_y
                 x_north = x_offset*np.cos(hdg) - y_offset*np.sin(hdg)  # rotation mtx = ([cos -sin],[sin cos])
                 y_north = x_offset*np.sin(hdg) + y_offset*np.cos(hdg)
-                longi = x_north / 101779  # longitude offset
-                lati = y_north / 110936.2  # latitude offset
+                longi = x_north / 100827.79149792079  # longitude offset(經度)
+                lati = y_north / 111194.99645772896  # latitude offset
                 precise_longi = lon + longi
                 precise_lati = lat + lati
 
