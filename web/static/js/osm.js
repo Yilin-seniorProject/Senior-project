@@ -10,7 +10,7 @@ export var counter = {
 
 document.addEventListener("DOMContentLoaded", function () {
     // *** 放置地圖
-    let zoom = 17; // 縮放程度，間距為 0 - 18
+    let zoom = 18; // 縮放程度，間距為 0 - 18
     let center = [25.019448151190158, 121.21634240643077]; // 中心點座標：橫山書法藝術公園
     map = L.map('map').setView(center, zoom); // 使用新添加的map元素
 
