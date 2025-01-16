@@ -120,12 +120,28 @@ def read_data():
             latitude, longitude = data['geo']
             
             imagetype = data['classname']
-            cursor.execute("INSERT INTO {} (ImageName, Longitude, Latitude, ImageType) VALUES (?, ?, ?, ?)".format(table_name),
+            centerX, centerY = data['center']
+            drone_lat = data['drone_lat']
+            drone_lng = data['drone_lng']
+            drone_alt = data['drone_alt']
+            drone_pitch = data['drone_pitch']
+            drone_roll = data['drone_roll']
+            drone_head = data['drone_head']
+            dataaddcommand="INSERT INTO {} (target_img, Longitude, Latitude, target_type, CenterX, CenterY, drone_lat, drone_lng, drone_alt, drone_pitch, drone_roll, drone_head) VALUES (?, ?, ?, ?, ?, ?)"
+            cursor.execute(dataaddcommand.format(table_name),
                            (
             name,
-            longitude[0],
-            latitude[0],
-            imagetype
+            longitude,
+            latitude,
+            imagetype,
+            centerX,
+            centerY,
+            drone_lat,
+            drone_lng,
+            drone_alt,
+            drone_pitch,
+            drone_roll,
+            drone_head
             ))
             db.commit()
             return jsonify({"status": "success", "message": "Data received"})
