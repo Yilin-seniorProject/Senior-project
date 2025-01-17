@@ -30,7 +30,7 @@ def close_db(exception=None):
         db.close()
 
 
-# 圖片檔儲存(list -> np.array，回傳ImageName)
+# 圖片檔儲存(list -> np.array，回傳target_img)
 def save_image(image):
     global IMAGE_DIRECTORY
     sys_datetime = datetime.now().strftime("%Y%m%d_%H%M%S")
@@ -79,7 +79,7 @@ def update_data():
     db = get_db()
     db.row_factory = sqlite3.Row
     cursor = db.cursor()
-    query = "SELECT ImageName, Latitude, Longitude, ImageType FROM {}".format(
+    query = "SELECT target_img, Latitude, Longitude, target_type FROM {}".format(
         table_name)
     cursor.execute(query)
     rows = cursor.fetchall()
@@ -98,13 +98,13 @@ def submit_data():
     db = get_db()
     cursor = db.cursor()
     cursor.execute(
-        f"SELECT ImageName FROM {table_name} WHERE ROWID = ?", (marker_id,))
-    imagename = cursor.fetchone()
-    if imagename is not None:
-        imagename = imagename[0]
+        f"SELECT target_img FROM {table_name} WHERE ROWID = ?", (marker_id,))
+    target_img = cursor.fetchone()
+    if target_img is not None:
+        target_img = target_img[0]
     else:
         return jsonify({"status": "error", "message": "No data found"})
-    image_path = os.path.join("static", "car_image", imagename)
+    image_path = os.path.join("static", "car_image", target_img)
     return jsonify({"image_path": image_path})
 
 
@@ -118,8 +118,7 @@ def read_data():
             data = json.loads(response)
             name = save_image(data['frame'])
             latitude, longitude = data['geo']
-            
-            imagetype = data['classname']
+            target_type = data['classname']
             centerX, centerY = data['center']
             drone_lat = data['drone_lat']
             drone_lng = data['drone_lng']
@@ -127,15 +126,26 @@ def read_data():
             drone_pitch = data['drone_pitch']
             drone_roll = data['drone_roll']
             drone_head = data['drone_head']
-            dataaddcommand="INSERT INTO {} (target_img, Longitude, Latitude, target_type, CenterX, CenterY, drone_lat, drone_lng, drone_alt, drone_pitch, drone_roll, drone_head) VALUES (?, ?, ?, ?, ?, ?)"
+            dataaddcommand="INSERT INTO {} ("+"target_img,"+\
+                                            "Longitude,"+\
+                                            'Latitude,'+\
+                                            'target_type,'+\
+                                            'CenterX,'+\
+                                            'CenterY,'+\
+                                            'drone_lat,'+\
+                                            'drone_lng,'+\
+                                            'drone_alt,'+\
+                                            'drone_pitch,'+\
+                                            'drone_roll,'+\
+                                            "drone_head) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)"
             cursor.execute(dataaddcommand.format(table_name),
                            (
             name,
-            longitude,
-            latitude,
-            imagetype,
-            centerX,
-            centerY,
+            longitude[0],
+            latitude[0],
+            target_type,
+            centerX[0],
+            centerY[0],
             drone_lat,
             drone_lng,
             drone_alt,

@@ -10,7 +10,7 @@ export function autoFetchData() {
         .then(data => {
             while (id < data.length) {
                 const element = data[id];
-                put_icon(map, element['Latitude'], element['Longitude'], element['ImageType'])
+                put_icon(map, element['Latitude'], element['Longitude'], element['target_type'])
                 id++;
             }
         })
