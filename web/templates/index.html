@@ -20,7 +20,7 @@
             <h1>無人機結合車輛精準定位</h1>
         </div>
         
-        <div style="float: left">
+        <div style="float: left; margin-right: 10px;">
             <div id="car_count">
                 <h2>目前定位到的車輛數量及類別</h2>
                 <table>
@@ -49,9 +49,10 @@
                         <input type="text" id="target_type" value="" readonly>
                     </li>
                     <li>
+                        GPS位置：
                         <table>
                             <tr>
-                                GPS位置：
+                                <th></th>
                                 <td>
                                     經度：
                                     <input type="text" id="target_lng" value="" readonly>
@@ -63,39 +64,38 @@
                             </tr>
                         </table>
                     </li>
-                    <li>車輛圖片</li>                    
+                    <li>車輛圖片</li>
+                    <img src="../static/img/Photo_of_project.jpg" height=280vh alt="Thumbnail of Target" id="target_img">
                 </ul>
-                <img src="../static/img/Photo_of_project.jpg" height=280vh alt="Thumbnail of Target" id="target_img">
             </div>
             <div id="popup" class="popup">
                 <span id="close_popup">&times;</span>
                 <img src="../static/img/Photo_of_project.jpg" alt="High Resolution" id="popup_img">
             </div>
         </div>
-        <div id="Drone_route">
-            <h2>被檢測之車輛位置</h2>
+        <div>
+            <div id="Drone_route">
+                <h2>被檢測之車輛位置</h2>
+    
+                <!-- 添加一個用於顯示地圖的div -->
+                <div id="map" style="height: 500px; position: relative"></div>          
 
-            <!-- 添加一個用於顯示地圖的div -->
-            <div id="map" style="height: 500px; position: relative"></div>          
-            <div class="map_information"> 
-                <h3>圖示</h3>
-                <img src="../static/img/car_icon.png" alt="汽車圖示" title="汽車" width=40;>
-                <span>汽車</span>
-                <img src="../static/img/scooter_icon.png" alt="機車圖示" title="機車" width=40;>
-                <span>機車</span>
+                <div class="marker_create">
+                    <!-- 輸入標記於地圖上 -->
+                    <label for="title">輸入GPS座標以新增自定義圖標：</label>
+                    <input type="text" id="input_lat" placeholder="Latitude" value="">
+                    <input type="text" id="input_lng" placeholder="Longitude" value="">
+                    <div>
+                        <input type="radio" id="car" name="vehicle-type" value="car" checked>
+                        <label for="car">Car</label>
+                        <img src="../static/img/car_icon.png" alt="汽車圖示" title="汽車" width=40;>
+                        <input type="radio" id="scooter" name="vehicle-type" value="scooter">
+                        <label for="scooter">Motorcycle</label>
+                        <img src="../static/img/scooter_icon.png" alt="機車圖示" title="機車" width=40;>
+                    </div>
+                    <button id="put-markers">Submit</button>
+                </div>
             </div>
-            
-            <!-- 輸入標記於地圖上 -->
-            <label for="title">請輸入GPS座標：</label>
-            <input type="text" id="input_lat" placeholder="Latitude" value="">
-            <input type="text" id="input_lng" placeholder="Longitude" value="">
-            <div>
-                <input type="radio" id="car" name="vehicle-type" value="car" checked>
-                <label for="car">Car</label>
-                <input type="radio" id="scooter" name="vehicle-type" value="scooter">
-                <label for="scooter">Scooter</label>
-            </div>
-            <button id="put-markers">Submit</button>
         </div>
     </body>
 </html>

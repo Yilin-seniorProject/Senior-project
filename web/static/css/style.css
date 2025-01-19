@@ -27,7 +27,7 @@ body{
 
 #car_count{
     background-color:white; 
-    border-radius: 5px; 
+    border-radius: 5px;
     width: 50vw;    /*50vw代表50%的視窗寬度(高度)*/
 }
 
@@ -92,21 +92,22 @@ body{
 
 #Drone_route{
     position: absolute;
-    left:52vw;    
-    float: right; 
-    width: 47vw; 
+    top: 77px;
+    left:50vw;
+    width: 47vw;
     height: 43vw;
     background-color: white;
+    border-radius: 5px;
+    width: 50vw;
 }
 
 .map_information{
     position: absolute;
     z-index:1000;
     bottom: 120px;
-    right: 0px; 
+    right: 0px;
     margin: 5px;
-    background-color: rgba(128, 128, 128, 0.586);    
-    border-radius:10px;
+    background-color: rgba(128, 128, 128, 0.586);
     opacity: 0.9;
 }
 

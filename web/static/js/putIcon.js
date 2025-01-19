@@ -9,7 +9,7 @@ function updateCountDisplay() {
     document.getElementById('scooter_count_input').value = counter.scooterNum;
 };
 
-export function put_icon(map, latitude, longitude, vehicleType) {
+export function put_icon(map, latitude, longitude, targetType) {
     // 自定義圖標：汽車、機車、其他(以計程車表示)
     const CarIcon = L.icon({
         iconUrl: '../static/img/car_icon.png',
@@ -26,7 +26,7 @@ export function put_icon(map, latitude, longitude, vehicleType) {
     
     // 根據訊號類型選擇圖標
     let selectedIcon;
-    switch (vehicleType) {
+    switch (targetType) {
         case 1: // car
         selectedIcon = CarIcon;
         counter.carNum++;
@@ -49,7 +49,7 @@ export function put_icon(map, latitude, longitude, vehicleType) {
         markerList.push({ marker, markerId });
         // 當標記被點擊時，顯示車輛的資訊
         marker.on('click', () => {
-            document.getElementById('target_type').value = vehicleType;
+            document.getElementById('target_type').value = targetType;
             document.getElementById('target_lng').value = longitude;
             document.getElementById('target_lat').value = latitude;
             imgRequest(markerId);
