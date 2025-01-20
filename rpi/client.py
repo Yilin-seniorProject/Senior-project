@@ -13,7 +13,7 @@ camera_mtx = np.array([[1.84463584e+03, 0, 1.37568753e+02],
                        [0, 0, 1]])
 dist = np.array([[9.66082944e-02,  5.06778169e+00,
                 -4.60461075e-03, -6.56564683e-02, -2.41323529e+01]])
-model_path = r"best_ncnn_model_2"
+model_path = r"best_ncnn_model"
 
 
 while True:
@@ -25,16 +25,15 @@ while True:
         attitude = mavlink.get_attitude_info()
         result = detector.coordinateTransform(
             frame, position, attitude)
-        img = cv2.imread(outputPath)
         if len(result) != 0:
             for rot in result:
                 id, x_north, y_north, lon, lat, outputPath = rot
-                
+                img = cv2.imread(outputPath)
                 data = dumps({
                     'frame': img.tolist(),
                     'geo': (lat.tolist(), lon.tolist()),
                     'classname': id,
-                    'center': (x_north, y_north),
+                    'center': (x_north.tolist(), y_north.tolist()),
                     'drone_lat': position[0],
                     'drone_lng': position[1],
                     'drone_alt': position[2],
