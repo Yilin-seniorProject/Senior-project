@@ -5,6 +5,7 @@ import os
 import numpy as np
 import cv2
 from datetime import datetime
+from coordi_trans import coordinateTransform
 
 app = Flask(__name__)
 DATABASE = 'database.db'
@@ -79,8 +80,7 @@ def update_data():
     db = get_db()
     db.row_factory = sqlite3.Row
     cursor = db.cursor()
-    query = "SELECT target_img, Latitude, Longitude, target_type FROM {}".format(
-        table_name)
+    query = f"SELECT target_img, Latitude, Longitude, target_type, drone_lat, drone_lng FROM {table_name}"
     cursor.execute(query)
     rows = cursor.fetchall()
     data = [dict(row) for row in rows]
@@ -118,15 +118,37 @@ def read_data():
             data = json.loads(response)
             name = save_image(data['frame'])
             latitude, longitude = data['geo']
-            target_type = data['classname']
-            centerX, centerY = data['center']
+            CenterX, CenterY = data['center']
+            centerX, centerY = CenterX[0], CenterY[0]
             drone_lat = data['drone_lat']
             drone_lng = data['drone_lng']
             drone_alt = data['drone_alt']
             drone_pitch = data['drone_pitch']
             drone_roll = data['drone_roll']
             drone_head = data['drone_head']
-            dataaddcommand="INSERT INTO {} ("+"target_img,"+\
+            if data['classname'] == 0:
+                target_type = 'Car'
+            elif data['classname'] == 1:
+                target_type = 'Motorcycle'
+            elif data['classname'] == 2:
+                target_type = 'Pedestrian'
+        except Exception as f:
+            print(f)
+            return jsonify({"status": "fail", "message": "Data not received(basic)"})
+        try:
+            camera_matrix = np.array([[1.84463584e+03, 0, 1.37568753e+02],
+                       [0, 1.74529878e+03, 2.78409056e+02],
+                       [0, 0, 1]])
+            target_objs = ([data['classname'], centerX, centerY],)
+            drone_pos = (drone_lat, drone_lng, drone_alt, drone_head)
+            drone_att = (drone_roll, drone_pitch)
+            result = coordinateTransform(camera_matrix, target_objs, drone_pos, drone_att)
+            longitude, latitude = result[3], result[4]
+        except Exception as w:
+            print(w)
+            return jsonify({"status": "fail", "message": "Data not received(trans)"})
+        try:        
+            dataaddcommand=f"INSERT INTO {table_name} ("+"target_img,"+\
                                             "Longitude,"+\
                                             'Latitude,'+\
                                             'target_type,'+\
@@ -138,14 +160,14 @@ def read_data():
                                             'drone_pitch,'+\
                                             'drone_roll,'+\
                                             "drone_head) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)"
-            cursor.execute(dataaddcommand.format(table_name),
-                           (
+            cursor.execute(dataaddcommand,
+           (
             name,
-            longitude[0],
-            latitude[0],
+            longitude,
+            latitude,
             target_type,
-            centerX[0],
-            centerY[0],
+            centerX,
+            centerY,
             drone_lat,
             drone_lng,
             drone_alt,
@@ -157,7 +179,7 @@ def read_data():
             return jsonify({"status": "success", "message": "Data received"})
         except Exception as e:
             print(e)
-            return jsonify({"status": "fail", "message": "Data not received"})
+            return jsonify({"status": "fail", "message": "Data not written"})
 
 # 清除數據庫
 # 無安全保護，之後可能要加
