@@ -10,11 +10,12 @@ body{
     align-items: center;
     background-color: rgb(0, 0, 71);
     border-radius: 5px; 
-    height: 50px; 
+    height: 50px;
     color:white;
 }
 
 .first_title h1{       
+    padding-left: 10px;
     flex-shrink: 0; /*收縮比例*/
 }
 
@@ -25,35 +26,68 @@ body{
     color: white;
 }
 
-#car_count{
-    background-color:white; 
-    border-radius: 5px;
-    width: 50vw;    /*50vw代表50%的視窗寬度(高度)*/
+.container{
+    display: flex;
+    justify-content: space-between;
 }
 
-#car_count table{
+.left_side{
+    flex: 10;
+}
+.middle{
+    flex: 1;
+}
+.right_side{
+    flex: 10;
+}
+
+.vehicle_amount{
+    background-color:white; 
+    border-radius: 5px;
+    width: 47vw;    /*50vw代表50%的視窗寬度(高度)*/
+}
+
+.vehicle_amount table{
     width: 100%;
     border-collapse: collapse;  /*設置表格寬度和邊框合併樣式*/
 }
-
-#car_count td{
-    padding: 10px;
-    margin: 10px;
+.amount{
+    font-size: x-large;
+    height: 0vh;
 }
-/* 針對 id 為 car_count 內的所有 input 標籤進行設定*/
-#car_count input[type = "text"]{
-    width: 30px;
+/* .vehicle_amount p{
+} */
+
+.vehicle_amount th,td{
+    vertical-align: middle;
+    border: 1px solid rgb(160 160 160);
+    text-align: center;
 }
 
-#car_information{
+#target_info{
     background-color: white; 
-    height: 32vw; 
-    width: 50vw;
+    height: 58.5vh;
     border-radius: 5px;
+    width: 47vw;
+    justify-content: center;
 }
 
-#car_information input[type = "text"]{
-    width:10vw;
+.target_doc{
+    display: flex;
+    align-items: center;
+}
+
+.figure{
+    margin-left: 1vw;
+    text-align: center;
+}
+
+.figure img{
+    height: 25vw;
+}
+
+li{
+    padding: 10px;
 }
 
 /* 設置懸浮視窗的樣式 */
@@ -90,24 +124,28 @@ body{
     cursor: pointer;
 }
 
-#Drone_route{
-    position: absolute;
-    top: 77px;
-    left:50vw;
-    width: 47vw;
-    height: 43vw;
+.detect_area{
+    /* height: 43vw; TODO注意高度*/
     background-color: white;
     border-radius: 5px;
     width: 50vw;
 }
 
-.map_information{
-    position: absolute;
-    z-index:1000;
-    bottom: 120px;
-    right: 0px;
-    margin: 5px;
-    background-color: rgba(128, 128, 128, 0.586);
-    opacity: 0.9;
+#map{
+    position: relative;
+    height: 69vh;
 }
 
+input[type="text"]{
+    width: 10vw;
+    height: 3vh;
+    border-radius: 5px;
+    border: 1px solid rgb(160 160 160);
+}
+
+button{
+    position: relative;
+    bottom: 1vh;
+    border-radius: 5px;
+    border: 1px solid rgb(160 160 160);
+}

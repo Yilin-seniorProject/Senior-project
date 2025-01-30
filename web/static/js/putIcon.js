@@ -1,23 +1,31 @@
 import { imgRequest } from './pullRequest.js';
 import { counter } from './osm.js';
-export let markerList = [];
+export let pinList = [];
 
 
 function updateCountDisplay() {
-    document.getElementById('total_count').value = counter.totalCount;
-    document.getElementById('car_count_input').value = counter.carNum;
-    document.getElementById('scooter_count_input').value = counter.scooterNum;
+    const fields = [
+        { key: 'totalCount', id: 'total_amount' },
+        { key: 'legal_carNum', id: 'legal_car_amount' },
+        { key: 'legal_scooterNum', id: 'legal_scooter_amount' },
+        { key: 'illegal_carNum', id: 'illegal_car_amount' },
+        { key: 'illegal_scooterNum', id: 'illegal_scooter_amount' },
+    ];
+
+    fields.forEach(field => {
+        document.getElementById(field.id).innerHTML = counter[field.key];
+    });
 };
 
 export function put_icon(map, latitude, longitude, targetType) {
     // 自定義圖標：汽車、機車、其他(以計程車表示)
     const CarIcon = L.icon({
         iconUrl: '../static/img/car_icon.png',
-        iconSize: [40, 40],
+        iconSize: [40, 20],
     });
     const ScooterIcon = L.icon({
         iconUrl: '../static/img/scooter_icon.png',
-        iconSize: [40, 40],
+        iconSize: [40, 35],
     });
     const TaxiIcon = L.icon({
         iconUrl: '../static/img/taxi_icon.png',
@@ -27,31 +35,35 @@ export function put_icon(map, latitude, longitude, targetType) {
     // 根據訊號類型選擇圖標
     let selectedIcon;
     switch (targetType) {
-        case 1: // car
+        case 'car': // car
         selectedIcon = CarIcon;
-        counter.carNum++;
+        counter.legal_carNum++;
         break;
-        case 2: // scooter
+        case 'motorcycle': // scooter
         selectedIcon = ScooterIcon;
-        counter.scooterNum++;
+        counter.legal_scooterNum++;
         break;
         default:
             selectedIcon = TaxiIcon; // 默認圖標
         }
     
     // 更新計數器
-    counter.totalCount = counter.carNum + counter.scooterNum;
+    counter.totalCount = counter.legal_carNum + counter.legal_scooterNum + 
+                        counter.illegal_carNum + counter.illegal_scooterNum;
 
     // 放置標記
     if (!isNaN(latitude) && !isNaN(longitude)) {
-        const markerId = markerList.length + 1;
+        const markerId = pinList.length + 1;
         const marker = L.marker([latitude, longitude], { icon: selectedIcon }).addTo(map);
-        markerList.push({ marker, markerId });
+        pinList.push({ marker, markerId });
         // 當標記被點擊時，顯示車輛的資訊
         marker.on('click', () => {
-            document.getElementById('target_type').value = targetType;
-            document.getElementById('target_lng').value = longitude;
-            document.getElementById('target_lat').value = latitude;
+            if(targetType == 'car') {
+                document.getElementById('target_type').innerHTML = "<li>車輛類別： 車子 Car</li>";
+            } else if(targetType == 'motorcycle') {
+                document.getElementById('target_type').innerHTML = "<li>車輛類別： 機車 Motorcycle</li>";
+            }
+            document.getElementById('target_position').innerHTML = "目標車輛位置：<br>(" + latitude + ", " + longitude + ")";
             imgRequest(markerId);
         });
     } else {
