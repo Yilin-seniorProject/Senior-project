@@ -54,7 +54,8 @@
                     <h2>目標車輛資訊</h2>
                         <div class="target_doc">
                             <div class="figure">
-                                <img src="../static/img/Photo_of_project.jpg" id="target_img" height=280vh alt="Thumbnail of Target" title="車輛圖片">
+                                <img src="../static/img/Photo_of_project.jpg" id="target_img" alt="Thumbnail of Target" title="點擊以放大">
+                                <p>車輛圖片</p>
                             </div>
                             <div class="information">
                                 <ul>
@@ -64,17 +65,12 @@
                                 </ul>
                             </div>
                         </div>
-                        <div class="target_doc">
-                            <p class="figure" style="width: 45%;">車輛圖片</p>
-                            <span style="width: 50%;"></span>
-                        </div>
                 </div>
                 <div id="popup" class="popup">
                     <span id="close_popup">&times;</span>
                     <img src="../static/img/Photo_of_project.jpg" alt="High Resolution Image" id="popup_img">
                 </div>
             </div>
-            <div class="middle"></div>
             <div class="right_side">
                 <div class="detect_area">
                     <h2>被檢測之車輛位置</h2>
@@ -85,13 +81,13 @@
                         <label for="title">輸入GPS座標以新增自定義圖標：</label>
                         <input type="text" id="input_lat" placeholder="Latitude" value="">
                         <input type="text" id="input_lng" placeholder="Longitude" value="">
-                        <div>
+                        <div class="pin_option">
                             <input type="radio" id="car" name="target-type" value="car" checked>
                             <label for="car">車子 Car</label>
-                            <img src="../static/img/car_icon.png" alt="汽車圖示" title="汽車" height=25;>
+                            <img src="../static/img/car_icon.png" alt="汽車圖示" title="汽車" id="car_icon" width=40>
                             <input type="radio" id="scooter" name="target-type" value="motorcycle">
                             <label for="scooter">機車 Motorcycle</label>
-                            <img src="../static/img/scooter_icon.png" alt="機車圖示" title="機車" height=30;>
+                            <img src="../static/img/scooter_icon.png" alt="機車圖示" title="機車" id="scooter_icon" width=35>
                             <button id="put-markers">Submit</button>
                         </div>
                     </div>

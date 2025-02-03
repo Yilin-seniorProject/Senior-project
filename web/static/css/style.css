@@ -1,16 +1,23 @@
 p{
     color:black;
+    margin: 4%;
 }
 
 body{
     background-color: #e9e8e8;
+    margin: 1vh 1vw;
+}
+
+h2{
+    margin: 1vh;
+    padding: 1vh;
 }
 .first_title{
     display: flex;
     align-items: center;
     background-color: rgb(0, 0, 71);
     border-radius: 5px; 
-    height: 50px;
+    height: 8vh;
     color:white;
 }
 
@@ -31,42 +38,37 @@ body{
     justify-content: space-between;
 }
 
-.left_side{
-    flex: 10;
-}
-.middle{
-    flex: 1;
-}
 .right_side{
-    flex: 10;
-}
+    margin-left: 1vw;
+    }
 
 .vehicle_amount{
     background-color:white; 
     border-radius: 5px;
-    width: 47vw;    /*50vw代表50%的視窗寬度(高度)*/
+    width: 47vw;
+    height: 38vh;
 }
 
 .vehicle_amount table{
     width: 100%;
-    border-collapse: collapse;  /*設置表格寬度和邊框合併樣式*/
+    border-collapse: separate;
 }
+
 .amount{
-    font-size: x-large;
-    height: 0vh;
+    font-size: xx-large;
+    margin: 1vh;
 }
-/* .vehicle_amount p{
-} */
+
 
 .vehicle_amount th,td{
     vertical-align: middle;
-    border: 1px solid rgb(160 160 160);
+    /* border: 1px solid rgb(160 160 160); */
     text-align: center;
 }
 
 #target_info{
     background-color: white; 
-    height: 58.5vh;
+    height: 50vh;
     border-radius: 5px;
     width: 47vw;
     justify-content: center;
@@ -83,7 +85,11 @@ body{
 }
 
 .figure img{
-    height: 25vw;
+    height: 36vh;
+}
+
+.figure p{
+    margin: 5px;
 }
 
 li{
@@ -125,7 +131,8 @@ li{
 }
 
 .detect_area{
-    /* height: 43vw; TODO注意高度*/
+    height: 89vh;
+    position: relative;
     background-color: white;
     border-radius: 5px;
     width: 50vw;
@@ -141,6 +148,19 @@ input[type="text"]{
     height: 3vh;
     border-radius: 5px;
     border: 1px solid rgb(160 160 160);
+}
+
+.pin_option{
+    position: absolute;
+    overflow: hidden;
+}
+
+#car_icon{
+    margin-bottom: -3%;
+}
+
+#scooter_icon{
+    margin-bottom: -1%;
 }
 
 button{
