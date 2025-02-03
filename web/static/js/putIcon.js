@@ -21,11 +21,11 @@ export function put_icon(map, latitude, longitude, targetType) {
     // 自定義圖標：汽車、機車、其他(以計程車表示)
     const CarIcon = L.icon({
         iconUrl: '../static/img/car_icon.png',
-        iconSize: [40, 20],
+        iconSize: [40, 40],
     });
     const ScooterIcon = L.icon({
         iconUrl: '../static/img/scooter_icon.png',
-        iconSize: [40, 35],
+        iconSize: [40, 40],
     });
     const TaxiIcon = L.icon({
         iconUrl: '../static/img/taxi_icon.png',
@@ -59,9 +59,9 @@ export function put_icon(map, latitude, longitude, targetType) {
         // 當標記被點擊時，顯示車輛的資訊
         marker.on('click', () => {
             if(targetType == 'car') {
-                document.getElementById('target_type').innerHTML = "<li>車輛類別： 車子 Car</li>";
+                document.getElementById('target_type').innerHTML = "車輛類別： 車子 Car";
             } else if(targetType == 'motorcycle') {
-                document.getElementById('target_type').innerHTML = "<li>車輛類別： 機車 Motorcycle</li>";
+                document.getElementById('target_type').innerHTML = "車輛類別： 機車 Motorcycle";
             }
             document.getElementById('target_position').innerHTML = "目標車輛位置：<br>(" + latitude + ", " + longitude + ")";
             imgRequest(markerId);
