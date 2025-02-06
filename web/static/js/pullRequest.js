@@ -32,6 +32,7 @@ export function imgRequest(markerId) {
             if (data.image_path) {
                 document.getElementById("target_img").src = data.image_path;
                 document.getElementById("popup_img").src = data.image_path;
+                // document.getElementById("drone_alt").innerHTML = "無人機拍攝高度： " + data.drone_alt + " 公尺";
                 console.log('Image changed.');
             }
         })

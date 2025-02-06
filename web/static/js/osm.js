@@ -3,20 +3,20 @@ import { autoFetchData } from './pullRequest.js';
 export let map;
 export var counter = {
     totalCount: 0,
-    carNum: 0,
-    taxiNum: 0,
-    scooterNum: 0
+    legal_carNum: 0,
+    legal_scooterNum: 0,
+    illegal_carNum: 0,
+    illegal_scooterNum: 0
 };
 
 document.addEventListener("DOMContentLoaded", function () {
     // *** 放置地圖
     let zoom = 18; // 縮放程度，間距為 0 - 18
-    let center = [25.019448151190158, 121.21634240643077]; // 中心點座標：橫山書法藝術公園
+    let center = [25.02295783175933, 121.21765135412089]; // 中心點座標：橫山書法藝術公園
     map = L.map('map').setView(center, zoom); // 使用新添加的map元素
 
     // 設定地圖的圖層
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-        attribution: '© OpenStreetMap', // 商用時必須要有版權出處
         zoomControl: true, // 是否秀出 - + 按鈕
     }).addTo(map);
 
@@ -27,7 +27,7 @@ document.addEventListener("DOMContentLoaded", function () {
     btnPutMarkers.addEventListener('click', e => {
         const latitude = parseFloat(document.getElementById('input_lat').value);
         const longitude = parseFloat(document.getElementById('input_lng').value);
-        const vehicleType = document.querySelector('input[name="vehicle-type"]:checked').value;
+        const vehicleType = document.querySelector('input[name="target-type"]:checked').value;
         e.preventDefault();
         put_icon(map, latitude, longitude, vehicleType);
     });
@@ -43,7 +43,7 @@ document.addEventListener("DOMContentLoaded", function () {
         popup.style.display = "block"; // 顯示懸浮視窗
     });
 
-    // 當點擊關閉按钮时，隐藏懸浮視窗
+    // 當點擊關閉按钮时，隱藏懸浮視窗
     closePopup.addEventListener("click", function () {
         popup.style.display = "none"; // 隱藏懸浮視窗
     });
