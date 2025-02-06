@@ -19,83 +19,80 @@
         <div class="first_title">
             <h1>無人機結合車輛精準定位</h1>
         </div>
-        
-        <div style="float: left">
-            <div id="car_count">
-                <h2>目前定位到的車輛數量及類別</h2>
-                <table>
-                    <tr>
-                        總數量： 
-                        <input type="text" id="total_count" value="0" readonly>
-                    </tr>
-                    <tr>
-                        <td>
-                            汽車： 
-                            <input type="text" id="car_count_input" value="0" readonly>
-                        </td>
-                        <td>
-                            機車：
-                            <input type="text" id="scooter_count_input" value="0" readonly>
-                        </td>
-                    </tr>
-                </table>
+        <div class="container">
+            <div class="left_side">
+                <div class="vehicle_amount">
+                    <h2>已定位之車輛數量及類別</h2>
+                    <table>
+                        <tr>
+                            <td rowspan="2">
+                                <p class="amount" id="total_amount">0</p>
+                                <p>總檢測數量</p>
+                            </td>
+                            <td>
+                                <p class="amount" id="legal_car_amount">0</p>
+                                <p>合法停放之汽車</p>
+                            </td>
+                            <td>
+                                <p class="amount" id="legal_scooter_amount">0</p>
+                                <p>合法停放之機車</p>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <p class="amount" id="illegal_car_amount">0</p>
+                                <p>非法停放之汽車</p>
+                            </td>
+                            <td>
+                                <p class="amount" id="illegal_scooter_amount">0</p>
+                                <p>非法停放之機車</p>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+                <div id="target_info">
+                    <h2>目標車輛資訊</h2>
+                        <div class="target_doc">
+                            <div class="figure">
+                                <img src="../static/img/Photo_of_project.jpg" id="target_img" alt="Thumbnail of Target" title="點擊以放大">
+                                <p>車輛圖片</p>
+                            </div>
+                            <div class="information">
+                                <ul>
+                                    <li id="target_type">車輛類別：</li>
+                                    <li id="target_position">目標車輛位置：</li>
+                                    <li id="drone_alt">無人機拍攝高度：</li>
+                                </ul>
+                            </div>
+                        </div>
+                </div>
+                <div id="popup" class="popup">
+                    <span id="close_popup">&times;</span>
+                    <img src="../static/img/Photo_of_project.jpg" alt="High Resolution Image" id="popup_img">
+                </div>
             </div>
-            
-            <div id="car_information">
-                <h2>該車輛資訊</h2>
-                <ul>
-                    <li>
-                        車輛類別：
-                        <input type="text" id="target_type" value="" readonly>
-                    </li>
-                    <li>
-                        <table>
-                            <tr>
-                                GPS位置：
-                                <td>
-                                    經度：
-                                    <input type="text" id="target_lng" value="" readonly>
-                                </td>
-                                <td>
-                                    緯度：
-                                    <input type="text" id="target_lat" value="" readonly>
-                                </td>
-                            </tr>
-                        </table>
-                    </li>
-                    <li>車輛圖片</li>                    
-                </ul>
-                <img src="../static/img/Photo_of_project.jpg" height=280vh alt="Thumbnail of Target" id="target_img">
+            <div class="right_side">
+                <div class="detect_area">
+                    <h2>被檢測之車輛位置</h2>
+                    <!-- 添加一個用於顯示地圖的div -->
+                    <div id="map"></div>          
+                    <div>
+                        <!-- 輸入標記於地圖上 -->
+                        <label for="title">輸入GPS座標以新增自定義圖標：</label>
+                        <input type="text" id="input_lat" placeholder="Latitude" value="">
+                        <input type="text" id="input_lng" placeholder="Longitude" value="">
+                        <div class="pin_option">
+                            <input type="radio" id="car" name="target-type" value="car" checked>
+                            <label for="car">車子 Car</label>
+                            <img src="../static/img/car_icon.png" alt="汽車圖示" title="汽車" id="car_icon" width=40>
+                            <input type="radio" id="scooter" name="target-type" value="motorcycle">
+                            <label for="scooter">機車 Motorcycle</label>
+                            <img src="../static/img/scooter_icon.png" alt="機車圖示" title="機車" id="scooter_icon" width=35>
+                            <button id="put-markers">Submit</button>
+                        </div>
+                    </div>
+                </div>
             </div>
-            <div id="popup" class="popup">
-                <span id="close_popup">&times;</span>
-                <img src="../static/img/Photo_of_project.jpg" alt="High Resolution" id="popup_img">
-            </div>
-        </div>
-        <div id="Drone_route">
-            <h2>被檢測之車輛位置</h2>
-
-            <!-- 添加一個用於顯示地圖的div -->
-            <div id="map" style="height: 500px; position: relative"></div>          
-            <div class="map_information"> 
-                <h3>圖示</h3>
-                <img src="../static/img/car_icon.png" alt="汽車圖示" title="汽車" width=40;>
-                <span>汽車</span>
-                <img src="../static/img/scooter_icon.png" alt="機車圖示" title="機車" width=40;>
-                <span>機車</span>
-            </div>
-            
-            <!-- 輸入標記於地圖上 -->
-            <label for="title">請輸入GPS座標：</label>
-            <input type="text" id="input_lat" placeholder="Latitude" value="">
-            <input type="text" id="input_lng" placeholder="Longitude" value="">
-            <div>
-                <input type="radio" id="car" name="vehicle-type" value="car" checked>
-                <label for="car">Car</label>
-                <input type="radio" id="scooter" name="vehicle-type" value="scooter">
-                <label for="scooter">Scooter</label>
-            </div>
-            <button id="put-markers">Submit</button>
         </div>
     </body>
 </html>
