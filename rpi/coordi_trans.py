@@ -5,6 +5,7 @@ from ultralytics import YOLO
 import datetime
 from mavlink import get_attitude_info, get_gps_info
 
+
 picam2 = Picamera2()
 picam2.preview_configuration.main.size = (640, 640)
 picam2.preview_configuration.main.format = "RGB888"
@@ -35,6 +36,7 @@ class Detector():
         return dst  # TODO:check new camera mtx
     
     def detect(self, img):
+        tmp = []
         obj = []
         dst = self.undistortion(img)
         results = self.model.predict(dst)
@@ -45,55 +47,29 @@ class Detector():
             coordi = np.array(xy_arr)
             x_mid = (coordi[:, 0] + coordi[:, 2]) / 2
             y_mid = (coordi[:, 1] + coordi[:, 3]) / 2
-            obj.append([id, x_mid, y_mid])
             annotaionImg = results[0].plot()
-        if len(obj) > 0:
             self.now = datetime.datetime.now()
             self.now = datetime.datetime.strftime(self.now, "%m%d_%H%M%S")
             self.outputPath = f'rpi/static/imgs/img{self.now}.jpg'
-            cv2.imwrite(f'{self.outputPath}', annotaionImg)  # save image when detect obj
-        return obj
+            tmp.append([id, x_mid, y_mid, self.outputPath])
+        if len(tmp) > 0:
+            cv2.imwrite(f'{self.outputPath}', annotaionImg)  # save image when detect obj    
+        return tmp
+
+    def drop_img(self, img_1, img_2):
+        orb = cv2.ORB_create()
         
-    def coordinateTransform(self, img, position:tuple, attitude:tuple):
-        """_Summary_
-        Args:
-            img (Matlike): Input image
-            position (Tuple): lat, lon, alt
-            attitude (Tuple): roll, pitch, hdg
+        kp_1, des_1 = orb.detectAndCompute(img_1, None)
+        kp_2, des_2 = orb.detectAndCompute(img_2, None)
 
-        Returns:
-            _type_: _description_
-        """
-        # img, roll, pitch, heading, height, longitude, latitude
-        # caclulate origin of the camera
-        newOrigin = []  # (cx, cy)
-        roll = np.deg2rad(attitude[0])
-        pitch = np.deg2rad(attitude[1])
-        lat = position[0]
-        lon = position[1]
-        alt = position[2]
-        hdg = np.deg2rad(position[3])
-        rot = []
-        newOrigin.append(self.camCenter_x - np.tan(roll))
-        newOrigin.append(self.camCenter_y - np.tan(pitch))
-        # calculate offset
-        objs = self.detect(img)
-        if len(objs) > 0:
-         # result for rotate coordinate
-            for obj in objs:
-                x_offset = (obj[1]-newOrigin[0]) * alt / self.focus_x
-                y_offset = (obj[2]-newOrigin[1]) * alt / self.focus_y
-                x_north = x_offset*np.cos(hdg) - y_offset*np.sin(hdg)  # rotation mtx = ([cos -sin],[sin cos])
-                y_north = x_offset*np.sin(hdg) + y_offset*np.cos(hdg)
-                longi = x_north / 100827.79149792079  # longitude offset(經度)
-                lati = y_north / 111194.99645772896  # latitude offset
-                precise_longi = lon + longi
-                precise_lati = lat + lati
-
-                # 2d list and it has id, north coordinate(x,y), corrected GPS(經,緯)
-                # actually like this: [[3, array([-2.2423], dtype=float32), array([-1.2744], dtype=float32), array([100]), array([100], dtype=float32)]]
-                rot.append([obj[0], x_north, y_north, precise_longi, precise_lati, self.outputPath]) 
-        return rot
+        bf = cv2.BFMatcher(cv2.NORM_HAMMING, crossCheck = True)
+        matches = bf.match(des_1, des_2)
+        matches = sorted(matches, key = lambda x: x.distance)
+        sim_Thres = 0.1*len(kp_1)
+        if len(matches) > sim_Thres:
+            return True
+        else:
+            return False
 
 
 if __name__ =='__main__':
@@ -103,11 +79,8 @@ if __name__ =='__main__':
     dist = np.array([[ 9.66082944e-02,  5.06778169e+00, -4.60461075e-03, -6.56564683e-02, -2.41323529e+01]])
     model_path = r"best_ncnn_model"
     
-    # attitude
+    # # attitude
     detector = Detector(cameraMatrix = camera_mtx, dist = dist, yoloPath = model_path)
-    while True:
-        frame = picam2.capture_array()
-        attitude = get_attitude_info()
-        position = get_gps_info()
-        print(detector.coordinateTransform(
-            frame, position, attitude))
+    img_1 = cv2.imread(r'rpi/static/imgs/img0122_180714.jpg')
+    img_2 = cv2.imread(r'rpi/static/imgs/img0117_153242.jpg')
+    print(detector.drop_img(img_1, img_2))

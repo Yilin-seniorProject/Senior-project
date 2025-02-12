@@ -42,9 +42,9 @@ while True:
                     'drone_pitch': attitude[1],
                 })
 
-            response = requests.post(URL, json=data)
-            print(response.status_code)
-            print(response.text)
+                response = requests.post(URL, json=data)
+                print(response.status_code)
+                print(response.text)
     except KeyboardInterrupt:
         exit(0)
     except Exception as e:
