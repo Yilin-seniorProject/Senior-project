@@ -9,15 +9,20 @@ from datetime import datetime
 
 app = Flask(__name__)
 DATABASE = 'database.db'
+IMAGE_DIRECTORY = r'web\static\car_image'
+CAMERA_MATRIX = np.array([[1.84463584e+03, 0, 1.37568753e+02],
+                       [0, 1.74529878e+03, 2.78409056e+02],
+                       [0, 0, 1]])
+
 table_name = 'point'
 cleantag = False
-IMAGE_DIRECTORY = r'web\static\car_image'
 
 # Define coordinate transform fuction
-def coordinateTransform(camera_mtx, objs:tuple, position:tuple, attitude:tuple):
+def coordinateTransform(camera_mtx, obj:tuple, position:tuple, attitude:tuple):
     """_Summary_
     Args:
-        obj (Tuple): [id, x_mid, y_mid] each list represents one object
+        camera_mtx (np.array): camera matrix
+        obj (Tuple): x_mid, y_mid
         position (Tuple): lat, lon, alt, hdg
         attitude (Tuple): roll, pitch
 
@@ -33,25 +38,21 @@ def coordinateTransform(camera_mtx, objs:tuple, position:tuple, attitude:tuple):
     lon = position[1]
     alt = position[2]
     hdg = np.deg2rad(position[3])
-    rot = []
-    newOrigin.append(camera_mtx[0][2] - np.tan(roll))
-    newOrigin.append(camera_mtx[1][2] - np.tan(pitch))
+    newOrigin.append(camera_mtx[0, 2] - np.tan(roll))
+    newOrigin.append(camera_mtx[1, 2] - np.tan(pitch))
     # calculate offset
-    if len(objs) > 0:
     # result for rotate coordinate
-        for obj in objs:
-            x_offset = (obj[1]-newOrigin[0]) * alt / camera_mtx[0][0]
-            y_offset = (obj[2]-newOrigin[1]) * alt / camera_mtx[1][1]
-            x_north = x_offset*np.cos(hdg) - y_offset*np.sin(hdg)  # rotation mtx = ([cos -sin],[sin cos])
-            y_north = x_offset*np.sin(hdg) + y_offset*np.cos(hdg)
-            longi = x_north / 100827.79149792079  # longitude offset(經度)
-            lati = y_north / 111194.99645772896  # latitude offset
-            precise_longi = lon + longi
-            precise_lati = lat + lati
+    x_offset = (obj[0]-newOrigin[0]) * alt / camera_mtx[0, 0]
+    y_offset = (obj[1]-newOrigin[1]) * alt / camera_mtx[1, 1]
+    x_north = x_offset*np.cos(hdg) - y_offset*np.sin(hdg)  # rotation mtx = ([cos -sin],[sin cos])
+    y_north = x_offset*np.sin(hdg) + y_offset*np.cos(hdg)
+    longi = x_north / 100827.79149792079  # longitude offset(經度)
+    lati = y_north / 111194.99645772896  # latitude offset
+    precise_longi = lon + longi
+    precise_lati = lat + lati
 
-            # 2d list and it has id, north coordinate(x,y), corrected GPS(經,緯)
-            rot.append([obj[0], x_north, y_north, precise_longi, precise_lati]) 
-        return rot
+    # 2d list and it has id, north coordinate(x,y), corrected GPS(經,緯)
+    return (precise_longi, precise_lati)
 
 # 連接sql
 def get_db():
@@ -98,7 +99,6 @@ def clear_folder(folder_path):
 @app.route('/', methods=['GET'])
 def index():
     return render_template('index.html')
-
 
 
 
@@ -153,65 +153,59 @@ def read_data():
             response = request.get_json()
             data = json.loads(response)
             name = save_image(data['frame'])
-            latitude, longitude = data['geo']
-            CenterX, CenterY = data['center']
-            centerX, centerY = CenterX[0], CenterY[0]
             drone_lat = data['drone_lat']
             drone_lng = data['drone_lng']
             drone_alt = data['drone_alt']
             drone_pitch = data['drone_pitch']
             drone_roll = data['drone_roll']
             drone_head = data['drone_head']
-            if data['classname'] == 0:
-                target_type = 'Car'
-            elif data['classname'] == 1:
-                target_type = 'Motorcycle'
-            elif data['classname'] == 2:
-                target_type = 'Pedestrian'
-        except Exception as f:
-            print(f)
-            return jsonify({"status": "fail", "message": "Data not received(basic)"})
-        try:
-            camera_matrix = np.array([[1.84463584e+03, 0, 1.37568753e+02],
-                       [0, 1.74529878e+03, 2.78409056e+02],
-                       [0, 0, 1]])
-            target_objs = ([data['classname'], centerX, centerY],)
+            ids = data['classname']
+            mids = data['center']
+            print(data["message"])
             drone_pos = (drone_lat, drone_lng, drone_alt, drone_head)
             drone_att = (drone_roll, drone_pitch)
-            result = coordinateTransform(camera_matrix, target_objs, drone_pos, drone_att)
-            longitude, latitude = result[0][3], result[0][4]
-        except Exception as w:
-            print(w)
-            return jsonify({"status": "fail", "message": "Data not received(trans)"})
-        try:        
-            dataaddcommand=f"INSERT INTO {table_name} ("+"target_img,"+\
-                                            "Longitude,"+\
-                                            'Latitude,'+\
-                                            'target_type,'+\
-                                            'CenterX,'+\
-                                            'CenterY,'+\
-                                            'drone_lat,'+\
-                                            'drone_lng,'+\
-                                            'drone_alt,'+\
-                                            'drone_pitch,'+\
-                                            'drone_roll,'+\
-                                            "drone_head) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)"
-            cursor.execute(dataaddcommand,
-           (
-            name,
-            longitude,
-            latitude,
-            target_type,
-            centerX,
-            centerY,
-            drone_lat,
-            drone_lng,
-            drone_alt,
-            drone_pitch,
-            drone_roll,
-            drone_head
-            ))
-            db.commit()
+            for i in range(len(ids)):
+                centerX, centerY = mids[i]
+                target_objs = (centerX, centerY)
+                if ids[i] == 0:
+                    target_type = 'car'
+                elif ids[i] == 1:
+                    target_type = 'motorcycle'
+                elif ids[i] == 2:
+                    target_type = 'pedestrian'
+            
+                result = coordinateTransform(CAMERA_MATRIX, target_objs, drone_pos, drone_att)
+                longitude, latitude = result
+                data_add_query = f"INSERT INTO {table_name} (" + \
+                                                "target_img," + \
+                                                "Longitude," + \
+                                                "Latitude," + \
+                                                "target_type," + \
+                                                "CenterX," + \
+                                                "CenterY," + \
+                                                "drone_lat," + \
+                                                "drone_lng," + \
+                                                "drone_alt," + \
+                                                "drone_pitch," + \
+                                                "drone_roll," + \
+                                                "drone_head" + \
+                                                ") VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)"
+                cursor.execute(data_add_query,
+                    (
+                    name,
+                    longitude,
+                    latitude,
+                    target_type,
+                    centerX,
+                    centerY,
+                    drone_lat,
+                    drone_lng,
+                    drone_alt,
+                    drone_pitch,
+                    drone_roll,
+                    drone_head
+                    ))
+                db.commit()
             return jsonify({"status": "success", "message": "Data received"})
         except Exception as e:
             print(e)
