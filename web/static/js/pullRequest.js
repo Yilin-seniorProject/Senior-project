@@ -32,7 +32,13 @@ export function imgRequest(markerId) {
             if (data.image_path) {
                 document.getElementById("target_img").src = data.image_path;
                 document.getElementById("popup_img").src = data.image_path;
-                // document.getElementById("drone_alt").innerHTML = "無人機拍攝高度： " + data.drone_alt + " 公尺";
+                document.getElementById("drone_alt").innerHTML = "無人機拍攝高度： " + data.drone_inform[2] + " 公尺";
+                // TODO 違規判斷式與記數
+                // if (data.violation) {
+                //     document.getElementById("violation").innerHTML = "車輛是否違規： 是 Yes";
+                // } else {
+                //     document.getElementById("violation").innerHTML = "車輛是否違規： 否 No";
+                // }
                 console.log('Image changed.');
             }
         })

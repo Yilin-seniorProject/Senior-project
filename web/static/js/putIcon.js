@@ -46,22 +46,25 @@ export function put_icon(map, latitude, longitude, targetType) {
         default:
             selectedIcon = TaxiIcon; // 默認圖標
         }
-    
-    // 更新計數器
-    counter.totalCount = counter.legal_carNum + counter.legal_scooterNum + 
-                        counter.illegal_carNum + counter.illegal_scooterNum;
-
-    // 放置標記
-    if (!isNaN(latitude) && !isNaN(longitude)) {
-        const markerId = pinList.length + 1;
-        const marker = L.marker([latitude, longitude], { icon: selectedIcon }).addTo(map);
-        pinList.push({ marker, markerId });
-        // 當標記被點擊時，顯示車輛的資訊
-        marker.on('click', () => {
-            if(targetType == 'car') {
-                document.getElementById('target_type').innerHTML = "車輛類別： 車子 Car";
-            } else if(targetType == 'motorcycle') {
-                document.getElementById('target_type').innerHTML = "車輛類別： 機車 Motorcycle";
+        
+        // 更新計數器
+        counter.totalCount = counter.legal_carNum + counter.legal_scooterNum + 
+        counter.illegal_carNum + counter.illegal_scooterNum;
+        
+        // 放置標記
+        if (!isNaN(latitude) && !isNaN(longitude)) {
+            const markerId = pinList.length + 1;
+            const marker = L.marker([latitude, longitude], { icon: selectedIcon }).addTo(map);
+            pinList.push({ marker, markerId });
+            // TODO 違規判斷式與記數
+            // if  (data.violation) {
+            //     counter.illegal_carNum++;
+            // 當標記被點擊時，顯示車輛的資訊
+            marker.on('click', () => {
+                if(targetType == 'car') {
+                    document.getElementById('target_type').innerHTML = "車輛類別： 車子 Car";
+                } else if(targetType == 'motorcycle') {
+                    document.getElementById('target_type').innerHTML = "車輛類別： 機車 Motorcycle";
             }
             document.getElementById('target_position').innerHTML = "目標車輛位置：<br>(" + latitude + ", " + longitude + ")";
             imgRequest(markerId);
