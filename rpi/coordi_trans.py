@@ -3,7 +3,6 @@ import numpy as np
 from picamera2 import Picamera2
 from ultralytics import YOLO
 import datetime
-from mavlink import get_attitude_info, get_gps_info
 
 
 picam2 = Picamera2()
