@@ -18,16 +18,16 @@ table_name = 'point'
 cleantag = False
 
 # Define coordinate transform fuction
-def coordinateTransform(camera_mtx, obj:tuple, position:tuple, attitude:tuple):
+def coordinateTransform(camera_mtx:np.ndarray, obj:tuple, position:tuple, attitude:tuple) -> tuple:
     """_Summary_
     Args:
-        camera_mtx (np.array): camera matrix
+        camera_mtx (np.ndarray): camera matrix
         obj (Tuple): x_mid, y_mid
-        position (Tuple): lat, lon, alt, hdg
+        position (Tuple): latitude, longitude, alt, heading
         attitude (Tuple): roll, pitch
 
     Returns:
-        _type_: _description_
+        out(Tuple): precise longitude, precise latitude
     """
     # img, roll, pitch, heading, height, longitude, latitude
     # caclulate origin of the camera
