@@ -16,7 +16,7 @@ def block(frame, position, attitude):
     results = detector.detect(frame)
     if len(results) != 0:
         #加frame
-        ids, mids, msgs = [], [], []
+        ids, mids, violations = [], [], []
         for result in results:
             id, x_mid, y_mid, x_1, y_1, x_2, y_2 = result # x_mid, y_mid means bounding box center
             ids.append(id)
@@ -31,13 +31,13 @@ def block(frame, position, attitude):
             else:
                 msg = f"Car {i+1} is not violating parking rule."
             print(msg)
-            msgs.append(int(is_violating))
+            violations.append(int(is_violating))
 
         data = dumps({
             'frame': frame.tolist(),
             'classname': ids,
             'center': mids,
-            'message': msgs,
+            'message': violations,
             'drone_lat': position[0],
             'drone_lng': position[1],
             'drone_alt': position[2],
