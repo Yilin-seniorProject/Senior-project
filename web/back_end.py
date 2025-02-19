@@ -113,7 +113,7 @@ def update_data():
     db = get_db()
     db.row_factory = sqlite3.Row
     cursor = db.cursor()
-    query = f"SELECT target_img, Latitude, Longitude, target_type, drone_lat, drone_lng, illegal FROM {table_name}"
+    query = f"SELECT target_img, Latitude, Longitude, target_type, drone_lat, drone_lng, message FROM {table_name}"
     cursor.execute(query)
     rows = cursor.fetchall()
     data = [dict(row) for row in rows]
