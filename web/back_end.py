@@ -113,7 +113,7 @@ def update_data():
     db = get_db()
     db.row_factory = sqlite3.Row
     cursor = db.cursor()
-    query = f"SELECT target_img, Latitude, Longitude, target_type, drone_lat, drone_lng FROM {table_name}"
+    query = f"SELECT target_img, Latitude, Longitude, target_type, drone_lat, drone_lng, message FROM {table_name}"
     cursor.execute(query)
     rows = cursor.fetchall()
     data = [dict(row) for row in rows]
@@ -135,13 +135,16 @@ def submit_data():
     target_img = cursor.fetchone()
     cursor.execute(
         f"SELECT drone_lat, drone_lng, drone_alt FROM {table_name} WHERE ROWID = ?", (marker_id,))
-    drone_inform = cursor.fetchone()
-    if target_img is not None and drone_inform is not None:
+    drone_info = cursor.fetchone()
+    cursor.execute(
+        f"SELECT message FROM {table_name} WHERE ROWID = ?", (marker_id,))
+    message = cursor.fetchone()
+    if target_img is not None and drone_info is not None and message is not None:
         target_img = target_img[0]
     else:
         return jsonify({"status": "error", "message": "No data found"})
     image_path = os.path.join("static", "car_image", target_img)
-    return jsonify({"image_path": image_path, "drone_inform": drone_inform})
+    return jsonify({"image_path": image_path, "drone_info": drone_info, "message":message})
 
 
 @app.route("/read_data", methods=["POST"])
@@ -160,6 +163,7 @@ def read_data():
             drone_roll = data['drone_roll']
             drone_head = data['drone_head']
             ids = data['classname']
+            message = data['message']
             mids = data['center']
             print(data["message"])
             drone_pos = (drone_lat, drone_lng, drone_alt, drone_head)
@@ -189,6 +193,7 @@ def read_data():
                                                 "drone_pitch," + \
                                                 "drone_roll," + \
                                                 "drone_head" + \
+                                                "message" + \
                                                 ") VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)"
                 cursor.execute(data_add_query,
                     (
@@ -203,7 +208,8 @@ def read_data():
                     drone_alt,
                     drone_pitch,
                     drone_roll,
-                    drone_head
+                    drone_head,
+                    message
                     ))
                 db.commit()
             return jsonify({"status": "success", "message": "Data received"})
@@ -228,4 +234,9 @@ def delete_data():
 
 # rpi: host='192.168.137.1'; pc:host='127.0.0.1'
 if __name__ == '__main__':
-    app.run(host='192.168.137.1', port=5000, debug=True)
+    setting = input("type 'rpi' or 'pc'")
+    if setting == 'rpi':
+        host = '192.168.137.1'
+    else:
+        host = '127.0.0.1'
+    app.run(host=host, port=5000, debug=True)
