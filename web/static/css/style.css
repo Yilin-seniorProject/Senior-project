@@ -1,6 +1,6 @@
-p{
+p, li, label{
     color:black;
-    margin: 4%;
+    font-size: 2vmin;
 }
 
 body{
@@ -12,6 +12,7 @@ h2{
     margin: 1vh;
     padding: 1vh;
 }
+
 .first_title{
     display: flex;
     align-items: center;
@@ -50,8 +51,10 @@ h2{
 }
 
 .vehicle_amount table{
-    width: 100%;
+    position: relative;
     border-collapse: separate;
+    top: 8%;
+    width: 100%;
 }
 
 .amount{
@@ -59,11 +62,13 @@ h2{
     margin: 1vh;
 }
 
-
 .vehicle_amount th,td{
     vertical-align: middle;
-    /* border: 1px solid rgb(160 160 160); */
     text-align: center;
+}
+
+.remark{
+    margin: 4%;
 }
 
 #target_info{
@@ -94,6 +99,7 @@ h2{
 
 li{
     padding: 10px;
+    margin: auto;
 }
 
 /* 設置懸浮視窗的樣式 */
@@ -141,6 +147,12 @@ li{
 #map{
     position: relative;
     height: 69vh;
+}
+
+.maunally_input{
+    position: absolute;
+    bottom: 8%;
+    left: 1%;
 }
 
 input[type="text"]{

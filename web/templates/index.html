@@ -27,25 +27,25 @@
                         <tr>
                             <td rowspan="2">
                                 <p class="amount" id="total_amount">0</p>
-                                <p>總檢測數量</p>
+                                <p class="remark">總檢測數量</p>
                             </td>
                             <td>
                                 <p class="amount" id="legal_car_amount">0</p>
-                                <p>合法停放之汽車</p>
+                                <p class="remark">合法停放之汽車</p>
                             </td>
                             <td>
                                 <p class="amount" id="legal_scooter_amount">0</p>
-                                <p>合法停放之機車</p>
+                                <p class="remark">合法停放之機車</p>
                             </td>
                         </tr>
                         <tr>
                             <td>
                                 <p class="amount" id="illegal_car_amount">0</p>
-                                <p>非法停放之汽車</p>
+                                <p class="remark">非法停放之汽車</p>
                             </td>
                             <td>
                                 <p class="amount" id="illegal_scooter_amount">0</p>
-                                <p>非法停放之機車</p>
+                                <p class="remark">非法停放之機車</p>
                             </td>
                         </tr>
                     </table>
@@ -62,6 +62,7 @@
                                     <li id="target_type">車輛類別：</li>
                                     <li id="target_position">目標車輛位置：</li>
                                     <li id="drone_alt">無人機拍攝高度：</li>
+                                    <li id="violation">車輛是否違規：</li>
                                 </ul>
                             </div>
                         </div>
@@ -76,7 +77,7 @@
                     <h2>被檢測之車輛位置</h2>
                     <!-- 添加一個用於顯示地圖的div -->
                     <div id="map"></div>          
-                    <div>
+                    <div class="maunally_input">
                         <!-- 輸入標記於地圖上 -->
                         <label for="title">輸入GPS座標以新增自定義圖標：</label>
                         <input type="text" id="input_lat" placeholder="Latitude" value="">

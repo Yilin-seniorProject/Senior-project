@@ -17,7 +17,7 @@ function updateCountDisplay() {
     });
 };
 
-export function put_icon(map, latitude, longitude, targetType) {
+export function put_icon(map, latitude, longitude, targetType, violation) {
     // 自定義圖標：汽車、機車、其他(以計程車表示)
     const CarIcon = L.icon({
         iconUrl: '../static/img/car_icon.png',
@@ -46,22 +46,37 @@ export function put_icon(map, latitude, longitude, targetType) {
         default:
             selectedIcon = TaxiIcon; // 默認圖標
         }
-    
-    // 更新計數器
-    counter.totalCount = counter.legal_carNum + counter.legal_scooterNum + 
-                        counter.illegal_carNum + counter.illegal_scooterNum;
+        
+        // 更新計數器
+        counter.totalCount = counter.legal_carNum + counter.legal_scooterNum + 
+        counter.illegal_carNum + counter.illegal_scooterNum;
+        
+        // 放置標記
+        if (!isNaN(latitude) && !isNaN(longitude)) {
+            const markerId = pinList.length + 1;
+            const marker = L.marker([latitude, longitude], { icon: selectedIcon }).addTo(map);
+            pinList.push({ marker, markerId });
+            // TODO 違規判斷式與記數
+            if  (violation) {
+                if (targetType == 'car'){
+                    counter.illegal_carNum++;
+                }else{
+                    counter.illegal_scooterNum++;
+                }
+            } else{
+                if (targetType == 'car'){
+                    counter.legal_carNum++;
+                }else{
+                    counter.legal_scooterNum++;
+                }
+            }
 
-    // 放置標記
-    if (!isNaN(latitude) && !isNaN(longitude)) {
-        const markerId = pinList.length + 1;
-        const marker = L.marker([latitude, longitude], { icon: selectedIcon }).addTo(map);
-        pinList.push({ marker, markerId });
-        // 當標記被點擊時，顯示車輛的資訊
-        marker.on('click', () => {
-            if(targetType == 'car') {
-                document.getElementById('target_type').innerHTML = "車輛類別： 車子 Car";
-            } else if(targetType == 'motorcycle') {
-                document.getElementById('target_type').innerHTML = "車輛類別： 機車 Motorcycle";
+            // 當標記被點擊時，顯示車輛的資訊
+            marker.on('click', () => {
+                if(targetType == 'car') {
+                    document.getElementById('target_type').innerHTML = "車輛類別： 車子 Car";
+                } else if(targetType == 'motorcycle') {
+                    document.getElementById('target_type').innerHTML = "車輛類別： 機車 Motorcycle";
             }
             document.getElementById('target_position').innerHTML = "目標車輛位置：<br>(" + latitude + ", " + longitude + ")";
             imgRequest(markerId);
