@@ -37,19 +37,13 @@ export function put_icon(map, latitude, longitude, targetType, violation) {
     switch (targetType) {
         case 'car': // car
         selectedIcon = CarIcon;
-        counter.legal_carNum++;
         break;
         case 'motorcycle': // scooter
         selectedIcon = ScooterIcon;
-        counter.legal_scooterNum++;
         break;
         default:
             selectedIcon = TaxiIcon; // 默認圖標
         }
-        
-        // 更新計數器
-        counter.totalCount = counter.legal_carNum + counter.legal_scooterNum + 
-        counter.illegal_carNum + counter.illegal_scooterNum;
         
         // 放置標記
         if (!isNaN(latitude) && !isNaN(longitude)) {
@@ -60,30 +54,33 @@ export function put_icon(map, latitude, longitude, targetType, violation) {
             if  (violation) {
                 if (targetType == 'car'){
                     counter.illegal_carNum++;
-                }else{
+                } else if(targetType == 'motorcycle'){
                     counter.illegal_scooterNum++;
                 }
             } else{
                 if (targetType == 'car'){
                     counter.legal_carNum++;
-                }else{
+                } else if(targetType == 'motorcycle'){
                     counter.legal_scooterNum++;
                 }
             }
-
+            
             // 當標記被點擊時，顯示車輛的資訊
             marker.on('click', () => {
                 if(targetType == 'car') {
                     document.getElementById('target_type').innerHTML = "車輛類別： 車子 Car";
                 } else if(targetType == 'motorcycle') {
                     document.getElementById('target_type').innerHTML = "車輛類別： 機車 Motorcycle";
-            }
-            document.getElementById('target_position').innerHTML = "目標車輛位置：<br>(" + latitude + ", " + longitude + ")";
-            imgRequest(markerId);
-        });
-    } else {
-        alert('Please enter valid latitude and longitude.');
-    }
+                }
+                document.getElementById('target_position').innerHTML = "目標車輛位置：<br>(" + latitude + ", " + longitude + ")";
+                imgRequest(markerId);
+            });
+        } else {
+            alert('Please enter valid latitude and longitude.');
+        }
+        // 更新計數器
+        counter.totalCount = counter.legal_carNum + counter.legal_scooterNum + 
+                            counter.illegal_carNum + counter.illegal_scooterNum;
     // 更新顯示的計數結果
     updateCountDisplay();
 }
