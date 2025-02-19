@@ -20,7 +20,7 @@ document.addEventListener("DOMContentLoaded", function () {
         zoomControl: true, // 是否秀出 - + 按鈕
     }).addTo(map);
 
-    let interval = setInterval(autoFetchData, 5000);
+    setInterval(autoFetchData, 5000);
 
     // 手動新增圖標
     const btnPutMarkers = document.getElementById('put-markers');

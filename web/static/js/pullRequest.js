@@ -10,7 +10,7 @@ export function autoFetchData() {
         .then(data => {
             while (id < data.length) {
                 const element = data[id];
-                put_icon(map, element['Latitude'], element['Longitude'], element['target_type'])
+                put_icon(map, element['Latitude'], element['Longitude'], element['target_type'], element['message']);
                 id++;
             }
         })
@@ -34,11 +34,11 @@ export function imgRequest(markerId) {
                 document.getElementById("popup_img").src = data.image_path;
                 document.getElementById("drone_alt").innerHTML = "無人機拍攝高度： " + data.drone_inform[2] + " 公尺";
                 // TODO 違規判斷式與記數
-                // if (data.violation) {
-                //     document.getElementById("violation").innerHTML = "車輛是否違規： 是 Yes";
-                // } else {
-                //     document.getElementById("violation").innerHTML = "車輛是否違規： 否 No";
-                // }
+                if (data.violation) {
+                    document.getElementById("violation").innerHTML = "車輛是否違規： 是 Yes";
+                } else {
+                    document.getElementById("violation").innerHTML = "車輛是否違規： 否 No";
+                }
                 console.log('Image changed.');
             }
         })

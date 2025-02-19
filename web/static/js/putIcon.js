@@ -57,8 +57,20 @@ export function put_icon(map, latitude, longitude, targetType) {
             const marker = L.marker([latitude, longitude], { icon: selectedIcon }).addTo(map);
             pinList.push({ marker, markerId });
             // TODO 違規判斷式與記數
-            // if  (data.violation) {
-            //     counter.illegal_carNum++;
+            if  (data.violation) {
+                if (data.target_type == 'car'){
+                    counter.illegal_carNum++;
+                }else{
+                    counter.illegal_scooterNum++;
+                }
+            } else{
+                if (data.target_type == 'car'){
+                    counter.legal_carNum++;
+                }else{
+                    counter.legal_scooterNum++;
+                }
+            }
+
             // 當標記被點擊時，顯示車輛的資訊
             marker.on('click', () => {
                 if(targetType == 'car') {
