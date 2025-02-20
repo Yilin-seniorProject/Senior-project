@@ -194,7 +194,7 @@ def read_data():
                                                 "drone_roll," + \
                                                 "drone_head" + \
                                                 "message" + \
-                                                ") VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)"
+                                                ") VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)"
                 cursor.execute(data_add_query,
                     (
                     name,
@@ -234,9 +234,9 @@ def delete_data():
 
 # rpi: host='192.168.137.1'; pc:host='127.0.0.1'
 if __name__ == '__main__':
-    setting = input("type 'rpi' or 'pc'")
-    if setting == 'rpi':
+    try:
         host = '192.168.137.1'
-    else:
+        app.run(host=host, port=5000, debug=True)
+    except:
         host = '127.0.0.1'
-    app.run(host=host, port=5000, debug=True)
+        app.run(host=host, port=5000, debug=True)
