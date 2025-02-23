@@ -165,11 +165,11 @@ def read_data():
             ids = data['classname']
             message = data['message']
             mids = data['center']
-            print(data["message"])
             drone_pos = (drone_lat, drone_lng, drone_alt, drone_head)
             drone_att = (drone_roll, drone_pitch)
             for i in range(len(ids)):
                 centerX, centerY = mids[i]
+                message = message[i]
                 target_objs = (centerX, centerY)
                 if ids[i] == 0:
                     target_type = 'car'
@@ -192,7 +192,7 @@ def read_data():
                                                 "drone_alt," + \
                                                 "drone_pitch," + \
                                                 "drone_roll," + \
-                                                "drone_head" + \
+                                                "drone_head," + \
                                                 "message" + \
                                                 ") VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)"
                 cursor.execute(data_add_query,
