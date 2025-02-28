@@ -24,7 +24,7 @@ class Detector():
         self.now = datetime.datetime.strftime(self.now, "%m%d_%H%M%S")
         self.outputPath = kwargs.get('outputPath', f'rpi/static/imgs/img{self.now}.jpg')
         self.dist = dist
-        self.model = YOLO(yoloPath)
+        self.model = YOLO(yoloPath, task='detect')
 
     def undistortion(self, img): # TODO:fix undistortion
         h, w = img.shape[:2]
@@ -36,7 +36,6 @@ class Detector():
     
     def detect(self, img):
         tmp = []
-        obj = []
         dst = self.undistortion(img)
         results = self.model.predict(dst)
         boxes = results[0].boxes  # get boxes
@@ -61,7 +60,7 @@ class Detector():
         kp_2, des_2 = orb.detectAndCompute(img_2, None)
 
         if des_1 is None or des_2 is None:
-           return False
+            return False
 
         sim_Thres = 0.1*len(kp_1)
         bf = cv2.BFMatcher(cv2.NORM_HAMMING, crossCheck = False)
