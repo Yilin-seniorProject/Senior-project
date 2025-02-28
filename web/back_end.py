@@ -163,13 +163,13 @@ def read_data():
             drone_roll = data['drone_roll']
             drone_head = data['drone_head']
             ids = data['classname']
-            message = data['message']
+            messages = data['message']
             mids = data['center']
             drone_pos = (drone_lat, drone_lng, drone_alt, drone_head)
             drone_att = (drone_roll, drone_pitch)
             for i in range(len(ids)):
                 centerX, centerY = mids[i]
-                message = message[i]
+                message = messages[i]
                 target_objs = (centerX, centerY)
                 if ids[i] == 0:
                     target_type = 'car'
@@ -235,7 +235,7 @@ def delete_data():
 # rpi: host='192.168.137.1'; pc:host='127.0.0.1'
 if __name__ == '__main__':
     try:
-        host = '192.168.137.1'
+        host = '192.168.137.158'
         app.run(host=host, port=5000, debug=True)
     except:
         host = '127.0.0.1'
