@@ -40,7 +40,7 @@ if __name__ == "__main__":
     for bbox in result:
         bbox = list(map(lambda x: int(x[0]), bbox[3:]))
         bbox_list.append(bbox)
-    test_img1 = image_processing(test_img1)
+    test_img1 = image_processing(test_img1, bbox_list)
     cv2.imshow('result1', test_img1)
     
     test_img2 = cv2.imread(r'temp/test2.jpg')
