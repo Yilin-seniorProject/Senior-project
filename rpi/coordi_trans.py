@@ -24,7 +24,7 @@ class Detector():
         self.now = datetime.datetime.strftime(self.now, "%m%d_%H%M%S")
         self.outputPath = kwargs.get('outputPath', f'rpi/static/imgs/img{self.now}.jpg')
         self.dist = dist
-        self.model = YOLO(yoloPath)
+        self.model = YOLO(yoloPath, task='detect')
 
     def undistortion(self, img): # TODO:fix undistortion
         h, w = img.shape[:2]
@@ -36,7 +36,6 @@ class Detector():
     
     def detect(self, img):
         tmp = []
-        obj = []
         dst = self.undistortion(img)
         results = self.model.predict(dst)
         boxes = results[0].boxes  # get boxes
@@ -61,7 +60,7 @@ class Detector():
         kp_2, des_2 = orb.detectAndCompute(img_2, None)
 
         if des_1 is None or des_2 is None:
-           return False
+            return False
 
         sim_Thres = 0.1*len(kp_1)
         bf = cv2.BFMatcher(cv2.NORM_HAMMING, crossCheck = False)
@@ -92,8 +91,8 @@ class Detector():
     # Function to check if a car is violating parking rules
     def check_parking_violation(self, x1, y1, x2, y2, red_mask):
         # Define areas around the car to check for red lines
-        above_area = red_mask[max(0, y1 - 50):y1, x1:x2]
-        below_area = red_mask[y2:y2 + 50, x1:x2]
+        above_area = red_mask[max(0, y1 - 10):y1, x1:x2]
+        below_area = red_mask[y2:y2 + 10, x1:x2]
 
         # Check if red lines exist in these regions
         above_red = np.any(above_area > 0)

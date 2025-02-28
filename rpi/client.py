@@ -23,13 +23,17 @@ def block(frame, position, attitude):
             mids.append([x_mid.tolist()[0], y_mid.tolist()[0]])
             if id == 0:
                 car_bbox.append((int(x_1), int(y_1), int(x_2), int(y_2)))
+            elif id ==1:
+                car_bbox.append((int(x_1), int(y_1), int(x_2), int(y_2)))
+            else:
+                car_bbox.append((int(x_1), int(y_1), int(x_2), int(y_2)))
         for i, (x1, y1, x2, y2) in enumerate(car_bbox):
             is_violating = detector.check_parking_violation(x1, y1, x2, y2, red_mask)
             if is_violating:
-                msg = f"Car {i+1} is violating parking rule by being on red line."
-                cv2.rectangle(frame, (x1, y1), (x2, y2), (255, 0, 0), 2)
+                msg = f"Object {i+1} is violating parking rule by being on red line."
+                cv2.rectangle(frame, (x_1, y_1), (x_2, y_2), (255, 0, 0), 2)
             else:
-                msg = f"Car {i+1} is not violating parking rule."
+                msg = f"Object {i+1} is not violating parking rule."
             print(msg)
             violations.append(int(is_violating))
 
