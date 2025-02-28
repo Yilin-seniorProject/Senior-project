@@ -235,7 +235,7 @@ def delete_data():
 # rpi: host='192.168.137.1'; pc:host='127.0.0.1'
 if __name__ == '__main__':
     try:
-        host = '192.168.137.158'
+        host = '192.168.137.1'
         app.run(host=host, port=5000, debug=True)
     except:
         host = '127.0.0.1'
