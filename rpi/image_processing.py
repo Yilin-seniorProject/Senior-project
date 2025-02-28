@@ -4,10 +4,14 @@ from coordi_trans import Detector
 
 def image_processing(img:cv2.typing.MatLike, bbox_list:list=None) -> cv2.typing.MatLike:
     img = cv2.cvtColor(img, cv2.COLOR_BGR2HSV)
-    hsv_upper = np.array([180, 180, 180])
-    hsv_lower = np.array([150, 60, 100])
+    lower_red1 = np.array([0, 70, 50])
+    upper_red1 = np.array([10, 255, 255])
+    lower_red2 = np.array([170, 70, 50])
+    upper_red2 = np.array([180, 255, 255])
 
-    mask = cv2.inRange(img, hsv_lower, hsv_upper)
+    mask1 = cv2.inRange(img, lower_red1, upper_red1)
+    mask2 = cv2.inRange(img, lower_red2, upper_red2)
+    mask = mask1 | mask2
     if bbox_list is not None:
         for bbox in bbox_list:
             x0, y0, x1, y1 = bbox
@@ -20,7 +24,7 @@ def image_processing(img:cv2.typing.MatLike, bbox_list:list=None) -> cv2.typing.
         for line in lines:
             x0, y0, x1, y1 = line[0, :]
             cv2.line(img, (x0, y0), (x1, y1), (0, 255, 0), 2)
-    return img
+    return img, mask
 
 if __name__ == "__main__":
     camera_mtx = np.array( [[1.84463584e+03,              0, 1.37568753e+02],
