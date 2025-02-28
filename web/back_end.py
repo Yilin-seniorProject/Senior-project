@@ -163,13 +163,13 @@ def read_data():
             drone_roll = data['drone_roll']
             drone_head = data['drone_head']
             ids = data['classname']
-            message = data['message']
+            messages = data['message']
             mids = data['center']
             drone_pos = (drone_lat, drone_lng, drone_alt, drone_head)
             drone_att = (drone_roll, drone_pitch)
             for i in range(len(ids)):
                 centerX, centerY = mids[i]
-                message = message[i]
+                message = messages[i]
                 target_objs = (centerX, centerY)
                 if ids[i] == 0:
                     target_type = 'car'
