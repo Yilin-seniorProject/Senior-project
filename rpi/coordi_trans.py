@@ -2,7 +2,7 @@ import cv2
 import numpy as np
 from picamera2 import Picamera2
 from ultralytics import YOLO
-import datetime
+from datetime import datetime
 
 
 picam2 = Picamera2()
@@ -16,48 +16,40 @@ class Detector():
     def __init__(self, cameraMatrix, yoloPath, dist, **kwargs):
         # cameraMatrix, dist, outputPath, yoloPath
         self.cameraMatrix = cameraMatrix
-        self.camCenter_x = self.cameraMatrix[0][2]
-        self.camCenter_y = self.cameraMatrix[1][2]
-        self.focus_x = self.cameraMatrix[0][0]
-        self.focus_y = self.cameraMatrix[1][1]
-        self.now = datetime.datetime.now()
-        self.now = datetime.datetime.strftime(self.now, "%m%d_%H%M%S")
-        self.outputPath = kwargs.get('outputPath', f'rpi/static/imgs/img{self.now}.jpg')
         self.dist = dist
         self.model = YOLO(yoloPath, task='detect')
 
-    def undistortion(self, img): # TODO:fix undistortion
+    def undistortion(self, img):
         h, w = img.shape[:2]
         newcameramtx, roi = cv2.getOptimalNewCameraMatrix(self.cameraMatrix, self.dist, (w,h), 0, (w,h))  # get new camera matrix
         dst = cv2.undistort(img, self.cameraMatrix, self.dist, None, newcameramtx)  # undistort
         x, y, w, h = roi  # crop the image
         dst = dst[y:y+h, x:x+w]
-        return dst  # TODO:check new camera mtx
+        return dst
     
     def detect(self, img):
-        tmp = []
+        detection_info = []
         dst = self.undistortion(img)
         results = self.model.predict(dst)
         boxes = results[0].boxes  # get boxes
         for box in boxes:
-            id = int(box.cls) 
+            id = int(box.cls)
             xy_arr = box.xyxy.cpu()
             coordi = np.array(xy_arr)
             x_mid = (coordi[:, 0] + coordi[:, 2]) / 2
             y_mid = (coordi[:, 1] + coordi[:, 3]) / 2
             annotaionImg = results[0].plot()
-            self.now = datetime.datetime.now()
-            self.now = datetime.datetime.strftime(self.now, "%m%d_%H%M%S")
-            self.outputPath = f'rpi/static/imgs/img{self.now}.jpg'
-            tmp.append([id, x_mid, y_mid, coordi[:, 0], coordi[:, 1], coordi[:, 2], coordi[:, 3]])
-        if len(tmp) > 0:
-            cv2.imwrite(f'{self.outputPath}', annotaionImg)  # save image when detect obj    
-        return tmp
+            now = datetime.now().strftime("%m%d_%H%M%S")
+            outputPath = f'rpi/static/imgs/img{now}.jpg'
+            detection_info.append([id, x_mid, y_mid, coordi[:, 0], coordi[:, 1], coordi[:, 2], coordi[:, 3]])
+        if len(detection_info) > 0:
+            cv2.imwrite(f'{outputPath}', annotaionImg)  # save image when detect object
+        return detection_info
 
     def drop_img(self, img_1, img_2):
         orb = cv2.ORB_create()
         kp_1, des_1 = orb.detectAndCompute(img_1, None)
-        kp_2, des_2 = orb.detectAndCompute(img_2, None)
+        _, des_2 = orb.detectAndCompute(img_2, None)
 
         if des_1 is None or des_2 is None:
             return False
@@ -75,18 +67,31 @@ class Detector():
             return False
 
     # Function to detect red lines (red color mask)
-    def detect_red_lines(self, img):
-        hsv = cv2.cvtColor(img, cv2.COLOR_BGR2HSV)  # Convert to HSV color space
+    def detect_red_lines(self, img:cv2.typing.MatLike, bbox_list:list=None) -> cv2.typing.MatLike:
+        img = cv2.cvtColor(img, cv2.COLOR_BGR2HSV)
         lower_red1 = np.array([0, 70, 50])
         upper_red1 = np.array([10, 255, 255])
         lower_red2 = np.array([170, 70, 50])
         upper_red2 = np.array([180, 255, 255])
 
         # Create masks to detect red color in two ranges
-        mask1 = cv2.inRange(hsv, lower_red1, upper_red1)
-        mask2 = cv2.inRange(hsv, lower_red2, upper_red2)
-        red_mask = mask1 | mask2
-        return red_mask
+        mask1 = cv2.inRange(img, lower_red1, upper_red1)
+        mask2 = cv2.inRange(img, lower_red2, upper_red2)
+        mask = mask1 | mask2
+        if bbox_list is not None:
+            for bbox in bbox_list:
+                x0, y0, x1, y1 = bbox
+                mask[y0:y1, x0:x1] = 0
+        mask = cv2.erode(mask, (3,3), iterations=5)
+        mask = cv2.dilate(mask, (5,5), iterations=10)
+        lines = cv2.HoughLinesP(mask, 1, np.pi/180, 100, minLineLength=100, maxLineGap=10)
+        img = cv2.cvtColor(img, cv2.COLOR_HSV2BGR)
+        if lines is not None:
+            for line in lines:
+                x0, y0, x1, y1 = line[0, :]
+                cv2.line(img, (x0, y0), (x1, y1), (0, 255, 0), 2)
+        return img, mask
+
 
     # Function to check if a car is violating parking rules
     def check_parking_violation(self, x1, y1, x2, y2, red_mask):

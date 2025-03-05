@@ -29,7 +29,6 @@ def coordinateTransform(camera_mtx:np.ndarray, obj:tuple, position:tuple, attitu
     Returns:
         out(Tuple): precise longitude, precise latitude
     """
-    # img, roll, pitch, heading, height, longitude, latitude
     # caclulate origin of the camera
     newOrigin = []  # (cx, cy)
     roll = np.deg2rad(attitude[0])
@@ -232,11 +231,9 @@ def delete_data():
     cleantag = True
     return jsonify({"status": "success", "message": "Data deleted"})
 
-# rpi: host='192.168.137.1'; pc:host='127.0.0.1'
+
 if __name__ == '__main__':
     try:
-        host = '192.168.137.1'
-        app.run(host=host, port=5000, debug=True)
+        app.run(host='192.168.137.1', port=5000, debug=True)
     except:
-        host = '127.0.0.1'
-        app.run(host=host, port=5000, debug=True)
+        app.run(host='127.0.0.1', port=5000, debug=True)
