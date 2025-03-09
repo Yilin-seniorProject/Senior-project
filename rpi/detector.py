@@ -82,8 +82,8 @@ class Detector():
             for bbox in bbox_list:
                 x0, y0, x1, y1 = bbox
                 mask[y0:y1, x0:x1] = 0
-        # mask = cv2.erode(mask, (3,3), iterations=5)
-        # mask = cv2.dilate(mask, (5,5), iterations=10)
+        mask = cv2.erode(mask, (3,3), iterations=5)
+        mask = cv2.dilate(mask, (5,5), iterations=10)
         lines = cv2.HoughLinesP(mask, 1, np.pi/180, 100, minLineLength=100, maxLineGap=10)
         img = cv2.cvtColor(img, cv2.COLOR_HSV2BGR)
         if lines is not None:
