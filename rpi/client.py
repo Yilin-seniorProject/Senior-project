@@ -23,11 +23,12 @@ def detect_violations(frame, position, attitude) -> None:
             car_bbox.append(bbox_int)
             
         _, red_mask = detector.detect_red_lines(frame, car_bbox)
-        # _, yellow_mask = detector.detect_yellow_net(frame, car_bbox) # 黃網線檢測(待實作)
+        _, yellow_mask = detector.detect_yellow_net(frame, car_bbox) # 黃網線檢測(待實作)
         
         for i, (x1, y1, x2, y2) in enumerate(car_bbox):
             is_violating = detector.check_parking_violation(x1, y1, x2, y2, red_mask)
-            if is_violating:
+            yellow_net = detector.check_yellow_net_violation(x1, y1, x2, y2, yellow_mask)
+            if is_violating or yellow_net:
                 msg = f"Object {i+1} is violating parking rule by being on red line."
                 cv2.rectangle(frame, (x1, y1), (x2, y2), (255, 0, 0), 2)
             else:
