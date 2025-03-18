@@ -4,7 +4,7 @@ import requests
 import numpy as np
 from time import sleep
 from json import dumps
-from .detector import Detector, picam2
+from detector import Detector, picam2
 
 
 URL = 'http://192.168.137.1:5000/read_data'
