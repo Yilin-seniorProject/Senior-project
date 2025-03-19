@@ -1,0 +1,19 @@
+description: Ultralytics YOLO11n model trained on D:/code/python/ML_finalProject/train/data.yaml
+author: Ultralytics
+date: '2025-03-10T08:49:34.362489'
+version: 8.3.86
+license: AGPL-3.0 License (https://ultralytics.com/license)
+docs: https://docs.ultralytics.com
+stride: 32
+task: detect
+batch: 1
+imgsz:
+- 640
+- 640
+names:
+  0: Car
+  1: Motorcycle
+  2: Pedestrian
+args:
+  batch: 1
+  half: false
