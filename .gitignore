@@ -163,4 +163,4 @@ cython_debug/
 *test*
 .vscode/
 temp/
-car_image/
+# car_image/
