@@ -36,9 +36,6 @@ Class: car, motorcycle and taxi (for pedestrains)
 - Result Report Submission (Prof.): 17:00 114/01/08 (Wed.)
 - Result Report Submission (CD): 17:00 114/01/13 (Mon.)
 
-## TODO
+## 3D models
 
-- Choose class name for motorcycle or scooter
-- add drone position in front end for reference
-- check coordi_transfer.py
-- change the name of vechileType(1, 2, 3) ->(car, scooter, ...)
+All 3D CAD models are attached to [here](https://github.com/JustAHedgehog/dronekits) and are edited in SolidWorks.
